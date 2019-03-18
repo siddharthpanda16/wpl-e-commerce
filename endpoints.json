@@ -1,0 +1,82 @@
+/* GET /movies ?genre=horror */
+/* returns a list of movies. Can pass in a param for genre */
+
+{
+  movies: [
+    {
+      id: 1,
+      title: "The Hitchhikers Guide to the Galaxy",
+      year: 2005,
+      description: "Arthur Dent (Martin Freeman) is trying to prevent his house from being bulldozed when his friend Ford Prefect (Mos Def) whisks him into outer space. It turns out Ford is an alien who has just saved Arthur from Earth's total annihilation. Ford introduces Arthur to his myriad friends, including many-headed President Zaphod Beeblebrox (Sam Rockwell) and sexy refugee Trillian (Zooey Deschanel). Arthur makes his way across the stars while seeking the meaning of life, or something close to it."
+    },
+    {
+      id: 2,
+      title: "Inception",
+      year: 2010,
+      description: "Dom Cobb (Leonardo DiCaprio) is a thief with the rare ability to enter people's dreams and steal their secrets from their subconscious. His skill has made him a hot commodity in the world of corporate espionage but has also cost him everything he loves. Cobb gets a chance at redemption when he is offered a seemingly impossible task: Plant an idea in someone's mind. If he succeeds, it will be the perfect crime, but a dangerous enemy anticipates Cobb's every move."
+    }
+  ]
+}
+
+/* GET /users/:id */
+/* return the information about a specific user. billing, cart, personal, etc. */
+
+{
+  name: "Pat Dayton",
+  username: "daytonpe",
+  plan: "gold",
+  rented: ["The Hitchhikers Guide to the Galaxy", "Inception"]
+}
+
+/* POST /users */
+/* create a new user. Pass in user information in body. */
+
+/* body */
+{
+  name: "Pat Dayton",
+  username: "daytonpe",
+  password: "blah",
+  passwordConfirm: "blah",
+  plan: "gold",
+  rented: ["The Hitchhikers Guide to the Galaxy", "Inception"]
+}
+
+/* response */
+{ message: "success" }
+
+/* PUT /users/:id */
+/* update a user (most likely their plan). Pass in information to change in body. */
+/* response */
+{ message: "success" }
+
+/* POST /users/:id/movie/:id */
+/* add a movie to a users cart. Throws if no more room. */
+/* response */
+{ message: "success" }
+
+/* DELETE /users/:id/movie/:id */
+/* delete a movie from a users cart*/
+/* response */
+{ message: "success" }
+
+/* POST /login */
+/* log in a user */
+/* response */
+{ message: "success" }
+
+/* POST /logout */
+/* log out a user */
+/* response */
+{ message: "success" }
+
+/*****************************************/
+/* OPTIONAL ROUTES - might want at some point.*/
+/*****************************************/
+
+/* POST /movies */
+/* create a new move. Not sure if this one is necessary if we
+   just create with a script. */
+
+/* DELETE /movies/:id */
+/* delete a move. Not sure if this one is necessary if we
+   just create with a script. */
