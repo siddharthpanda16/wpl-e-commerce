@@ -25,7 +25,12 @@
   name: "Pat Dayton",
   username: "daytonpe",
   plan: "gold",
-  rented: ["The Hitchhikers Guide to the Galaxy", "Inception"]
+  rented: ["The Hitchhikers Guide to the Galaxy", "Inception"],
+  billing: {
+    ccNum: "1111-2222-3333-4444",
+    ccCVV: "123",
+    ccExp: "01:01:2020"
+  }
 }
 
 /* POST /users */
@@ -38,7 +43,12 @@
   password: "blah",
   passwordConfirm: "blah",
   plan: "gold",
-  rented: ["The Hitchhikers Guide to the Galaxy", "Inception"]
+  rented: ["The Hitchhikers Guide to the Galaxy", "Inception"],
+  billing: {
+    ccNum: "1111-2222-3333-4444",
+    ccCVV: "123",
+    ccExp: "01:01:2020"
+  }
 }
 
 /* response */
