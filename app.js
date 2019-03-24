@@ -4,19 +4,13 @@ const bodyParser = require("body-parser");
 const { getMoviesRouter } = require("./routes/movies");
 const { getUsersRouter } = require("./routes/users");
 
-// // Set up mongoose connection
-// const dbURI = `mongodb+srv://${encodeURIComponent(
-//   "daytonpe"
-// )}:${encodeURIComponent(
-//   process.env.PASSWORD
-// )}@sandbox-l2gbc.mongodb.net/test?retryWrites=true`;
-//
-// console.log("dbURI", dbURI);
-// const mongoDB = process.env.MONGODB_URI || dbURI;
-// mongoose.connect(mongoDB);
-// mongoose.Promise = global.Promise;
-// const db = mongoose.connection;
-// // db.on("error", console.log("Error connecting to mongoDB."));
+// Set up mongoose connection
+const dbURI = `mongodb://pat:password1@ds051334.mlab.com:51334/movie-app`;
+
+console.log("dbURI", dbURI);
+mongoose.connect(dbURI);
+mongoose.Promise = global.Promise;
+const db = mongoose.connection;
 
 app.use(bodyParser.json());
 
@@ -29,10 +23,10 @@ app.use("/", usersRouter);
 /* basic ping route */
 app.get("/", (req, res) => {
   try {
+    console.log("Base route hit.");
     res.status(200).json({ message: "The dude abides." });
   } catch (e) {
     console.error(e.message);
-    cognitoError(res);
   }
 });
 

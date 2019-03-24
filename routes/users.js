@@ -1,4 +1,5 @@
 const express = require("express");
+var User = require("../models/user");
 
 function getUsersRouter() {
   const router = express.Router();
@@ -21,10 +22,9 @@ function getUsersRouter() {
         res.send("User Created successfully");
       });
 
-      res.status(200).json({ success: true });
+      res.status(200).json({ displayName });
     } catch (e) {
       console.error(e.message);
-      cognitoError(res);
     }
   });
 
