@@ -1,0 +1,26 @@
+{
+  "name": "wpl-e-commerce",
+  "version": "1.0.0",
+  "description": "Movie Rental Service",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "start": " nodemon --exec PASSWORD=Banan@14 node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sspanda92/wpl-e-commerce.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sspanda92/wpl-e-commerce/issues"
+  },
+  "homepage": "https://github.com/sspanda92/wpl-e-commerce#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.19",
+    "nodemon": "^1.18.10"
+  }
+}
