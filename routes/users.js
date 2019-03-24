@@ -4,7 +4,7 @@ var User = require("../models/user");
 function getUsersRouter() {
   const router = express.Router();
 
-  /* get single movie */
+  /* create new user */
   router.post("/users", async (req, res) => {
     console.log("POST /users hit.");
 
@@ -27,6 +27,8 @@ function getUsersRouter() {
       console.error(e.message);
     }
   });
+
+  /* get single user */
 
   return router;
 }
