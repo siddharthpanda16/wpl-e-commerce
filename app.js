@@ -7,7 +7,6 @@ const { getUsersRouter } = require("./routes/users");
 // Set up mongoose connection
 const dbURI = `mongodb://pat:password1@ds051334.mlab.com:51334/movie-app`;
 
-console.log("dbURI", dbURI);
 mongoose.connect(dbURI);
 mongoose.Promise = global.Promise;
 const db = mongoose.connection;

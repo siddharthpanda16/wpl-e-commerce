@@ -29,6 +29,17 @@ function getUsersRouter() {
   });
 
   /* get single user */
+  router.get("/users/:id", async (req, res) => {
+    console.log(`GET /users/${req.params.id} hit.`);
+    try {
+      User.findById(req.params.id, function(err, user) {
+        if (err) return next(err);
+        res.send(user);
+      });
+    } catch (e) {
+      console.error(e.message);
+    }
+  });
 
   return router;
 }
