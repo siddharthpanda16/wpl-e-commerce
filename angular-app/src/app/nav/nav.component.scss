@@ -1,0 +1,21 @@
+a:focus{
+    color: white !important;
+}
+
+.container-fluid{
+  padding: 0px;
+}
+#user-profile, #sign-out{
+      cursor: pointer;
+      font-size: 2.0em;
+      color: #CCC;
+      margin-left: 10px;
+      :hover{
+        font-size: 2.2em;
+        color: white;
+      }
+      :focus{
+        font-size: 2.2em;
+        color: white;
+      }
+}

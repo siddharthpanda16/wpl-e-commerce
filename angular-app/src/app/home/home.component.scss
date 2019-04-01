@@ -1,0 +1,66 @@
+.container-fluid{
+    background: black;
+
+    #search-div-id{
+        padding-bottom: 10px;
+        padding-top: 50px;
+    }
+
+    img:hover {
+            box-shadow: 3px 3px 25px 12px darkseagreen;
+            /* opacity: 0.6;
+            filter: alpha(opacity=50);  */
+    }
+
+    #radio-div-id{
+        label{
+            margin-left: 25px;
+        }
+    }
+}
+
+div{
+    .card{
+        margin-right: 10px;
+    }
+    h1{
+        color:white;
+        
+    }
+
+    h3{
+        color:white;
+        padding-top:55px;
+    }
+}
+
+.no-margin-padding{
+    padding: 0px;
+    margin:0px;
+    border: 0;
+    cursor: pointer;
+    color: black;
+}
+
+.popTitle{
+    color: black;
+}
+
+.pad-100{
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+#search-form {
+    margin-top: 187px;
+    margin-right: 7px !important;
+    input {
+        height: 50px;
+        width: 600px !important;
+    }    
+    button{
+        height: 50px;
+   
+    
+    }
+}
