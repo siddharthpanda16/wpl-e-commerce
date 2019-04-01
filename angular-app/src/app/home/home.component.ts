@@ -7,7 +7,36 @@ import { Movie } from '../models/movie';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+
+  styles: [`
+    .my-custom-class {
+      background: aliceblue;
+      font-size: 125%;
+    }
+    .my-custom-class .arrow::after {
+      border-top-color: aliceblue;
+    }
+
+    .popover-header{
+      color:black;
+      font-size: 18px;
+      overflow:auto;
+      height:35px;
+    }
+
+    ngb-popover-window
+    {
+      min-width: 400px;
+      left:20px;
+    }
+    .popover-body{
+      font-size: 14px;
+      overflow:auto;
+      height:50px;
+    }
+  `]
 })
 export class HomeComponent implements OnInit {
 
@@ -35,7 +64,6 @@ export class HomeComponent implements OnInit {
     middle: false,
     right: false
   };
-
   movies: Object=[
     {
       "Title": "Toy Story",
