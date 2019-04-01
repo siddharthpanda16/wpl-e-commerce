@@ -1,5 +1,8 @@
 import { Component, OnInit , ViewEncapsulation} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { DataService } from '../data.service';
+import { MovieService } from '../services/movieServices';
+import { Movie } from '../models/movie';
 
 @Component({
   selector: 'app-home',
@@ -37,12 +40,23 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class HomeComponent implements OnInit {
 
-  public radioGroupForm: FormGroup;
+  constructor( private sharedData:DataService, private movieService:MovieService, private formBuilder: FormBuilder ) { }
 
-  constructor(private formBuilder: FormBuilder) {}
+  moviesActual:Map<string, Movie[]>;
 
   ngOnInit() {
-    
+    // this.sortMoviesByGenre()
+  }
+
+  sortMoviesByGenre() { // transform data here 
+    this.movieService.getAllMovies().subscribe( movies => {
+        movies.forEach( movie => {
+          var genres = movie.genres;
+          genres.forEach( genre => {
+            // add to moviesActual
+          });
+        });
+    });
   }
   
   model = {
