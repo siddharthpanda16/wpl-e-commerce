@@ -38,17 +38,19 @@ function getUsersRouter() {
       const user = new User({
         displayName: req.body.displayName,
         username: req.body.username,
-        password: req.body.password
+        password: req.body.password,
+        cart: [],
+        billing: {
+          ccNum: req.body.billing.ccNum,
+          ccCVV: req.body.billing.ccCVV,
+          ccExp: req.body.billing.ccExp
+        }
       });
 
       user.save(function(err) {
-        if (err) {
-          return next(err);
-        }
-        res.send("User Created successfully");
+        if (err) throw new Error("problem creating new user.");
+        res.status(200).json({ message: "success" });
       });
-
-      res.status(200).json({ displayName });
     } catch (e) {
       console.error(e.message);
     }
