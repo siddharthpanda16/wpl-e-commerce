@@ -8,3 +8,5 @@ Assuming that you are set up on MLab, create a new database called movie-app and
 # Todo
 
 - encrypt all passwords.
+- keep from creating duplicates
+- Make sure you can't add more than you are supposed to.

@@ -88,6 +88,32 @@ function getUsersRouter() {
     }
   });
 
+  /* Add a movie id to a users cart */
+  router.post("/users/:userId/movie/:movieId", async (req, res) => {
+    console.log("POST /users/:userId/movie/:movieId hit.");
+    try {
+      /* Locate the user via their id */
+      User.findById(req.params.userId, function(err, user) {
+        if (err) throw new Error("Error finding user.");
+
+        /* ensure it's actually a movie */
+
+        /* Check the users plan to make sure they have space in their cart */
+
+        /* Add the movie to the users cart */
+        user.cart.push(req.params.movieId);
+
+        /* save the new information */
+        user.save(function(err) {
+          if (err) throw new Error("Error adding movie to cart.");
+          res.status(200).json({ message: "Success" });
+        });
+      });
+    } catch (e) {
+      console.error(e.message);
+    }
+  });
+
   return router;
 }
 
