@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { User } from './models/user';
 import { BehaviorSubject } from 'rxjs';
+import { Movie }  from './models/movie';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,11 @@ export class DataService {
   private isAdmin = new BehaviorSubject<boolean>(false); 
   currUserIsAdmin = this.isAdmin.asObservable();
 
+
+  private movies = new BehaviorSubject<Movie[]>(null); 
+  allMovies = this.movies.asObservable();
+  
+
   constructor() { }
 
   setUser(user: User){
@@ -21,5 +27,9 @@ export class DataService {
 
   setIsAdmin(isAdmin: boolean){
     this.isAdmin.next(isAdmin);
+  }
+
+  setMovies(movies: Movie[]){
+    this.movies.next(movies);
   }
 }

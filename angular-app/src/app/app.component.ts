@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { DataService } from './data.service';
+import { MovieService } from './services/movieServices';
+import { Movie } from './models/movie';
 
 @Component({
   selector: 'app-root',
@@ -11,11 +13,13 @@ export class AppComponent {
 
   private currUserId:string;
 
-  constructor(private sharedData:DataService){
+  constructor(private sharedData:DataService, private movieService: MovieService){
     // assign currentuserid after login here 
   }
 
-  ngOnInit(){
-    
+  ngOnInit(){  
+   this.movieService.getAllMovies().subscribe( movies => {
+     this.sharedData.setMovies(movies);
+   })
   }
 }

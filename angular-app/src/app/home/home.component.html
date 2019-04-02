@@ -2,61 +2,104 @@
 
   <!-- <h1 class="text-center w-100">SEARCH MOVIES</h1> -->
   <div id="search-div-id" class="d-flex justify-content-center">
-    <form id="search-form" class="form-inline">
+    <form id="search-form"  (ngSubmit)="onSearchSubmit()" class="form-inline">
       <input class="form-control mr-sm-2" type="search" placeholder="Titles, actors, genres" aria-label="Search">
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
   </div>
   <div id="radio-div-id" class="d-flex justify-content-center">
     <div class="btn-group btn-group-toggle">
-      <label class="btn btn-light" ngbButtonLabel>
-        <input type="checkbox" ngbButton [(ngModel)]="model.left"> Genre
+      <label class="btn btn-outline-info" ngbButtonLabel>
+        <input type="checkbox" ngbButton [(ngModel)]="model.genre"> Genre
       </label>
-      <label class="btn btn-light" ngbButtonLabel>
-        <input type="checkbox" ngbButton [(ngModel)]="model.middle"> Title
+      <label class="btn btn-outline-info" ngbButtonLabel>
+        <input type="checkbox" ngbButton [(ngModel)]="model.title"> Title
       </label>
-      <label class="btn btn-light" ngbButtonLabel>
-        <input type="checkbox" ngbButton [(ngModel)]="model.right"> Director
+      <label class="btn btn-outline-info" ngbButtonLabel>
+        <input type="checkbox" ngbButton [(ngModel)]="model.director"> Director
       </label>
-    </div>
-</div>
-  <h3 class="w-100">Recommended</h3>
-
-  <div class="d-flex justify-content-center pad-100">
-    <div class="card bg-dark text-white" *ngFor="let movie of movies">
-      <button class="no-margin-padding"[popoverTitle]="popTitle" type="button"  
-        placement="bottom" [ngbPopover]="popContent" popoverClass="my-custom-class" triggers="mouseenter:mouseleave" >
-        <img class="card-img bg-dark" [src]="movie.Poster" alt="Card image">
-      </button>
-      <ng-template #popTitle ><b>{{movie.Title}}</b>!</ng-template>
-      <ng-template #popContent>{{movie.plot}}!!</ng-template>
-      <!--  <div (mouseenter)="showCard=true" (mouseout)="showCard=false"  class="card-img-overlay">
-          <h5 *ngIf="showCard" class="card-title">{{movie.Title}}</h5>
-          <p *ngIf="showCard" class="card-text">{{movie.plot}}</p>
-          <p *ngIf="showCard" class="card-text">Last updated 3 mins ago</p>
-        </div>
-      
-       -->
-
     </div>
   </div>
+  <div *ngFor="let genreMovies of moviesActual | keyvalue;last as isLast;">
+      <h3 class="w-100">{{genreMovies.key}}</h3>
+      <div class="d-flex justify-content-center pad-100">
+        <div class="card bg-dark text-white" *ngFor="let movie of genreMovies.value">
+          <button *ngIf="!isLast" class="no-margin-padding" [popoverTitle]="popTitle" type="button" placement="bottom" [ngbPopover]="popContent"
+            popoverClass="my-custom-class">
+            <img class="card-img bg-dark" [src]="movie.Poster" alt="Card image">
+          </button>
+          <button *ngIf="isLast" class="no-margin-padding" [popoverTitle]="popTitle" type="button" placement="top" [ngbPopover]="popContent"
+            popoverClass="my-custom-class">
+            <img class="card-img bg-dark" [src]="movie.Poster" alt="Card image">
+          </button>
+          <ng-template #popContent>
+              <table class="popover-table">
+                  <tr>
+                    <th class="text-center" colspan="2"><b>{{movie.Title}}</b></th>
+                  </tr>
+                  <tr>
+                    <td>{{movie.plot}}!!</td>
+                    <td>
+                      <button type="button" class="btn btn-outline-info">
+                        Add To Playlist
+                        <i class="far fa-plus-square fa-lg"></i>
+                      </button>
+                      <button type="button" class="btn btn-outline-info">
+                          Play
+                          <i class="far fa-play-circle fa-lg"></i>
+                        </button>
+                    </td>
+                  </tr>
+                </table>
+          </ng-template>
+          <!--  <div (mouseenter)="showCard=true" (mouseout)="showCard=false"  class="card-img-overlay">
+              <h5 *ngIf="showCard" class="card-title">{{movie.Title}}</h5>
+              <p *ngIf="showCard" class="card-text">{{movie.plot}}</p>
+              <p *ngIf="showCard" class="card-text">Last updated 3 mins ago</p>
+            </div>
+          triggers="mouseenter:mouseleave"
+           -->
+    
+        </div>
+      </div>
+  </div>
+  <!-- 
   <h3 class="w-100">Horror</h3>
 
   <div class="d-flex justify-content-center pad-100">
     <div class="card bg-dark text-white" *ngFor="let movie of movies">
-      <button class="no-margin-padding"[popoverTitle]="popTitle" type="button"  
-        placement="bottom" [ngbPopover]="popContent" popoverClass="my-custom-class" triggers="mouseenter:mouseleave" >
+      <button class="no-margin-padding" [popoverTitle]="popTitle" type="button" placement="bottom" [ngbPopover]="popContent"
+        popoverClass="my-custom-class">
         <img class="card-img bg-dark" [src]="movie.Poster" alt="Card image">
       </button>
-      <ng-template #popTitle ><b>{{movie.Title}}</b>!</ng-template>
-      <ng-template #popContent>{{movie.plot}}!!</ng-template>
-      <!--  <div (mouseenter)="showCard=true" (mouseout)="showCard=false"  class="card-img-overlay">
+       <ng-template #popTitle><b>{{movie.Title}}</b>!</ng-template>
+      <ng-template #popContent>
+          <table class="popover-table">
+              <tr>
+                <th class="text-center" colspan="2"><b>{{movie.Title}}</b></th>
+              </tr>
+              <tr>
+                <td>{{movie.plot}}!!</td>
+                <td>
+                  <button type="button" class="btn btn-outline-info">
+                    Add To Playlist
+                    <i class="far fa-plus-square fa-lg"></i>
+                  </button>
+                  <button type="button" class="btn btn-outline-info">
+                      Play
+                      <i class="far fa-play-circle fa-lg"></i>
+                    </button>
+                </td>
+              </tr>
+            </table>
+      </ng-template>
+       <div (mouseenter)="showCard=true" (mouseout)="showCard=false"  class="card-img-overlay">
           <h5 *ngIf="showCard" class="card-title">{{movie.Title}}</h5>
           <p *ngIf="showCard" class="card-text">{{movie.plot}}</p>
           <p *ngIf="showCard" class="card-text">Last updated 3 mins ago</p>
         </div>
       
-       -->
+       
 
     </div>
   </div>
@@ -64,21 +107,32 @@
 
   <div class="d-flex justify-content-center pad-100">
     <div class="card bg-dark text-white" *ngFor="let movie of movies">
-      <button class="no-margin-padding"[popoverTitle]="popTitle" type="button"  
-        placement="top" [ngbPopover]="popContent" popoverClass="my-custom-class" triggers="mouseenter:mouseleave" >
+      <button class="no-margin-padding" [popoverTitle]="popTitle" type="button" placement="top" [ngbPopover]="popContent"
+        popoverClass="my-custom-class">
         <img class="card-img bg-dark" [src]="movie.Poster" alt="Card image">
       </button>
-      <ng-template #popTitle ><b>{{movie.Title}}</b>!</ng-template>
-      <ng-template #popContent>{{movie.plot}}!!</ng-template>
-      <!--  <div (mouseenter)="showCard=true" (mouseout)="showCard=false"  class="card-img-overlay">
-          <h5 *ngIf="showCard" class="card-title">{{movie.Title}}</h5>
-          <p *ngIf="showCard" class="card-text">{{movie.plot}}</p>
-          <p *ngIf="showCard" class="card-text">Last updated 3 mins ago</p>
-        </div>
-      
-       -->
-
+      <ng-template #popTitle><b>{{movie.Title}}</b>!</ng-template> 
+      <ng-template #popContent>
+        <table class="popover-table">
+          <tr>
+            <th class="text-center" colspan="2"><b>{{movie.Title}}</b></th>
+          </tr>
+          <tr>
+            <td>{{movie.plot}}!!</td>
+            <td>
+              <button type="button" class="btn btn-outline-info">
+                Add To Playlist
+                <i class="far fa-plus-square fa-lg"></i>
+              </button>
+              <button type="button" class="btn btn-outline-info">
+                  Play
+                  <i class="far fa-play-circle fa-lg"></i>
+                </button>
+            </td>
+          </tr>
+        </table>
+      </ng-template>
     </div>
   </div>
-  
+ -->
 </div>

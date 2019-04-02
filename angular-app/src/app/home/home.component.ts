@@ -34,29 +34,50 @@ import { Movie } from '../models/movie';
     .popover-body{
       font-size: 14px;
       overflow:auto;
-      height:50px;
+      height:100px;
     }
   `]
 })
 export class HomeComponent implements OnInit {
 
-  constructor( private sharedData:DataService, private movieService:MovieService, private formBuilder: FormBuilder ) { }
+  constructor( private sharedData:DataService, private movieService:MovieService, private formBuilder: FormBuilder ) {
 
-  moviesActual:Map<string, Movie[]>;
+    //this.searchForm.reset();
+   }
+  
+    searchForm: FormGroup;
 
-  ngOnInit() {
-    // this.sortMoviesByGenre()
-  }
+    moviesActual= new Map<string, Movie[]>();
+    ngOnInit() {
+      this.sortMoviesByGenre();
+    }
 
+    onSubmit(){
+      console.log('entered on sbumit');
+    }
   sortMoviesByGenre() { // transform data here 
-    this.movieService.getAllMovies().subscribe( movies => {
+    /* this.sharedData.allMovies.subscribe( movies => {
         movies.forEach( movie => {
           var genres = movie.genres;
           genres.forEach( genre => {
             // add to moviesActual
           });
         });
-    });
+    }); */
+    this.movies.forEach(movie=> 
+      {
+        var genres = movie["genres"];
+        genres.forEach( genre => {
+          if(this.moviesActual!=null && this.moviesActual.get(genre)!=null)
+            this.moviesActual.get(genre).push(movie);
+          else
+          {
+            this.moviesActual.set(genre,new Array(movie));
+          }
+        });
+
+      }
+      );
   }
   
   model = {
@@ -64,7 +85,7 @@ export class HomeComponent implements OnInit {
     middle: false,
     right: false
   };
-  movies: Object=[
+  movies: Array<Movie>=[
     {
       "Title": "Toy Story",
       "Poster": "https://images-na.ssl-images-amazon.com/images/M/MV5BMDU2ZWJlMjktMTRhMy00ZTA5LWEzNDgtYmNmZTEwZTViZWJkXkEyXkFqcGdeQXVyNDQ2OTk4MzI@._V1_UX182_CR0,0,182,268_AL_.jpg",
