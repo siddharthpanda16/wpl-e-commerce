@@ -4,6 +4,32 @@ var User = require("../models/user");
 function getUsersRouter() {
   const router = express.Router();
 
+  /* get single user */
+  router.get("/users/:id", async (req, res) => {
+    console.log(`GET /users/${req.params.id} hit.`);
+    try {
+      User.findById(req.params.id, function(err, user) {
+        if (err) return next(err);
+        res.send(user);
+      });
+    } catch (e) {
+      console.error(e.message);
+    }
+  });
+
+  /* get all users (admin) */
+  router.get("/users", async (req, res) => {
+    console.log(`GET /users/${req.params.id} hit.`);
+    try {
+      User.find(function(err, users) {
+        if (err) return next(err);
+        res.send(users);
+      });
+    } catch (e) {
+      console.error(e.message);
+    }
+  });
+
   /* create new user */
   router.post("/users", async (req, res) => {
     console.log("POST /users hit.");
@@ -28,13 +54,34 @@ function getUsersRouter() {
     }
   });
 
-  /* get single user */
-  router.get("/users/:id", async (req, res) => {
-    console.log(`GET /users/${req.params.id} hit.`);
+  /* update a user */
+  router.put("/users/:id", async (req, res) => {
+    console.log("PUT /users hit.");
+
     try {
-      User.findById(req.params.id, function(err, user) {
+      User.findByIdAndUpdate(req.params.id, { $set: req.body }, function(
+        err,
+        user
+      ) {
         if (err) return next(err);
-        res.send(user);
+        res.status(200).json({ success: true });
+      });
+    } catch (e) {
+      console.error(e.message);
+    }
+  });
+
+  /* delete a user */
+  router.delete("/users/:id", async (req, res) => {
+    console.log("PUT /users hit.");
+
+    try {
+      User.findByIdAndDelete(req.params.id, { $set: req.body }, function(
+        err,
+        user
+      ) {
+        if (err) return next(err);
+        res.status(200).json({ success: true });
       });
     } catch (e) {
       console.error(e.message);
