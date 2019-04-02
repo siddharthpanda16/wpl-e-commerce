@@ -3,7 +3,7 @@
 
     #search-div-id{
         padding-bottom: 10px;
-        padding-top: 50px;
+        padding-top: 20px;
     }
 
     img:hover {
@@ -16,6 +16,7 @@
         label{
             margin-left: 25px;
         }
+        padding-bottom:40px;
     }
 }
 
@@ -30,7 +31,8 @@ div{
 
     h3{
         color:white;
-        padding-top:55px;
+        padding-top:25px;
+        padding-bottom:25px;
     }
 }
 
@@ -52,7 +54,7 @@ div{
 }
 
 #search-form {
-    margin-top: 187px;
+    margin-top: 150px;
     margin-right: 7px !important;
     input {
         height: 50px;
@@ -62,5 +64,17 @@ div{
         height: 50px;
    
     
+    }
+}
+
+.popover-table{
+    button{
+        width: 150px;
+        height: 35px;
+        margin-bottom: 10px;
+    }
+    th{
+        text-decoration: underline;
+        text-transform: uppercase;
     }
 }
