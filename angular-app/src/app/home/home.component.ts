@@ -34,21 +34,29 @@ import { Movie } from '../models/movie';
     .popover-body{
       font-size: 14px;
       overflow:auto;
-      height:90px;
+      height:100px;
     }
   `]
 })
 export class HomeComponent implements OnInit {
 
-  constructor( private sharedData:DataService, private movieService:MovieService, private formBuilder: FormBuilder ) { }
+  constructor( private sharedData:DataService, private movieService:MovieService, private formBuilder: FormBuilder ) {
+
+    //this.searchForm.reset();
+   }
+  
+    searchForm: FormGroup;
 
     moviesActual= new Map<string, Movie[]>();
     ngOnInit() {
       this.sortMoviesByGenre();
     }
 
+    onSubmit(){
+      console.log('entered on sbumit');
+    }
   sortMoviesByGenre() { // transform data here 
-    /* this.movieService.getAllMovies().subscribe( movies => {
+    /* this.sharedData.allMovies.subscribe( movies => {
         movies.forEach( movie => {
           var genres = movie.genres;
           genres.forEach( genre => {
@@ -70,7 +78,6 @@ export class HomeComponent implements OnInit {
 
       }
       );
-      console.log(this.moviesActual);
   }
   
   model = {

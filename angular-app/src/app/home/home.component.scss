@@ -22,7 +22,7 @@
 
 div{
     .card{
-        margin-right: 10px;
+        margin-right: 25px;
     }
     h1{
         color:white;
@@ -31,8 +31,8 @@ div{
 
     h3{
         color:white;
-        padding-top:25px;
-        padding-bottom:25px;
+        padding-top:35px;
+        padding-bottom:35px;
     }
 }
 
@@ -70,8 +70,9 @@ div{
 .popover-table{
     button{
         width: 150px;
-        height: 35px;
-        margin-bottom: 10px;
+        height: 30px;
+        margin-bottom: 5px;
+        padding-top: 2px;
     }
     th{
         text-decoration: underline;
