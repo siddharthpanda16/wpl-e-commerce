@@ -10,3 +10,6 @@ Assuming that you are set up on MLab, create a new database called movie-app and
 - encrypt all passwords.
 - keep from creating duplicates
 - Make sure you can't add more than you are supposed to.
+- Do we need to do cookies or anything?
+  - can we just put a users id in the route and if they aren't authenticated then we can just boot them back to login?
+- What parts of movie do we actually use?
