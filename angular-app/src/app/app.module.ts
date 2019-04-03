@@ -20,6 +20,7 @@ import { UserService } from './services/userServices';
 import { MovieService } from './services/movieServices';
 import { TopRatedComponent } from './top-rated/top-rated.component';
 import { RecommendedComponent } from './recommended/recommended.component';
+import { MovieDetailsComponent } from './movie-details/movie-details.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { RecommendedComponent } from './recommended/recommended.component';
     AdminComponent,
     NavComponent,
     TopRatedComponent,
-    RecommendedComponent
+    RecommendedComponent,
+    MovieDetailsComponent
   ],
   imports: [
     BrowserModule,
