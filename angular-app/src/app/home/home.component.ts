@@ -40,21 +40,18 @@ import { Movie } from '../models/movie';
 })
 export class HomeComponent implements OnInit {
 
-  constructor( private sharedData:DataService, private movieService:MovieService, private formBuilder: FormBuilder ) {
+  constructor( private sharedData:DataService, private movieService:MovieService, private formBuilder: FormBuilder ) { 
+    this.createForm();
+  }
 
-    //this.searchForm.reset();
-   }
-  
-    searchForm: FormGroup;
+  moviesActual= new Map<string, Movie[]>();
+  searchForm: FormGroup;
+  search: any = {};
 
-    moviesActual= new Map<string, Movie[]>();
     ngOnInit() {
       this.sortMoviesByGenre();
     }
 
-    onSubmit(){
-      console.log('entered on sbumit');
-    }
   sortMoviesByGenre() { // transform data here 
     /* this.sharedData.allMovies.subscribe( movies => {
         movies.forEach( movie => {
@@ -79,11 +76,23 @@ export class HomeComponent implements OnInit {
       }
       );
   }
+
+  onSubmit(inputVal){
+    console.log("form is submitted");
+    console.log("input text  " + inputVal);
+    console.log("Genre checkbox " + this.model.genre);
+  }
+
+  createForm(){
+    this.searchForm = this.formBuilder.group({
+      search_input: []
+    });
+  }
   
   model = {
-    left: false,
-    middle: false,
-    right: false
+    genre: false,
+    title: false,
+    director: false
   };
   movies: Array<Movie>=[
     {
