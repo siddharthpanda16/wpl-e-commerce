@@ -10,7 +10,8 @@ var UserSchema = new Schema({
     ccNum: { type: String, required: true },
     ccCVV: { type: String, required: true },
     ccExp: { type: String, required: true }
-  }
+  },
+  level: { type: String, required: true }
 });
 
 // Export the model

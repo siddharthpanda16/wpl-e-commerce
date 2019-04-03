@@ -1,5 +1,5 @@
 const express = require("express");
-var User = require("../models/user");
+const User = require("../models/user");
 
 function getUsersRouter() {
   const router = express.Router();
@@ -115,6 +115,10 @@ function getUsersRouter() {
       console.error(e.message);
     }
   });
+
+  /* post login
+   * returns
+   * - id, username, level */
 
   return router;
 }

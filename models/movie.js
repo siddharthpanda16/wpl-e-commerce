@@ -26,7 +26,7 @@ var MovieSchema = new Schema({
     rating: { type: Number },
     userReviews: { type: Number },
     userMeter: { type: Number },
-    image: "certified",
+    image: { type: String },
     meter: { type: Number },
     reviews: { type: Number },
     userRating: { type: Number },
@@ -40,4 +40,4 @@ var MovieSchema = new Schema({
 });
 
 // Export the model
-module.exports = mongoose.model("Movie", UserSchema);
+module.exports = mongoose.model("Movie", MovieSchema);
