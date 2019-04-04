@@ -7,7 +7,7 @@ Assuming that you are set up on MLab, create a new database called movie-app and
 
 # Todo
 
-- encrypt password and ccCVV.
+- encrypt password
 - keep from creating duplicates in movies
 - might run into issues grabbing all those movies at once? need to paginate?
 - will you be able to police the adding of the correct "level" movies on front end?

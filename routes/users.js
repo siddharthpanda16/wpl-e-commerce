@@ -1,6 +1,7 @@
 const express = require("express");
 const User = require("../models/user");
 const Movie = require("../models/movie");
+const bcrypt = require("bcrypt");
 
 function getUsersRouter() {
   const router = express.Router();
@@ -9,7 +10,7 @@ function getUsersRouter() {
   router.post("/login", async (req, res) => {
     console.log("POST /login hit.");
     try {
-      /* Grabn un/pw from body */
+      /* Grab un/pw from body */
       const username = req.body.username;
       const password = req.body.password;
 
@@ -17,16 +18,16 @@ function getUsersRouter() {
       if (!username || !password)
         throw new Error("username and password must be provided.");
 
-      User.findOne({ username }, function(err, user) {
-        if (err) {
-          res.status(400).json({ error: "problem finding and updating user." });
-        } else {
-          const match = password === user.password; //TODO encrypt this
-          res.status(200).json({ success: match });
-        }
+      const user = await User.findOne({ username }).catch(e => {
+        throw Error("Problem finding user by username");
       });
+
+      const match = await bcrypt.compare(password, user.password).catch(e => {
+        throw Error("Problem comparing the passwords");
+      });
+
+      res.status(200).json({ success: match });
     } catch (e) {
-      console.error(e.message);
       res.status(400).json({ error: e.message });
     }
   });
