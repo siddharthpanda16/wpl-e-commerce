@@ -1,6 +1,11 @@
 .container-fluid{
     background: black;
 
+    #search-container
+    {
+        flex-wrap: wrap;
+    }
+
     #search-div-id{
         padding-bottom: 10px;
         padding-top: 20px;
@@ -22,8 +27,14 @@
 
 div{
     .card{
-        margin-right: 25px;
+        margin-right: 25px ;
     }
+
+    .card-search{
+        margin-top:35px;
+        margin-bottom:35px;
+    }
+
     h1{
         color:white;
         
