@@ -35,7 +35,7 @@ import { DetailsPageComponent } from './details-page/details-page.component';
     NavComponent,
     TopRatedComponent,
     RecommendedComponent,
-    DetailsPageComponent
+    DetailsPageComponent,
   ],
   imports: [
     BrowserModule,
