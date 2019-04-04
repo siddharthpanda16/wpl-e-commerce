@@ -93,7 +93,7 @@ function getUsersRouter() {
       if (nameTaken) throw new Error("This username is already taken.");
       const user = new User(req.body);
 
-      /* Make sure the body is saved */
+      /* Make sure the user is saved */
       await user.save().catch(e => {
         throw Error("Problem saving new user.");
       });
