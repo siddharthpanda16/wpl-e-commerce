@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { DataService } from '../data.service';
 import { MovieService } from '../services/movieServices';
 import { Movie } from '../models/movie';
+import { User } from '../models/user';
 
 @Component({
   selector: 'app-home',
@@ -51,6 +52,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.sortMoviesByGenre();
+    console.log(this.sharedData.currentUser);
   }
 
   sortMoviesByGenre() { // transform data here 
@@ -87,6 +89,13 @@ export class HomeComponent implements OnInit {
         this.moviesSearched.push(movie);
       }
     });
+
+    let u1 = new User(); u1.username = "searched";
+    console.log(u1);
+    // this.sharedData.currentUser =  u1;
+    this.sharedData.setUser(u1);
+    console.log(this.sharedData.currentUser);
+
   }
 
   createForm() {

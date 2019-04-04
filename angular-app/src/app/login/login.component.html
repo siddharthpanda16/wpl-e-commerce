@@ -1,3 +1,23 @@
-<p>
-  login works!
-</p>
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+      <!-- Tabs Titles -->
+  
+      <!-- Icon -->
+      <div class="fadeIn first">
+          <i class="far fa-id-card fa-lg"></i>
+      </div>
+  
+      <!-- Login Form -->
+      <form [formGroup]="loginForm" novalidate>
+        <input type="text" id="login"  formControlName="username" #username class="fadeIn second"  name="login" placeholder="login">
+        <input type="password" id="password" formControlName="password" #password  class="fadeIn third" name="password" placeholder="password">
+        <input (click)="onLogin(username.value,password.value)" type="submit" class="fadeIn fourth" value="Log In">
+      </form>
+  
+      <!-- Remind Passowrd -->
+      <div id="formFooter">
+        <a class="underlineHover" href="/register">New User ? Create Account</a>
+      </div>
+  
+    </div>
+  </div>
