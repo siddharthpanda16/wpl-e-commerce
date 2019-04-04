@@ -1,0 +1,13 @@
+{
+  "displayName": "Jar Jar Binks",
+  "username": "jar2",
+  "password": "bigFish17",
+  "plan": "gold",
+  "cart": ["movieID1", "movieID2"],
+  "billing": {
+    "ccNum": "1111-2222-3333-4444",
+    "ccCVV": "123",
+    "ccExp": "01:01:2020"
+  },
+  "level": 1
+}
