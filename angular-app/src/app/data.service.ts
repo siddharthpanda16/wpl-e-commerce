@@ -7,13 +7,12 @@ import { Movie }  from './models/movie';
   providedIn: 'root'
 })
 export class DataService {
-  
-  private currUser = new BehaviorSubject<User>(new User); 
-  currentUser = this.currUser.asObservable();
 
   private isAdmin = new BehaviorSubject<boolean>(false); 
   currUserIsAdmin = this.isAdmin.asObservable();
 
+  private currUser = new BehaviorSubject<User>(new User()); 
+  currentUser = this.currUser.asObservable();
 
   private movies = new BehaviorSubject<Movie[]>(null); 
   allMovies = this.movies.asObservable();
@@ -22,6 +21,8 @@ export class DataService {
   constructor() { }
 
   setUser(user: User){
+    // this.currUser= user;
+    // this.currentUser = this.currUser;
     this.currUser.next(user);
   }
 

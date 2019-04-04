@@ -1,8 +1,9 @@
-import { Component, OnInit , ViewEncapsulation} from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DataService } from '../data.service';
 import { MovieService } from '../services/movieServices';
 import { Movie } from '../models/movie';
+import { User } from '../models/user';
 
 @Component({
   selector: 'app-home',
@@ -40,17 +41,19 @@ import { Movie } from '../models/movie';
 })
 export class HomeComponent implements OnInit {
 
-  constructor( private sharedData:DataService, private movieService:MovieService, private formBuilder: FormBuilder ) { 
+  constructor(private sharedData: DataService, private movieService: MovieService, private formBuilder: FormBuilder) {
     this.createForm();
   }
-
-  moviesActual= new Map<string, Movie[]>();
+  isSearched: Boolean = false;
+  moviesActual = new Map<string, Movie[]>();
+  moviesSearched: Movie[] = [];
   searchForm: FormGroup;
   search: any = {};
 
-    ngOnInit() {
-      this.sortMoviesByGenre();
-    }
+  ngOnInit() {
+    this.sortMoviesByGenre();
+    console.log(this.sharedData.currentUser);
+  }
 
   sortMoviesByGenre() { // transform data here 
     /* this.sharedData.allMovies.subscribe( movies => {
@@ -61,40 +64,52 @@ export class HomeComponent implements OnInit {
           });
         });
     }); */
-    this.movies.forEach(movie=> 
-      {
-        var genres = movie["genres"];
-        genres.forEach( genre => {
-          if(this.moviesActual!=null && this.moviesActual.get(genre)!=null)
-            this.moviesActual.get(genre).push(movie);
-          else
-          {
-            this.moviesActual.set(genre,new Array(movie));
-          }
-        });
+    this.movies.forEach(movie => {
+      var genres = movie["genres"];
+      genres.forEach(genre => {
+        if (this.moviesActual != null && this.moviesActual.get(genre) != null)
+          this.moviesActual.get(genre).push(movie);
+        else {
+          this.moviesActual.set(genre, new Array(movie));
+        }
+      });
 
-      }
-      );
+    }
+    );
   }
 
-  onSubmit(inputVal){
+  onSubmit(inputVal) {
     console.log("form is submitted");
     console.log("input text  " + inputVal);
     console.log("Genre checkbox " + this.model.genre);
+    this.isSearched = true;
+    this.moviesSearched = [];
+    this.movies.forEach(movie => {
+      if (movie.Title.includes(inputVal)) {
+        this.moviesSearched.push(movie);
+      }
+    });
+
+    let u1 = new User(); u1.username = "searched";
+    console.log(u1);
+    // this.sharedData.currentUser =  u1;
+    this.sharedData.setUser(u1);
+    console.log(this.sharedData.currentUser);
+
   }
 
-  createForm(){
+  createForm() {
     this.searchForm = this.formBuilder.group({
       search_input: []
     });
   }
-  
+
   model = {
     genre: false,
     title: false,
     director: false
   };
-  movies: Array<Movie>=[
+  movies: Array<Movie> = [
     {
       "Title": "Toy Story",
       "Poster": "https://images-na.ssl-images-amazon.com/images/M/MV5BMDU2ZWJlMjktMTRhMy00ZTA5LWEzNDgtYmNmZTEwZTViZWJkXkEyXkFqcGdeQXVyNDQ2OTk4MzI@._V1_UX182_CR0,0,182,268_AL_.jpg",
