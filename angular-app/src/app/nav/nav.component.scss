@@ -5,14 +5,14 @@ a:focus{
 .container-fluid{
   padding: 0px;
 }
-#user-profile, #sign-out{
+#user-profile, #sign-out, path{
       cursor: pointer;
       font-size: 2.0em;
-      color: #CCC;
+      color: lightskyblue;
       margin-left: 10px;
       :hover{
         font-size: 2.2em;
-        color: white;
+        color: yellow;
       }
       :focus{
         font-size: 2.2em;

@@ -1,3 +1,5 @@
+<app-nav>
+  </app-nav>
 <div class="container-fluid">
 
   <!-- <h1 class="text-center w-100">SEARCH MOVIES</h1> -->
@@ -21,11 +23,53 @@
       </label>
     </div>
   </div>
-  <div *ngFor="let genreMovies of moviesActual | keyvalue;last as isLast;">
-    <h3 class="w-100">{{genreMovies.key}}</h3>
-    <div class="d-flex justify-content-center pad-100">
-      <div class="card bg-dark text-white" *ngFor="let movie of genreMovies.value">
-        <button *ngIf="!isLast" class="no-margin-padding" [popoverTitle]="popTitle" type="button" placement="bottom"
+  <div *ngIf="!isSearched">
+    <div *ngFor="let genreMovies of moviesActual | keyvalue;last as isLast;">
+      <h3 class="w-100">{{genreMovies.key}}</h3>
+      <div class="d-flex justify-content-center pad-100">
+        <div class="card bg-dark text-white" *ngFor="let movie of genreMovies.value">
+          <button *ngIf="!isLast" class="no-margin-padding" [popoverTitle]="popTitle" type="button" placement="bottom"
+            [ngbPopover]="popContent" popoverClass="my-custom-class">
+            <img class="card-img bg-dark" [src]="movie.Poster" alt="Card image">
+          </button>
+          <button *ngIf="isLast" class="no-margin-padding" [popoverTitle]="popTitle" type="button" placement="top"
+            [ngbPopover]="popContent" popoverClass="my-custom-class">
+            <img class="card-img bg-dark" [src]="movie.Poster" alt="Card image">
+          </button>
+          <ng-template #popContent>
+            <table class="popover-table">
+              <tr>
+                <th class="text-center" colspan="2"><b>{{movie.Title}}</b></th>
+              </tr>
+              <tr>
+                <td>{{movie.plot}}!!</td>
+                <td>
+                  <button *ngIf="addedInPlayList" type="button" class="btn btn-outline-info">
+                    Add To Playlist
+                    <i class="far fa-plus-square fa-lg"></i>
+                  </button>
+                  <button *ngIf="!addedInPlayList" type="button" class="btn btn-outline-info">
+                    Play
+                    <i class="far fa-play-circle fa-lg"></i>
+                  </button>
+                  <button type="button" class="btn btn-outline-info" routerLink="/movie-details">
+                    Details
+                    <i class="fas fa-external-link-square-alt fa-lg"></i>
+                  </button>
+                </td>
+              </tr>
+            </table>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isSearched">
+    <h3 class="w-100">SEARCH RESULTS</h3>
+    <div id="search-container" class="d-flex justify-content-center pad-100">
+      <div class="card  card-search bg-dark text-white" *ngFor="let movie of moviesSearched">
+        <button *ngIf="!isLast" class="no-margin-padding" [popoverTitle]="popTitle" type="button" placement="top"
           [ngbPopover]="popContent" popoverClass="my-custom-class">
           <img class="card-img bg-dark" [src]="movie.Poster" alt="Card image">
         </button>
