@@ -17,6 +17,7 @@ export class DetailsPageComponent implements OnInit {
   movie:Movie = new Movie();
   similar:Movie[] = []
   stars:number = 0;
+  user:User = new User();
 
   constructor(private sharedData:DataService, private movieService:MovieService, 
     private userService:UserService,private route: ActivatedRoute, private router:Router) { }
@@ -26,52 +27,53 @@ export class DetailsPageComponent implements OnInit {
     // this.route.paramMap.subscribe(params => {
     //   this.movieId = params.get("id")
     // });
+    this.setUser();
     this.getDetails(this.movieId);
   }
 
   getDetails(movieId:string){
-    // this.movieService.getMovieById(movieId).subscribe( movie => {
-    //   this.stars = Math.round(movie.imdb.rating/2);
-    //   this.movie = movie;
-    // });
-    this.similar.push(new Movie());
-    this.similar.push(new Movie());
-    this.similar.push(new Movie());
-    this.similar.push(new Movie());
-    this.similar.push(new Movie());
-    this.similar.push(new Movie());
-    this.similar.push(new Movie());
-    this.similar.push(new Movie());
-    this.similar.push(new Movie());
-    this.similar.push(new Movie());
-    this.similar.push(new Movie());
-    this.similar.push(new Movie());
-    this.similar.push(new Movie());
-    this.similar.push(new Movie());
-    this.similar.push(new Movie());
-    this.similar.push(new Movie());
-    this.similar.push(new Movie());
-    this.similar.push(new Movie());
-    this.stars = Math.round(this.movie.imdb.rating/2);
+    this.movieService.getMovieById(movieId).subscribe( movie => {
+      this.stars = Math.round(movie.imdb.rating/2);
+      this.movie = movie;
+    });
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.stars = Math.round(this.movie.imdb.rating/2);
 
+  }
+
+  public setUser(){
+    this.sharedData.currentUser.subscribe( user => {
+      this.user = user;
+    });
   }
 
   public alreadyInCart(){
-    this.sharedData.currentUser.subscribe( user => {
-        return user.cart.includes( this.movieId );
-    })
+    return this.user.cart.includes( this.movieId );
   }
 
   public canPlay(){
-    this.sharedData.currentUser.subscribe( user => {
-      return user.plan >= this.movie.level;
-    });
+    return this.user.plan >= this.movie.level;
   }
 
   public addToPlayList(movie:Movie){
-    this.sharedData.currentUser.subscribe( user => {
-      //this.userService.addToPlaylist(user , movie._id);
-    });
+    this.userService.addToPlaylist(this.user , movie._id);
   }
 
   public getPremium(){

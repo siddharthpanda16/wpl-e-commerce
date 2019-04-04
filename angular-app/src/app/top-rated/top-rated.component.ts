@@ -14,46 +14,41 @@ import { Router } from '@angular/router';
 export class TopRatedComponent implements OnInit {
 
   movies : Movie[] = [];
+  user : User = new User();
+
   constructor(private sharedData:DataService, private movieService:MovieService, 
     private userService:UserService, private router: Router ) { }
 
   ngOnInit() {
+    this.setUser();
     this.getTopRated();
   }
 
   public getTopRated(): void {
-    // this.movieService.getTopRated().subscribe( movies => {
-    //   movies.forEach( movie => {
-    //     this.movies.push( movie );
-    //   });
-    // });
-    this.sharedData.allMovies.subscribe( movies => {
-      movies.forEach(element => {
-        this.movies.push( element );
+    this.movieService.getTopRated().subscribe( movies => {
+      movies.forEach( movie => {
+        this.movies.push( movie );
       });
     });
+    // this.sharedData.allMovies.subscribe( movies => {
+    //   movies.forEach(element => {
+    //     this.movies.push( element );
+    //   });
+    // });
   }
 
-  public getUser(callback){
+  public setUser(){
     this.sharedData.currentUser.subscribe( user => {
-      callback(user);
+      this.user = user;
     });
   }
 
   public addToPlayList(movie:Movie){
-    this.sharedData.currentUser.subscribe( user => {
-      this.userService.addToPlaylist(user , movie._id);
-    });
+    this.userService.addToPlaylist(this.user , movie._id);
   }
 
   public checkMovieInCart(movie:Movie){
-    this.sharedData.currentUser.subscribe( user => {
-      console.log( user._id , movie._id, user.cart.includes(movie._id));
-      return user.cart.includes(movie._id);
-    }, err => {
-      console.log("no cart");
-      return false;
-    });
+    this.user.cart.includes(movie._id);
   }
 
   public movieDetails(movie:Movie){
@@ -61,18 +56,6 @@ export class TopRatedComponent implements OnInit {
   }
 
   public canPlay(movie:Movie){
-    // this.getUser( (user) => {
-    //   console.log( user.plan , movie.level, movie.level <= user.plan );
-    //   return movie.level <= user.plan;
-    // });
-
-    this.sharedData.currentUser.subscribe( user => {
-      console.log( user.plan , movie.level, movie.level <= user.plan );
-      return movie.level <= user.plan;
-    }, err => {
-      console.log(" no current user");
-      return false;
-    });
+    movie.level <= this.user.plan;
   }
-
 }

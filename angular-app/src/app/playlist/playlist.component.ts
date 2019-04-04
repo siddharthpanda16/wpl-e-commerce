@@ -22,23 +22,30 @@ export class PlaylistComponent implements OnInit {
      private userService:UserService, private router: Router ) { }
 
   ngOnInit() {
+    this.setUser();
     this.getPlaylist();
   }
 
   public getPlaylist(): void {
-    // this.sharedData.currentUser.subscribe( currentUser => {
-    //   this.user = currentUser;
-    //   var playlist = this.user.cart;
-    //   playlist.forEach( movieId => {
-    //     this.movieService.getMovieById(movieId).subscribe( movie => {
-    //       this.movies.push( movie );
-    //     })
+    this.sharedData.currentUser.subscribe( currentUser => {
+      this.user = currentUser;
+      var playlist = this.user.cart;
+      playlist.forEach( movieId => {
+        this.movieService.getMovieById(movieId).subscribe( movie => {
+          this.movies.push( movie );
+        })
+      });
+    });
+    // this.sharedData.allMovies.subscribe( movies => {
+    //   movies.forEach(element => {
+    //     this.movies.push( element );
     //   });
     // });
-    this.sharedData.allMovies.subscribe( movies => {
-      movies.forEach(element => {
-        this.movies.push( element );
-      });
+  }
+
+  public setUser(){
+    this.sharedData.currentUser.subscribe( user => {
+      this.user = user;
     });
   }
   
@@ -62,16 +69,11 @@ export class PlaylistComponent implements OnInit {
   }
 
   public canPlay(movie:Movie){
-    this.sharedData.currentUser.subscribe( user => {
-      return user.plan >= movie.level;
-    });
+    return this.user.plan >= movie.level;
   }
 
   public removeFromPlaylist(movie:Movie){
-    this.sharedData.currentUser.subscribe( user => {
-      // console.log("here");
-      this.userService.deleteFromPlaylist(user, movie._id);
-    });
+    this.userService.deleteFromPlaylist(this.user, movie._id);
   }
 
   public play(){
