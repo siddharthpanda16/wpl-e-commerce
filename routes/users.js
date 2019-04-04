@@ -11,6 +11,7 @@ function getUsersRouter() {
     console.log("POST /login hit.");
     try {
       /* Grab un/pw from body */
+      console.log(req.body );
       const username = req.body.username;
       const password = req.body.password;
 
@@ -26,7 +27,7 @@ function getUsersRouter() {
         throw Error("Problem comparing the passwords");
       });
 
-      res.status(200).json({ success: match });
+      res.status(200).json( user );
     } catch (e) {
       res.status(400).json({ error: e.message });
     }
@@ -40,7 +41,7 @@ function getUsersRouter() {
       const user = await User.findById(req.params.id).catch(e => {
         throw Error("Problem finding user by ID.");
       });
-      res.status(200).json({ user, message: "Success" });
+      res.status(200).json( user );
     } catch (e) {
       res.status(400).json({ error: e.message });
     }
@@ -108,12 +109,13 @@ function getUsersRouter() {
   router.put("/users/:id", async (req, res) => {
     console.log(`PUT /users/${req.params.id} hit.`);
     try {
+      console.log(req.params.id, req.body);
       const user = await User.findByIdAndUpdate(req.params.id, req.body).catch(
         e => {
           throw Error("Problem finding or updating user by ID.");
         }
       );
-      res.status(200).json({ id: user._id, message: "Success" });
+      res.status(200).json( user ); //{ id: user._id, message: "Success" }
     } catch (e) {
       res.status(400).json({ error: e.message });
     }

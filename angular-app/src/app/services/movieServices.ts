@@ -26,27 +26,27 @@ export class MovieService {
     ngOnInit() {}
 
     addMovie(movie:Movie): Observable<Movie> {
-        var url = ('localhost:1234/movies'); 
+        var url = ('http://localhost:1234/movies'); 
         var options = httpOptions; 
 
         return this.http.post<Movie>( url, movie, options).pipe(
             tap(_ => console.log('fetched claim')),
-            catchError(this.handleError<Movie>(`getUserById() failed`))
+            catchError(this.handleError<Movie>(`addMovie() failed`))
         );
     }
 
     updateMovie(oid:String, movie:Movie): Observable<Movie> {
-        var url = ('localhost:1234/movies/{movie_id}').replace(/{movie_id}/g, movie._id['$oid']); 
+        var url = ('http://localhost:1234/movies/{movie_id}').replace(/{movie_id}/g, movie._id['$oid']); 
         var options = httpOptions; 
 
         return this.http.put<Movie>( url, movie, options).pipe(
             tap(_ => console.log('fetched claim')),
-            catchError(this.handleError<Movie>(`getUserById() failed`))
+            catchError(this.handleError<Movie>(`updateMovie() failed`))
         );
     }
 
     getMovieById(movieId:string): Observable<Movie>{
-        var url = ('localhost:1234/movies/{movie_id}').replace(/{movie_id}/g, movieId); 
+        var url = ('http://localhost:1234/movies/{movie_id}').replace(/{movie_id}/g, movieId); 
         var options = httpOptions; 
 
         return this.http.get<Movie>( url, options).pipe(
@@ -56,35 +56,35 @@ export class MovieService {
     }
 
     getAllMovies(): Observable<Movie[]>{
-        var url = ('localhost:1234/movies'); 
+        var url = ('http://localhost:1234/movies'); 
         var options = httpOptions; 
 
         return this.http.get<Movie[]>( url, options ).pipe(
             tap(_ => console.log('fetched claim')),
-            catchError(this.handleError<Movie[]>(`getMovieById() failed`))
+            catchError(this.handleError<Movie[]>(`getAllMovies() failed`))
         );
     }
 
     getTopRated(): Observable<Movie[]>{
-        var url = ('localhost:1234/movies'); 
+        var url = ('http://localhost:1234/movies'); 
         var options = httpOptions; 
         options['params'] = new HttpParams()
             .set('sortBy', 'rating')
         
         return this.http.get<Movie[]>( url, options ).pipe(
             tap(_ => console.log('fetched claim')),
-            catchError(this.handleError<Movie[]>(`getMovieById() failed`))
+            catchError(this.handleError<Movie[]>(`getTopRated() failed`))
         );
     }
 
     searchMovie(params:Object): Observable<Movie[]> {
-        var url = ('localhost:1234/movies'); 
+        var url = ('http://localhost:1234/movies'); 
         var options = httpOptions; 
         options['params'] = params;
 
         return this.http.get<Movie[]>( url, options).pipe(
             tap(_ => console.log('fetched claim')),
-            catchError(this.handleError<Movie[]>(`getMovieById() failed`))
+            catchError(this.handleError<Movie[]>(`searchMovie() failed`))
         );
     }
 

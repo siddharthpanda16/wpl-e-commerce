@@ -26,7 +26,7 @@ export class UserService {
     ngOnInit() {}
 
     getUser(username:string): Observable<User> {
-        var url = ('localhost:1234/user/{user_id}').replace(/{user_id}/g, username); 
+        var url = ('http://localhost:1234/user/{user_id}').replace(/{user_id}/g, username); 
         
         var options = httpOptions; 
         // options['params'] = new HttpParams()
@@ -38,20 +38,23 @@ export class UserService {
         );
     }
 
-    validateUser(username:string, password:string) {
-      this.getUser(username).subscribe( user => {
-          if( password === user.password) {
-            this.sharedData.setUser(user);
-            return true;
-          }
-          return false;
-      }, err => {
-        return false;
-      });
+    validateUser(username:string, password:string):Observable<User> {
+      var url = ('http://localhost:1234/login'); 
+      var options = httpOptions; 
+      console.log( { username, password})
+      let queryParams = {
+        'username' : username , 
+        'password': password
+      }
+
+      return this.http.post<User>( url, queryParams , options ).pipe(
+          tap(_ => console.log('fetched claim')),
+          catchError(this.handleError<User>(`getUserById() failed`))
+      );
     }
 
     addUser(user:User):Observable<User> {
-        var url = ('localhost:1234/users'); 
+        var url = ('http://localhost:1234/users'); 
         var options = httpOptions; 
 
         return this.http.post<User>( url, user, options).pipe(
@@ -61,7 +64,7 @@ export class UserService {
     }
 
     updateUser(user:User):Observable<User> {
-      var url = ('localhost:1234/users/{user_id}').replace(/{user_id}/g, user._id); 
+      var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user._id); 
       var options = httpOptions; 
 
       return this.http.put<User>( url, user, options).pipe(
@@ -74,7 +77,7 @@ export class UserService {
     }
 
     updatePlaylist(user:User, movieIds:string[]):Observable<User>{
-      var url = ('localhost:1234/users/{user_id}').replace(/{user_id}/g,user._id); 
+      var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g,user._id); 
       user.cart = movieIds;
       var options = httpOptions; 
 
@@ -92,7 +95,7 @@ export class UserService {
         return new BehaviorSubject<boolean>(false);
       } else {
         user.cart.push(movieId);
-        var url = ('localhost:1234/users/{user_id}').replace(/{user_id}/g,user._id);
+        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g,user._id);
         var options = httpOptions; 
 
         return this.http.put<boolean>( url, user, options).pipe(
@@ -108,15 +111,19 @@ export class UserService {
 
     deleteFromPlaylist(user:User, movieId:string):Observable<boolean>{
         // console.log('here2', user);
-        if( user.cart.length == 0 ){
-          return new BehaviorSubject<boolean>(false);
-        } else {
-          user.cart = user.cart.filter( function(value){
-            return value != movieId;
-        });
-        // console.log(user);
-        var url = ('localhost:1234/users/{user_id}').replace(/{user_id}/g,user._id);
+        // if( user.cart.length == 0 ){
+        //   return new BehaviorSubject<boolean>(false);
+        // } else {
+        //   user.cart = user.cart.filter( function(value){
+        //     return value != movieId;
+        // });
+        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g,user._id);
         var options = httpOptions; 
+
+        user.cart = user.cart.filter( function(value){
+          return value != movieId;
+        });
+        console.log( {"delete service " : {  user , url }});
 
         return this.http.put<boolean>( url, user, options).pipe(
             tap(_ => {
@@ -125,7 +132,7 @@ export class UserService {
             }),
             catchError(this.handleError<boolean>(`getUserById() failed`))
         );
-      }
+      // }
     }
 
       /**

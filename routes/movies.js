@@ -25,7 +25,7 @@ function getMoviesRouter() {
       const movie = await Movie.findById(req.params.id).catch(e => {
         throw Error("Problem finding movie by ID.");
       });
-      res.status(200).json({ movie, message: "Success" });
+      res.status(200).json( movie ); // { movie, message: "Success" }
     } catch (e) {
       res.status(400).json({ error: e.message });
     }

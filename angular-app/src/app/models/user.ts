@@ -10,10 +10,10 @@ export class Card{
 }
 
 export class User{
-    _id:string = "1234567890";
-    displayName:string = 'foo';
-    username:string = 'jar2';
-    password:string = 'bigFish17';
+    _id:string = "";
+    displayName:string = '';
+    username:string = '';
+    password:string = '';
     plan:number = 2;
     cart:string[] = ["movieid1", "movieid2"];
     billing:Card = new Card();

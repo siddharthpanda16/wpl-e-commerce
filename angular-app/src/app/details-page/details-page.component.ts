@@ -28,6 +28,7 @@ export class DetailsPageComponent implements OnInit {
     //   this.movieId = params.get("id")
     // });
     this.setUser();
+    console.log( 'username' , this.user.username );
     this.getDetails(this.movieId);
   }
 
