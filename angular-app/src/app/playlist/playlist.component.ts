@@ -4,6 +4,8 @@ import { UserService } from '../services/userServices';
 import { MovieService } from '../services/movieServices';
 import { Movie } from '../models/movie';
 import { User } from '../models/user';
+import {CdkDragDrop, moveItemInArray, DragDropModule} from '@angular/cdk/drag-drop';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-playlist',
@@ -12,23 +14,67 @@ import { User } from '../models/user';
 })
 export class PlaylistComponent implements OnInit {
 
-  constructor(private sharedData:DataService, private movieService:MovieService ) { }
+  user : User = new User();
+  movies : Movie[] = [];
+  saveDisabled :Boolean = true;
 
-  movies : Movie[];
+  constructor(private sharedData:DataService, private movieService:MovieService,
+     private userService:UserService, private router: Router ) { }
 
   ngOnInit() {
     this.getPlaylist();
   }
 
   public getPlaylist(): void {
-    this.sharedData.currentUser.subscribe( currentUser => {
-      var playlist = currentUser.cart;
-      playlist.forEach( movieId => {
-        this.movieService.getMovieById(movieId).subscribe( movie => {
-          this.movies.push( movie );
-        })
+    // this.sharedData.currentUser.subscribe( currentUser => {
+    //   this.user = currentUser;
+    //   var playlist = this.user.cart;
+    //   playlist.forEach( movieId => {
+    //     this.movieService.getMovieById(movieId).subscribe( movie => {
+    //       this.movies.push( movie );
+    //     })
+    //   });
+    // });
+    this.sharedData.allMovies.subscribe( movies => {
+      movies.forEach(element => {
+        this.movies.push( element );
       });
     });
   }
+  
+  public drop(event: CdkDragDrop<string[]>) {
+    this.saveDisabled = null;
+    moveItemInArray(this.movies, event.previousIndex, event.currentIndex);
+  }
 
+  public updateCart(){
+    let movieIds:string[] = [];
+    this.movies.forEach(movie => {
+      movieIds.push(movie._id);
+    }); 
+    this.userService.updatePlaylist(this.user, movieIds);
+    this.saveDisabled = true;
+    console.log( movieIds);
+  }
+
+  public movieDetails(movie:Movie){
+    this.router.navigateByUrl('/movie/'+movie._id);
+  }
+
+  public canPlay(movie:Movie){
+    this.sharedData.currentUser.subscribe( user => {
+      return user.plan >= movie.level;
+    });
+  }
+
+  public removeFromPlaylist(movie:Movie){
+    this.sharedData.currentUser.subscribe( user => {
+      // console.log("here");
+      this.userService.deleteFromPlaylist(user, movie._id);
+    });
+  }
+
+  public play(){
+    
+  }
 }

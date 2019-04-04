@@ -8,6 +8,7 @@ import { PlaylistComponent } from './playlist/playlist.component';
 import { AdminComponent } from './admin/admin.component';
 import { RecommendedComponent } from './recommended/recommended.component';
 import { TopRatedComponent } from './top-rated/top-rated.component';
+import { DetailsPageComponent } from './details-page/details-page.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -18,7 +19,7 @@ const routes: Routes = [
   {path: 'admin', component: AdminComponent},
   {path: 'top-rated', component: TopRatedComponent},
   {path: 'recommended', component: RecommendedComponent},
-
+  {path: 'movie/:id', component: DetailsPageComponent},
 ];
 
 @NgModule({

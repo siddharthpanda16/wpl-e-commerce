@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, throwError, of } from 'rxjs';
+import { Observable, throwError, of, BehaviorSubject } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
@@ -20,11 +20,7 @@ const httpOptions = {
 
 export class UserService {
 
-    // private currUser:User;
     constructor( private sharedData:DataService, private http: HttpClient ){
-        // this.sharedData.currentUser.subscribe(userId =>{
-        //     this.currUser = userId;
-        // })
     }
 
     ngOnInit() {}
@@ -42,6 +38,18 @@ export class UserService {
         );
     }
 
+    validateUser(username:string, password:string) {
+      this.getUser(username).subscribe( user => {
+          if( password === user.password) {
+            this.sharedData.setUser(user);
+            return true;
+          }
+          return false;
+      }, err => {
+        return false;
+      });
+    }
+
     addUser(user:User):Observable<User> {
         var url = ('localhost:1234/users'); 
         var options = httpOptions; 
@@ -53,24 +61,71 @@ export class UserService {
     }
 
     updateUser(user:User):Observable<User> {
-        var url = ('localhost:1234/users/{user_id}').replace(/{user_id}/g, user.id); 
-        var options = httpOptions; 
+      var url = ('localhost:1234/users/{user_id}').replace(/{user_id}/g, user._id); 
+      var options = httpOptions; 
 
-        return this.http.put<User>( url, user, options).pipe(
-            tap(_ => console.log('fetched claim')),
-            catchError(this.handleError<User>(`getUserById() failed`))
-        );
+      return this.http.put<User>( url, user, options).pipe(
+          tap(_ => { 
+            this.sharedData.setUser(user); 
+            console.log('fetched claim');
+          }),
+          catchError(this.handleError<User>(`getUserById() failed`))
+      );
     }
 
-    updateCart(user:User, movieIds:string[]):Observable<User>{
-        var url = ('localhost:1234/users/{user_id}').replace(/{user_id}/g,user.id); 
-        user.cart = movieIds;
+    updatePlaylist(user:User, movieIds:string[]):Observable<User>{
+      var url = ('localhost:1234/users/{user_id}').replace(/{user_id}/g,user._id); 
+      user.cart = movieIds;
+      var options = httpOptions; 
+
+      return this.http.put<User>( url, user, options).pipe(
+          tap(_ => {
+            console.log('fetched claim');
+            this.sharedData.setUser(user);
+          }),
+          catchError(this.handleError<User>(`getUserById() failed`))
+      );
+    }
+
+    addToPlaylist(user:User, movieId:string):Observable<boolean>{
+      if( user.cart.length === 5 ){
+        return new BehaviorSubject<boolean>(false);
+      } else {
+        user.cart.push(movieId);
+        var url = ('localhost:1234/users/{user_id}').replace(/{user_id}/g,user._id);
         var options = httpOptions; 
 
-        return this.http.put<User>( url, user, options).pipe(
-            tap(_ => console.log('fetched claim')),
-            catchError(this.handleError<User>(`getUserById() failed`))
+        return this.http.put<boolean>( url, user, options).pipe(
+            tap(_ => {
+              console.log('fetched claim');
+              this.sharedData.setUser(user);
+            }),
+            catchError(this.handleError<boolean>(`getUserById() failed`))
         );
+      }
+    }
+
+
+    deleteFromPlaylist(user:User, movieId:string):Observable<boolean>{
+        // console.log('here2', user);
+        if( user.cart.length == 0 ){
+          return new BehaviorSubject<boolean>(false);
+        } else {
+          user.cart = user.cart.filter( function(value){
+            return value != movieId;
+        });
+        // console.log(user);
+        var url = ('localhost:1234/users/{user_id}').replace(/{user_id}/g,user._id);
+        var options = httpOptions; 
+
+        return this.http.put<boolean>( url, user, options).pipe(
+            tap(_ => {
+              console.log('fetched claim');
+              this.sharedData.setUser(user);
+            }),
+            catchError(this.handleError<boolean>(`getUserById() failed`))
+        );
+      }
     }
 
       /**

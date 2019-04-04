@@ -10,7 +10,7 @@ export class Card{
 }
 
 export class User{
-    id:string = "1234567890";
+    _id:string = "1234567890";
     displayName:string = 'foo';
     username:string = 'jar2';
     password:string = 'bigFish17';

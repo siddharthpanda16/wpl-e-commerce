@@ -65,6 +65,18 @@ export class MovieService {
         );
     }
 
+    getTopRated(): Observable<Movie[]>{
+        var url = ('localhost:1234/movies'); 
+        var options = httpOptions; 
+        options['params'] = new HttpParams()
+            .set('sortBy', 'rating')
+        
+        return this.http.get<Movie[]>( url, options ).pipe(
+            tap(_ => console.log('fetched claim')),
+            catchError(this.handleError<Movie[]>(`getMovieById() failed`))
+        );
+    }
+
     searchMovie(params:Object): Observable<Movie[]> {
         var url = ('localhost:1234/movies'); 
         var options = httpOptions; 

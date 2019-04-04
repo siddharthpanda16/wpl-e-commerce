@@ -7,7 +7,7 @@ import { Movie }  from './models/movie';
   providedIn: 'root'
 })
 export class DataService {
-
+  
   private currUser = new BehaviorSubject<User>(new User); 
   currentUser = this.currUser.asObservable();
 

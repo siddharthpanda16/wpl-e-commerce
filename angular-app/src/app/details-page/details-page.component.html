@@ -1,0 +1,64 @@
+
+<div class="page">
+    <!-- <h3 class="pageheader text-center"> {{movie.Title}} </h3> -->
+    <div class="pagecontent w-100 padding50">
+        <div class="movie-tab w-100 row">
+          <div class="col">
+            <br>
+            <h3 class="movie-title">{{movie.Title}}&nbsp;&nbsp;&nbsp;&nbsp;<small>({{movie.year}})</small></h3>
+            <p>&nbsp;&nbsp;<span class="text-secondary">{{ movie.rated}} </span> | <span class="text-secondary">{{ movie.runtime}} min </span> </p>
+            <br>
+            <span><p>{{movie.plot}}</p></span>
+            <span><p>
+              <i class="fas fa-star text-danger" *ngFor="let i of [].constructor(stars)"></i>
+              {{movie.imdb.rating}} ({{movie.imdb.votes}} reviews)
+            </p></span>
+            <div class="bg-light padding20">
+                <div> <em> {{ movie.tomato.consensus}} - <strong>Tomato Consensus</strong> </em> </div>
+                <div> <strong>User Meter :</strong> {{ movie.tomato.userMeter}} </div>
+                <div> <strong>User Rating :</strong> {{ movie.tomato.userRating}} </div>
+                <div> <strong>Metacritic :</strong> {{movie.metacritic}}</div>
+            </div>
+            <br>
+            <div>
+                <span class="text-primary">Genres : </span>
+                <span *ngFor="let g of movie.genres; last as isLast">{{g}} <span *ngIf="!isLast">, </span></span>
+            </div>
+            <div>
+              <span class="text-primary">Cast : </span>
+              <span *ngFor="let actor of movie.actors; last as isLast">{{actor}}<span *ngIf="!isLast">, </span></span>
+            </div>
+            <div>
+                <span class="text-primary">Directors : </span>
+                <span>{{movie.director}}</span>
+            </div>
+            <div>
+                <span class="text-primary">Writers : </span>
+                <span *ngFor="let actor of movie.writers; last as isLast">{{actor}}<span *ngIf="!isLast">, </span></span>
+            </div>
+            <br>
+            <div *ngIf="movie.awards">
+                <span><i class="fas fa-trophy text-secondary"></i></span>&nbsp;&nbsp;&nbsp;
+                <span>{{movie.awards.text}}</span>
+            </div>
+            <br>
+            <button class="btn btn-warning "  *ngIf="!canPlay(movie)" (click)="getPremium()"> Get Premium </button>
+            <button class="btn btn-info "  *ngIf="canPlay(movie) && !alreadyInCart(movie)" (click)="addToPlayList(movie)"> Add To Playlist </button>
+            <button class="btn btn-info "  *ngIf="canPlay(movie) && alreadyInCart(movie)" (click)="play()"> Play </button>
+          </div>
+          <div class="col col-4">
+              <img class="poster" [src]="movie.Poster"/>
+          </div>
+        </div>
+        <br>
+        <div class="similar-tab w-100 row">
+            <p class="row w-100 text-left"> Similar movies you might like</p>
+            <br>
+            <div class="sim-div text-left row">
+              <div class="poster-div" *ngFor="let simMovie of similar">
+                <img class="similar-poster" [src]="simMovie.Poster" (click)="movieDetails(simMovie)"/>
+              </div>
+            </div>
+        </div>
+    </div>
+  </div>
