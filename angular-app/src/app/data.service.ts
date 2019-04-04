@@ -8,9 +8,6 @@ import { Movie }  from './models/movie';
 })
 export class DataService {
 
-  // private currUser : User; 
-  // currentUser : User;
-
   private isAdmin = new BehaviorSubject<boolean>(false); 
   currUserIsAdmin = this.isAdmin.asObservable();
 

@@ -4,6 +4,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule} from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule }    from '@angular/common/http';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -20,7 +21,7 @@ import { UserService } from './services/userServices';
 import { MovieService } from './services/movieServices';
 import { TopRatedComponent } from './top-rated/top-rated.component';
 import { RecommendedComponent } from './recommended/recommended.component';
-import { MovieDetailsComponent } from './movie-details/movie-details.component';
+import { DetailsPageComponent } from './details-page/details-page.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,7 @@ import { MovieDetailsComponent } from './movie-details/movie-details.component';
     NavComponent,
     TopRatedComponent,
     RecommendedComponent,
-    MovieDetailsComponent
+    DetailsPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,7 +43,8 @@ import { MovieDetailsComponent } from './movie-details/movie-details.component';
     NgbModule,
     HttpClientModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    DragDropModule
   ],
   providers: [
     DataService,

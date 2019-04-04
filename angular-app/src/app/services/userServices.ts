@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, throwError, of } from 'rxjs';
+import { Observable, throwError, of, BehaviorSubject } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
@@ -20,17 +20,13 @@ const httpOptions = {
 
 export class UserService {
 
-    // private currUser:User;
     constructor( private sharedData:DataService, private http: HttpClient ){
-        // this.sharedData.currentUser.subscribe(userId =>{
-        //     this.currUser = userId;
-        // })
     }
 
     ngOnInit() {}
 
     getUser(username:string): Observable<User> {
-        var url = ('localhost:1234/user/{user_id}').replace(/{user_id}/g, username); 
+        var url = ('http://localhost:1234/user/{user_id}').replace(/{user_id}/g, username); 
         
         var options = httpOptions; 
         // options['params'] = new HttpParams()
@@ -42,8 +38,23 @@ export class UserService {
         );
     }
 
+    validateUser(username:string, password:string):Observable<User> {
+      var url = ('http://localhost:1234/login'); 
+      var options = httpOptions; 
+      console.log( { username, password})
+      let queryParams = {
+        'username' : username , 
+        'password': password
+      }
+
+      return this.http.post<User>( url, queryParams , options ).pipe(
+          tap(_ => console.log('fetched claim')),
+          catchError(this.handleError<User>(`getUserById() failed`))
+      );
+    }
+
     addUser(user:User):Observable<User> {
-        var url = ('localhost:1234/users'); 
+        var url = ('http://localhost:1234/users'); 
         var options = httpOptions; 
 
         return this.http.post<User>( url, user, options).pipe(
@@ -53,24 +64,75 @@ export class UserService {
     }
 
     updateUser(user:User):Observable<User> {
-        var url = ('localhost:1234/users/{user_id}').replace(/{user_id}/g, user.id); 
-        var options = httpOptions; 
+      var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user._id); 
+      var options = httpOptions; 
 
-        return this.http.put<User>( url, user, options).pipe(
-            tap(_ => console.log('fetched claim')),
-            catchError(this.handleError<User>(`getUserById() failed`))
-        );
+      return this.http.put<User>( url, user, options).pipe(
+          tap(_ => { 
+            this.sharedData.setUser(user); 
+            console.log('fetched claim');
+          }),
+          catchError(this.handleError<User>(`getUserById() failed`))
+      );
     }
 
-    updateCart(user:User, movieIds:string[]):Observable<User>{
-        var url = ('localhost:1234/users/{user_id}').replace(/{user_id}/g,user.id); 
-        user.cart = movieIds;
+    updatePlaylist(user:User, movieIds:string[]):Observable<User>{
+      var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g,user._id); 
+      user.cart = movieIds;
+      var options = httpOptions; 
+
+      return this.http.put<User>( url, user, options).pipe(
+          tap(_ => {
+            console.log('fetched claim');
+            this.sharedData.setUser(user);
+          }),
+          catchError(this.handleError<User>(`getUserById() failed`))
+      );
+    }
+
+    addToPlaylist(user:User, movieId:string):Observable<boolean>{
+      if( user.cart.length === 5 ){
+        return new BehaviorSubject<boolean>(false);
+      } else {
+        user.cart.push(movieId);
+        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g,user._id);
         var options = httpOptions; 
 
-        return this.http.put<User>( url, user, options).pipe(
-            tap(_ => console.log('fetched claim')),
-            catchError(this.handleError<User>(`getUserById() failed`))
+        return this.http.put<boolean>( url, user, options).pipe(
+            tap(_ => {
+              console.log('fetched claim');
+              this.sharedData.setUser(user);
+            }),
+            catchError(this.handleError<boolean>(`getUserById() failed`))
         );
+      }
+    }
+
+
+    deleteFromPlaylist(user:User, movieId:string):Observable<boolean>{
+        // console.log('here2', user);
+        // if( user.cart.length == 0 ){
+        //   return new BehaviorSubject<boolean>(false);
+        // } else {
+        //   user.cart = user.cart.filter( function(value){
+        //     return value != movieId;
+        // });
+        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g,user._id);
+        var options = httpOptions; 
+
+        user.cart = user.cart.filter( function(value){
+          return value != movieId;
+        });
+        console.log( {"delete service " : {  user , url }});
+
+        return this.http.put<boolean>( url, user, options).pipe(
+            tap(_ => {
+              console.log('fetched claim');
+              this.sharedData.setUser(user);
+            }),
+            catchError(this.handleError<boolean>(`getUserById() failed`))
+        );
+      // }
     }
 
       /**

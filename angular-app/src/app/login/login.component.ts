@@ -23,20 +23,6 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
-  validateUser(username:string, password:string) {
-    /* this.userService.getUser(username).subscribe( user => {
-        if( password === user.password) {
-          this.sharedData.setUser(user);
-          return true;
-        }
-        return false;
-    }, err => {
-      return false;
-    }); */
-
-    
-  }
-
   createForm() {
     this.loginForm = this.formBuilder.group({
       username: [],
@@ -45,13 +31,13 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin(username,password){
-    console.log(username +' '+ password + '  '+this.user.username+'  '+this.user.password)
-    if(this.user.username== username && this.user.password== password ){
-        this.sharedData.setUser(this.user);
-        //this.location.replaceState('/'); // clears browser history so they can't navigate with back button
-        this.router.navigate(['/']);
-    }
-    else
-        this.router.navigate(['/top-rated']);
+    this.userService.validateUser(username, password).subscribe( user => {
+      console.log(username +' '+ password + '  '+this.user.username+'  '+this.user.password)
+      this.sharedData.setUser(user);
+      // console.log(this.sharedData.currentUser);
+      this.router.navigate(['/']);
+    }, err=> {
+      this.router.navigate(['/login']);
+    });
   }
 }
