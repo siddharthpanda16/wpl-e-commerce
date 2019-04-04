@@ -2,10 +2,10 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
-  displayName: { type: String, required: true },
+  displayName: { type: String, required: true }, // must be unique
   username: { type: String, required: true },
   password: { type: String, required: true },
-  cart: [{ type: String }],
+  cart: [{ type: String, required: true }],
   billing: {
     ccNum: { type: String, required: true },
     ccCVV: { type: String, required: true },
