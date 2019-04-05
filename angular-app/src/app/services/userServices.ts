@@ -26,7 +26,7 @@ export class UserService {
     ngOnInit() {}
 
     getUser(username:string): Observable<User> {
-        var url = ('http://localhost:1234/user/{user_id}').replace(/{user_id}/g, username); 
+        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, username); 
         
         var options = httpOptions; 
         // options['params'] = new HttpParams()
@@ -64,7 +64,7 @@ export class UserService {
     }
 
     updateUser(user:User):Observable<User> {
-      var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user._id); 
+      var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user.id); 
       var options = httpOptions; 
 
       return this.http.put<User>( url, user, options).pipe(
@@ -77,7 +77,7 @@ export class UserService {
     }
 
     updatePlaylist(user:User, movieIds:string[]):Observable<User>{
-      var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g,user._id); 
+      var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g,user.id); 
       user.cart = movieIds;
       var options = httpOptions; 
 
@@ -95,7 +95,7 @@ export class UserService {
         return new BehaviorSubject<boolean>(false);
       } else {
         user.cart.push(movieId);
-        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g,user._id);
+        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g,user.id);
         var options = httpOptions; 
 
         return this.http.put<boolean>( url, user, options).pipe(
@@ -117,7 +117,7 @@ export class UserService {
         //   user.cart = user.cart.filter( function(value){
         //     return value != movieId;
         // });
-        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g,user._id);
+        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g,user.id);
         var options = httpOptions; 
 
         user.cart = user.cart.filter( function(value){

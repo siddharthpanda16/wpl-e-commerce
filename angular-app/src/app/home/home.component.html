@@ -1,6 +1,6 @@
 <app-nav>
   </app-nav>
-<div class="container-fluid">
+<div class="container-fluid" id="home-container">
 
   <!-- <h1 class="text-center w-100">SEARCH MOVIES</h1> -->
   <div id="search-div-id" class="d-flex justify-content-center">
@@ -52,7 +52,7 @@
                     Play
                     <i class="far fa-play-circle fa-lg"></i>
                   </button>
-                  <button type="button" class="btn btn-outline-info" routerLink="/movie-details">
+                  <button type="button" class="btn btn-outline-info" (click)="movieDetails(movie)">
                     Details
                     <i class="fas fa-external-link-square-alt fa-lg"></i>
                   </button>

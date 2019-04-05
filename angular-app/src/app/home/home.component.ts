@@ -2,8 +2,10 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DataService } from '../data.service';
 import { MovieService } from '../services/movieServices';
+import { UserService } from '../services/userServices';
 import { Movie } from '../models/movie';
 import { User } from '../models/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -27,12 +29,12 @@ import { User } from '../models/user';
       height:35px;
     }
 
-    ngb-popover-window
+    #home-container ngb-popover-window 
     {
       min-width: 400px;
       left:20px;
     }
-    .popover-body{
+    #home-container .popover-body{
       font-size: 14px;
       overflow:auto;
       height:100px;
@@ -41,7 +43,7 @@ import { User } from '../models/user';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private sharedData: DataService, private movieService: MovieService, private formBuilder: FormBuilder) {
+  constructor(private sharedData: DataService, private movieService: MovieService, private userService: UserService, private formBuilder: FormBuilder, private router: Router) {
     this.createForm();
   }
   isSearched: Boolean = false;
@@ -49,10 +51,27 @@ export class HomeComponent implements OnInit {
   moviesSearched: Movie[] = [];
   searchForm: FormGroup;
   search: any = {};
+  user: User = new User;
 
   ngOnInit() {
-    this.sortMoviesByGenre();
-    console.log(this.sharedData.currentUser);
+    if (sessionStorage.getItem("keyname")) {
+      this.userService.getUser(sessionStorage.getItem("keyname")).subscribe(user => this.sharedData.setUser(user));
+      this.sharedData.currentUser.subscribe(user => {
+        if (user ==null || user.username == '') {
+          this.router.navigate(['/login']);
+        }
+        else {
+          this.router.navigate(['/']);
+          this.sortMoviesByGenre();
+        }
+      });
+    }
+    else {
+      this.router.navigate(['/login']);
+    }
+
+
+
   }
 
   sortMoviesByGenre() { // transform data here 
@@ -96,6 +115,12 @@ export class HomeComponent implements OnInit {
     this.sharedData.setUser(u1);
     console.log(this.sharedData.currentUser);
 
+  }
+
+  public movieDetails(movie: Movie) {
+    console.log("moviedetails home ", movie._id["$oid"]);
+
+    this.router.navigateByUrl('/movie/' + movie._id["$oid"]);
   }
 
   createForm() {

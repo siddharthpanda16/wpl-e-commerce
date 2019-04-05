@@ -9,11 +9,13 @@ import { User} from '../models/user';
   encapsulation: ViewEncapsulation.None,
   styles:[
     `
-    ngb-popover-window {
+    #nav-container ngb-popover-window {
       min-width: auto;
     }
-    .popover-body {
-      height: auto
+    #nav-container .popover-body{
+      
+        height: auto !important;
+    }
     `
   ]
 })

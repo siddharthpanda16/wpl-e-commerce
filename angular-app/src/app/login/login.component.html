@@ -1,23 +1,36 @@
 <div class="wrapper fadeInDown">
-    <div id="formContent">
-      <!-- Tabs Titles -->
-  
-      <!-- Icon -->
-      <div class="fadeIn first">
-          <i class="far fa-id-card fa-lg"></i>
-      </div>
-  
-      <!-- Login Form -->
-      <form [formGroup]="loginForm" novalidate>
-        <input type="text" id="login"  formControlName="username" #username class="fadeIn second"  name="login" placeholder="login">
-        <input type="password" id="password" formControlName="password" #password  class="fadeIn third" name="password" placeholder="password">
-        <input (click)="onLogin(username.value,password.value)" type="submit" class="fadeIn fourth" value="Log In">
-      </form>
-  
-      <!-- Remind Passowrd -->
-      <div id="formFooter">
-        <a class="underlineHover" href="/register">New User ? Create Account</a>
-      </div>
-  
+  <div id="formContent">
+    <!-- Tabs Titles -->
+
+    <!-- Icon -->
+    <div class="fadeIn first">
+      <!-- <i class="far fa-id-card fa-lg"></i> -->
+      <i class="fas fa-sign-in-alt fa-lg"></i>
     </div>
+
+    <!-- Login Form -->
+    <form [formGroup]="loginForm" novalidate>
+      <h5 *ngIf="!success" class="error alert-danger">username and password do not match!!!</h5>
+      <input type="text" id="login" formControlName="username" #username class="fadeIn second" name="login" placeholder="login">
+      <div *ngIf="submitted && loginForm.controls.username.errors" class="error">
+        <label *ngIf="loginForm.controls.username.errors.required" class="alert-danger"> username is required.</label>
+      </div>
+      <div *ngIf="submitted && loginForm.controls.username.errors" class="error">
+        <label *ngIf="loginForm.controls.username.errors.pattern" class="alert-danger"> Enter valid username (only
+          alphanumeric and underscores).</label>
+      </div>
+      <input type="password" id="password" formControlName="password" #password class="fadeIn third" name="password"
+        placeholder="password">
+      <div *ngIf="submitted && loginForm.controls.password.errors" class="error">
+        <label *ngIf="loginForm.controls.password.errors.required" class="alert-danger"> Password is required.</label>
+      </div>
+      <input (click)="onLogin(username.value,password.value)" type="submit" class="fadeIn fourth" value="Log In">
+    </form>
+
+    <!-- Remind Passowrd -->
+    <div id="formFooter">
+      <a class="underlineHover" href="/register">New User ? Create Account</a>
+    </div>
+
   </div>
+</div>
