@@ -7,11 +7,48 @@ function getMoviesRouter() {
   /* get all movies by level
    * Can query on level as well with ?level=3 appended to end of url*/
   router.get("/movies", async (req, res) => {
-    console.log(`GET /movies?level=${req.query.level} hit.`);
+    console.log(`GET /movies?sortBy=${req.query.sortBy}?order=${req.query.order} hit.`);
     try {
-      const movies = Movie.find({ level: req.query.level }).catch(e => {
+      // let sortAndOrder = `{ '${req.query.sortBy ? req.query.sortBy : Title}' : '${req.query.order ? req.query.order : 1}' }`;
+      // console.log ( sortAndOrder );
+      const movies = await Movie.find().limit(50).catch(e => {
         throw Error("Problem finding movies.");
       });
+      res.status(200).json( movies );
+    } catch (e) {
+      console.error(e.message);
+      res.status(400).json({ error: e.message });
+    }
+  });
+
+  /** 
+   * get top rated 10 movies 
+   */
+  router.get("/movies/top", async (req, res) => {
+    console.log(`GET /movies?level=${req.query.level} hit.`);
+    try {
+      let sortByImdbRating = { 'imdb.rating' : 'desc' };
+      const movies = await Movie.find().sort( sortByImdbRating ).limit(10).catch(e => {
+        throw Error("Problem finding movies.");
+      });
+      res.status(200).json( movies );
+    } catch (e) {
+      console.error(e.message);
+      res.status(400).json({ error: e.message });
+    }
+  });
+
+  /** 
+   * get recent 20 movies 
+   */
+  router.get("/movies/recent", async (req, res) => {
+    console.log(`GET /movies?level=${req.query.level} hit.`);
+    try {
+      let sortByYear = { 'year' : 'desc' };
+      const movies = await Movie.find().sort( sortByYear ).limit(20).catch(e => {
+        throw Error("Problem finding movies.");
+      });
+      res.status(200).json( movies );
     } catch (e) {
       console.error(e.message);
       res.status(400).json({ error: e.message });
