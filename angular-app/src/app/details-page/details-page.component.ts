@@ -70,7 +70,7 @@ export class DetailsPageComponent implements OnInit {
   }
 
   public canPlay(){
-    return this.user.plan >= this.movie.level;
+    return this.user.level >= this.movie.level;
   }
 
   public addToPlayList(movie:Movie){

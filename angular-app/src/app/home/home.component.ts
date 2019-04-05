@@ -57,7 +57,7 @@ export class HomeComponent implements OnInit {
     if (sessionStorage.getItem("keyname")) {
       this.userService.getUser(sessionStorage.getItem("keyname")).subscribe(user => this.sharedData.setUser(user));
       this.sharedData.currentUser.subscribe(user => {
-        if (user.username == '') {
+        if (user ==null || user.username == '') {
           this.router.navigate(['/login']);
         }
         else {

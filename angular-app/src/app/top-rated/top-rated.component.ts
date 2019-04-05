@@ -67,6 +67,6 @@ export class TopRatedComponent implements OnInit {
   }
 
   public canPlay(movie:Movie){
-    movie.level <= this.user.plan;
+    movie.level <= this.user.level;
   }
 }

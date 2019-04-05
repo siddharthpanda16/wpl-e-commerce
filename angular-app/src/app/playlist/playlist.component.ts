@@ -79,7 +79,7 @@ export class PlaylistComponent implements OnInit {
   }
 
   public canPlay(movie:Movie){
-    return this.user.plan >= movie.level;
+    return this.user.level >= movie.level;
   }
 
   public removeFromPlaylist(movie:Movie){
