@@ -22,8 +22,18 @@ export class PlaylistComponent implements OnInit {
      private userService:UserService, private router: Router ) { }
 
   ngOnInit() {
-    this.setUser();
-    this.getPlaylist();
+    this.sharedData.currentUser.subscribe(user=> {
+      if(  user.username==''){
+      this.router.navigate(['/login']);
+
+      }
+      else{
+        console.log("i am in playlist");
+        this.setUser();
+        this.getPlaylist();
+        }
+      });
+    
   }
 
   public getPlaylist(): void {

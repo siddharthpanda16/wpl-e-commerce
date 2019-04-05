@@ -34,6 +34,8 @@ export class LoginComponent implements OnInit {
     this.userService.validateUser(username, password).subscribe( user => {
       console.log(username +' '+ password + '  '+this.user.username+'  '+this.user.password)
       this.sharedData.setUser(user);
+
+      sessionStorage.setItem("keyname", user._id);
       // console.log(this.sharedData.currentUser);
       this.router.navigate(['/']);
     }, err=> {

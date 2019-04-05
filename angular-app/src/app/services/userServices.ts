@@ -26,7 +26,7 @@ export class UserService {
     ngOnInit() {}
 
     getUser(username:string): Observable<User> {
-        var url = ('http://localhost:1234/user/{user_id}').replace(/{user_id}/g, username); 
+        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, username); 
         
         var options = httpOptions; 
         // options['params'] = new HttpParams()
