@@ -1,6 +1,7 @@
 import { Component, OnInit,ViewEncapsulation } from '@angular/core';
 import { DataService} from '../data.service';
 import { User} from '../models/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav',
@@ -24,7 +25,7 @@ export class NavComponent implements OnInit {
   username:String; 
   user:User;
   
-  constructor(private sharedData:DataService ) { }
+  constructor(private sharedData:DataService, private router:Router ) { }
 
   ngOnInit() {
     this.sharedData.currentUser.subscribe( user => {
@@ -33,5 +34,9 @@ export class NavComponent implements OnInit {
     });
   }
 
+  signOut(){
+    sessionStorage.removeItem("keyname");
+    this.router.navigateByUrl("/login");
+  };
 
 }

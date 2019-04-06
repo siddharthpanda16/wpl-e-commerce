@@ -11,7 +11,7 @@ function getMoviesRouter() {
     try {
       // let sortAndOrder = `{ '${req.query.sortBy ? req.query.sortBy : Title}' : '${req.query.order ? req.query.order : 1}' }`;
       // console.log ( sortAndOrder );
-      const movies = await Movie.find().limit(50).catch(e => {
+      const movies = await Movie.find().catch(e => {
         throw Error("Problem finding movies.");
       });
       res.status(200).json( movies );
