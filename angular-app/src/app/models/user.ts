@@ -6,6 +6,7 @@ export class Card{
 }
 
 export class User{
+    match:boolean;
     id:string = "";
     displayName:string = '';
     username:string = '';
