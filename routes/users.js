@@ -27,7 +27,14 @@ function getUsersRouter() {
         throw Error("Problem comparing the passwords");
       });
 
-      res.status(200).json({ match, user });
+      res.status(200).json({
+        match,
+        billing: user.billing,
+        _id: user._id,
+        displayName: user.displayName,
+        username: user.username,
+        level: user.level
+      });
     } catch (e) {
       res.status(400).json({ error: e.message });
     }
