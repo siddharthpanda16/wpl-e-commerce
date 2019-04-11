@@ -197,10 +197,12 @@ function getMoviesRouter() {
       /* get the information from the body */
       let { genres, cast, ratings } = req.body;
 
+      if (!genres || !cast || !ratings)
+        throw new Error("genres, cast, and ratings are required");
+
       /* Make sure everything passed in in the body is an array */
-      if (!genres.isArray || !cast.isArray || !ratings.isArray) {
+      if (!genres.isArray || !cast.isArray || !ratings.isArray)
         throw new Error("genres, cast, and ratings must be an array");
-      }
 
       /* Initialize arrays if they are empty for some reason */
       if (genres.length === 0) genres = ["Comedy"];
