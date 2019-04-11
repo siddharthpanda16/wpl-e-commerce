@@ -27,10 +27,6 @@ function getUsersRouter() {
         throw Error("Problem comparing the passwords");
       });
 
-      console.log("match", match);
-
-      user["match"] = match;
-
       res.status(200).json({ match, user });
     } catch (e) {
       res.status(400).json({ error: e.message });
