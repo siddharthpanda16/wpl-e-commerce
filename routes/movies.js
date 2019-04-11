@@ -7,11 +7,16 @@ function getMoviesRouter() {
   /* get all movies by level
    * Can query on level as well with ?level=3 appended to end of url*/
   router.get("/movies", async (req, res) => {
-    console.log(`GET /movies?sortBy=${req.query.sortBy}?order=${req.query.order} hit.`);
+    let { sortBy, order, limit, level} = req.query;
+    if(limit){
+      limit = parseInt(limit);
+    }
+
+
     try {
       // let sortAndOrder = `{ '${req.query.sortBy ? req.query.sortBy : Title}' : '${req.query.order ? req.query.order : 1}' }`;
       // console.log ( sortAndOrder );
-      const movies = await Movie.find().limit(50).catch(e => {
+      const movies = await Movie.find().limit(limit).catch(e => {
         throw Error("Problem finding movies.");
       });
       res.status(200).json( movies );
@@ -21,8 +26,8 @@ function getMoviesRouter() {
     }
   });
 
-  /** 
-   * get top rated 10 movies 
+  /**
+   * get top rated 10 movies
    */
   router.get("/movies/top", async (req, res) => {
     console.log(`GET /movies?level=${req.query.level} hit.`);
@@ -38,8 +43,8 @@ function getMoviesRouter() {
     }
   });
 
-  /** 
-   * get recent 20 movies 
+  /**
+   * get recent 20 movies
    */
   router.get("/movies/recent", async (req, res) => {
     console.log(`GET /movies?level=${req.query.level} hit.`);
