@@ -23,6 +23,14 @@ export class LoginComponent implements OnInit {
   success: Boolean = true;
 
   ngOnInit() {
+    if (sessionStorage.getItem("keyname")) {
+      this.userService.getUser(sessionStorage.getItem("keyname")).subscribe(user => this.sharedData.setUser(user));
+      this.sharedData.currentUser.subscribe(user => {
+        if (!(user == null || user.username == '')) {
+          this.router.navigate(['/']);
+        }
+      });
+    }
   }
 
   createForm() {
