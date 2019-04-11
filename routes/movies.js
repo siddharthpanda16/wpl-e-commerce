@@ -9,9 +9,9 @@ function uniqueCountPreserve(inputArray) {
   //Sorts the input array by the number of time
   //each element appears (largest to smallest)
 
-  if (inputArray.length === 0) {
-    return [];
-  }
+  /* Add a couple base cases */
+  if (inputArray.length === 0) return [];
+  if (inputArray.length === 1) return inputArray;
 
   //Count the number of times each item
   //in the array occurs and save the counts to an object
@@ -202,6 +202,11 @@ function getMoviesRouter() {
         throw new Error("genres, cast, and ratings must be an array");
       }
 
+      /* Initialize arrays if they are empty for some reason */
+      if (genres.length === 0) genres = ["Comedy"];
+      if (cast.length === 0) cast = ["Kevin Bacon"]; // cuz why not?
+      if (ratings.length === 0) ratings = [6];
+
       /* Filter down to the most important genre/cast member */
       const genre = uniqueCountPreserve(genres)[0] || undefined;
       console.log("genre", genre);
@@ -214,12 +219,32 @@ function getMoviesRouter() {
       rating = getAvg(ratings);
       console.log("rating", rating);
 
-      // res.status(200).json({ woo: "woo" });
-
+      /* Simple recommendation engine:
+       * Based on the actors, genres, ratings passed in,
+       * we find movies that match either 2+ of the following constraints:
+       * - includes actor that is featured the most in the passed in list
+       * - includes genre type that is featured most in the passed in list
+       * - is higher than the avg rating of the passed in list. */
       const movies = await Movie.find({
-        // genres: genre,
-        actors: actor,
-        "imdb.rating": { $gt: rating }
+        $or: [
+          {
+            genres: genre,
+            actors: actor,
+            "imdb.rating": { $gt: rating }
+          },
+          {
+            genres: genre,
+            "imdb.rating": { $gt: rating }
+          },
+          {
+            "imdb.rating": { $gt: rating },
+            actors: actor
+          },
+          {
+            genres: genre,
+            actors: actor
+          }
+        ]
       })
         .sort({ year: "desc" })
         .limit(20)
