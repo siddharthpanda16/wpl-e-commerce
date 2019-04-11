@@ -205,7 +205,7 @@ function getMoviesRouter() {
         throw new Error("genres, cast, and ratings must be an array");
 
       /* Initialize arrays if they are empty for some reason */
-      if (genres.length === 0) genres = ["Comedy"];
+      if (genres.length === 0) genres = ["Action"];
       if (cast.length === 0) cast = ["Kevin Bacon"]; // cuz why not?
       if (ratings.length === 0) ratings = [6];
 
