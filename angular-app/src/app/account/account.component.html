@@ -1,3 +1,45 @@
-<p>
-  account works!
-</p>
+<app-nav></app-nav>
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+    <!-- Tabs Titles -->
+
+    <!-- Icon -->
+    <div class="fadeIn first">
+        <i class="far fa-id-card fa-lg"></i>
+    </div>
+
+    <!-- Login Form -->
+    <form [formGroup]="registerForm" novalidate>
+      <h5 *ngIf="!success" class="error alert-danger">confirm password and password do not match!!!</h5>
+      <h5 *ngIf="invalid" class="error alert-danger">Details filled is not  valid!!!</h5>
+      <input type="text" id="displayname"  formControlName="displayname" #displayname class="fadeIn second"  name="displayname" [value]="user.displayName">
+      <div *ngIf="registerForm.controls['displayname'].touched && submitted && registerForm.controls.displayname.errors" class="error">
+          <label *ngIf="registerForm.controls.displayname.errors.required" class="alert-danger"> display name is required.</label>
+      </div>
+      <input type="text" id="username"  formControlName="username" #username class="fadeIn second"  name="username" [value]="user.username" placeholder="*User Name">
+      <div *ngIf="registerForm.controls['username'].touched && (submitted && registerForm.controls.username.errors)" class="error">
+          <label *ngIf="registerForm.controls.username.errors.required" class="alert-danger"> username is required.</label>
+      </div>
+      <div *ngIf="registerForm.controls['username'].touched && submitted && registerForm.controls.username.errors" class="error">
+          <label *ngIf="registerForm.controls.username.errors.pattern" class="alert-danger"> Enter valid username (only
+            alphanumeric and underscores).</label>
+      </div>
+      <input type="text" id="card_details"  formControlName="card_details" #card_details class="fadeIn second"  name="card_details" [value]="user.billing['ccNum'] + '/' + user.billing['ccCVV']+ '/' + user.billing['ccExp']" placeholder="card details">
+      <input type="password" id="password" formControlName="password" #password  class="fadeIn third" name="password" placeholder="Password">
+      <div *ngIf="submitted && registerForm.controls.password.errors" class="error">
+          <label *ngIf="registerForm.controls.password.errors.required" class="alert-danger"> password  is required.</label>
+      </div>
+      <input type="password" id="confirm_password" formControlName="confirm_password" #confirm_password  class="fadeIn third" name="confirm_password" placeholder="Confirm Password">
+      <div *ngIf="submitted && registerForm.controls.confirm_password.errors" class="error">
+          <label *ngIf="registerForm.controls.confirm_password.errors.required" class="alert-danger"> confirm password is required.</label>
+      </div>
+      <input (click)="onRegister(displayname.value,username.value,card_details.value,password.value,confirm_password.value)" type="submit" class="fadeIn fourth" value="Update">
+    </form>
+
+    <!-- Remind Passowrd -->
+   <!--  <div id="formFooter">
+      <a class="underlineHover" href="/register">New User ? Create Account</a>
+    </div> -->
+
+  </div>
+</div>

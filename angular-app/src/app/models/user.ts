@@ -1,7 +1,7 @@
 
 export class Card{
-    ccNum:number = 1111222233334444;
-    ccCVV:number = 123;
+    ccNum:string = "1111222233334444";
+    ccCVV:string = "123";
     ccExp: string="";
 }
 

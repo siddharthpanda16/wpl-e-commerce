@@ -21,8 +21,7 @@ export class DataService {
   constructor() { }
 
   setUser(user: User){
-    // this.currUser= user;
-    // this.currentUser = this.currUser;
+    this.currUser.subscribe(user=>user.id=user["_id"]);
     this.currUser.next(user);
   }
 
