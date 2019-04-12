@@ -23,8 +23,9 @@ export class DetailsPageComponent implements OnInit {
     private userService:UserService,private route: ActivatedRoute, private router:Router) { }
 
   ngOnInit() {
+    console.log("in deatils");
     if (sessionStorage.getItem("keyname")) {
-      this.userService.getUser(sessionStorage.getItem("keyname")).subscribe(user => this.sharedData.setUser(user));
+      // this.userService.getUser(sessionStorage.getItem("keyname")).subscribe(user => this.sharedData.setUser(user));
       this.sharedData.currentUser.subscribe(user => {
         if (user == null || user.username == '') {
           this.router.navigate(['/login']);
@@ -89,6 +90,7 @@ export class DetailsPageComponent implements OnInit {
   }
 
   public addToPlayList(movie:Movie){
+    console.log( { from : "AddPlaylistMovieDetails" , user : this.user , movie});
     this.userService.addToPlaylist(this.user , movie._id);
   }
 
