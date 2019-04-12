@@ -23,6 +23,7 @@ export class LoginComponent implements OnInit {
   success: Boolean = true;
 
   ngOnInit() {
+    console.log("login session:");
   }
 
   createForm() {
@@ -36,17 +37,20 @@ export class LoginComponent implements OnInit {
     this.submitted = true;
     if (this.loginForm.valid) {
       this.userService.validateUser(username, password).subscribe(user => {
-        console.log(username + ' ' + password + '  ' + this.user.username + '  ' + this.user.password)
         this.sharedData.setUser(user);
+        console.log("login, onLogin(): " + username + ' ' + password + ', this.user: ' + '  ' + user.username + '  ' + user.password)
         this.success = true;
-        sessionStorage.setItem("keyname", user.id);
-        // console.log(this.sharedData.currentUser);
+        sessionStorage.setItem("keyname", user._id);
+        console.log("user: " + JSON.stringify(user));
+        console.log("login.onLogin(), user._id == " + user._id.$oid);
+1        // console.log(this.sharedData.currentUser);
         this.router.navigate(['/']);
       }, err => {
         this.router.navigate(['/login']);
         this.success = false;
       }); 
     }
+    else {    }
 
   }
 }

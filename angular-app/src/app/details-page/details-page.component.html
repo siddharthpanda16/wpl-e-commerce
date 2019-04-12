@@ -17,7 +17,7 @@
               {{movie.imdb.rating}} ({{movie.imdb.votes}} reviews)
             </p></span>
             <div *ngIf="movie.tomato" class="bg-light padding20">
-                <div *ngIf=" movie.tomato.consensus" > <em> {{ movie.tomato.consensus}} - <strong>Tomato Consensus</strong> </em> </div>
+                <div *ngIf="movie.tomato.consensus" > <em> {{ movie.tomato.consensus}} - <strong>Tomato Consensus</strong> </em> </div>
                 <div *ngIf="movie.tomato.userMeter" > <strong>User Meter :</strong> {{ movie.tomato.userMeter}} </div>
                 <div *ngIf="movie.tomato.userRating" > <strong>User Rating :</strong> {{ movie.tomato.userRating}} </div>
                 <div *ngIf="movie.metacritic" > <strong>Metacritic :</strong> {{movie.metacritic}}</div>
@@ -64,4 +64,4 @@
             </div>
         </div>
     </div>
-  </div>
+</div>

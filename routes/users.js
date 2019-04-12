@@ -55,7 +55,22 @@ function getUsersRouter() {
     }
   });
 
+
+  /* single user by username */
+  router.get("/users/username/:username", async (req, res) => {
+    console.log(`GET /users/${req.params.username} hit.`);
+    try {
+      const user = await User.findOne({'username' : req.params.username}).catch(e => {
+        throw Error("Problem finding user by username.");
+      });
+      res.status(200).json(user);
+    } catch (e) {
+      res.status(400).json({ error: e.message });
+    }
+  });
+
   /* get all users (admin) */
+  /* *from Khoa: I thought about this, and then I thought it is not very useful in practice...especially if the db contains thousands of users or more, i.e. millions */
   router.get("/users", async (req, res) => {
     console.log(`GET /users/${req.params.id} hit.`);
     try {
@@ -70,7 +85,7 @@ function getUsersRouter() {
 
   /* create new user */
   router.post("/users", async (req, res) => {
-    console.log("POST /users hit.");
+    console.log("register: POST /users hit.");
 
     try {
       if (req.body.isAdmin) {
@@ -103,7 +118,7 @@ function getUsersRouter() {
       }
 
       /* Ensure username is not already taken. */
-      const nameTaken = await User.findOne({ username });
+      const nameTaken = await User.findOne({ "username" : username });
 
       if (nameTaken) throw new Error("This username is already taken.");
       const user = new User({ ...req.body, isAdmin: false });
@@ -120,19 +135,24 @@ function getUsersRouter() {
   });
 
   /* update a user */
+  /* *byKhoa: change put to post? */
+  /* also can change to find by username */
+  /* it couldn't get into this route, no log text from this shown on nodejs console */
   router.put("/users/:id", async (req, res) => {
-    console.log(`PUT /users/${req.params.id} hit.`);
+    console.log(`PUT /users/${req.params.id} hit.`); /* even this line didn't show in console  */
     try {
-      if (req.body.isAdmin) {
+      /*if (req.body.isAdmin) {
         throw Error("Cannot use endpoint to make existing user an admin.");
-      }
-      const user = await User.findByIdAndUpdate(req.params.id, req.body).catch(
+      }*/
+      const user = await User.findOneAndUpdate({ "_id":req.params.id}, req.body).catch(
         e => {
           throw Error("Problem finding or updating user by ID.");
         }
       );
       res.status(200).json(user); //{ id: user._id, message: "Success" }
+      console.log("update user success");
     } catch (e) {
+      console.log("update user failure");
       res.status(400).json({ error: e.message });
     }
   });

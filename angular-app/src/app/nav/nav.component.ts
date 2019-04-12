@@ -24,12 +24,15 @@ export class NavComponent implements OnInit {
   username:String; 
   user:User;
   
+  isAdmin: Boolean = false;
+
   constructor(private sharedData:DataService ) { }
 
   ngOnInit() {
     this.sharedData.currentUser.subscribe( user => {
       this.user = user;
       this.username = this.user.username;
+      this.isAdmin = this.user.isAdmin;
     });
   }
 

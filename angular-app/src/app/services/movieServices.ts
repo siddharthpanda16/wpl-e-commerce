@@ -30,18 +30,30 @@ export class MovieService {
         var options = httpOptions; 
 
         return this.http.post<Movie>( url, movie, options).pipe(
-            tap(_ => console.log('fetched claim')),
+            tap(resp => console.log('addMovie resp: '+ JSON.stringify(resp) )),
             catchError(this.handleError<Movie>(`addMovie() failed`))
         );
     }
 
-    updateMovie(oid:String, movie:Movie): Observable<Movie> {
-        var url = ('http://localhost:1234/movies/{movie_id}').replace(/{movie_id}/g, movie._id['$oid']); 
+    /* note: oid input parameter unnecessary? */
+    /* also, we have an issue with movie._id vs. movie._id.$oid */
+    updateMovie(/*oid:String, */ movie:Movie): Observable<Movie> {
+        var url = ('http://localhost:1234/movies/{movie_id}').replace(/{movie_id}/g, movie._id); 
         var options = httpOptions; 
 
         return this.http.put<Movie>( url, movie, options).pipe(
-            tap(_ => console.log('fetched claim')),
+            tap(_ => console.log('fetched claim updateMovie()')),
             catchError(this.handleError<Movie>(`updateMovie() failed`))
+        );
+    }
+
+    deleteMovie(/*oid:String, */ movie:Movie): Observable<Movie> {
+        var url = ('http://localhost:1234/movies/{movie_id}').replace(/{movie_id}/g, movie._id); 
+        var options = httpOptions; 
+
+        return this.http.delete<Movie>( url, options).pipe(
+            tap(_ => console.log('MovieService.deleteMovie(), fetched claim')),
+            catchError(this.handleError<Movie>(`deleteMovie() failed`))
         );
     }
 
@@ -50,7 +62,7 @@ export class MovieService {
         var options = httpOptions; 
 
         return this.http.get<Movie>( url, options).pipe(
-            tap(_ => console.log('fetched claim')),
+            tap(_ => console.log('fetched claim getMovieByID()')),
             catchError(this.handleError<Movie>(`getMovieById() failed`))
         );
     }
@@ -60,7 +72,7 @@ export class MovieService {
         var options = httpOptions; 
 
         return this.http.get<Movie[]>( url, options ).pipe(
-            tap(_ => console.log('fetched claim')),
+            tap(_ => console.log('fetched claim getAllMovies()')),
             catchError(this.handleError<Movie[]>(`getAllMovies() failed`))
         );
     }
@@ -70,7 +82,7 @@ export class MovieService {
         var options = httpOptions; 
         
         return this.http.get<Movie[]>( url, options ).pipe(
-            tap(_ => console.log('fetched claim')),
+            tap(_ => console.log('fetched claim getTopRated()')),
             catchError(this.handleError<Movie[]>(`getTopRated() failed`))
         );
     }
@@ -80,7 +92,7 @@ export class MovieService {
         var options = httpOptions; 
         
         return this.http.get<Movie[]>( url, options ).pipe(
-            tap(_ => console.log('fetched claim')),
+            tap(_ => console.log('fetched claim getRecent()')),
             catchError(this.handleError<Movie[]>(`getTopRated() failed`))
         );
     }
@@ -91,7 +103,7 @@ export class MovieService {
         options['params'] = params;
 
         return this.http.get<Movie[]>( url, options).pipe(
-            tap(_ => console.log('fetched claim')),
+            tap(_ => console.log('fetched claim searchMovies()')),
             catchError(this.handleError<Movie[]>(`searchMovie() failed`))
         );
     }

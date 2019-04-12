@@ -6,12 +6,13 @@ export class Card{
 }
 
 export class User{
-    id:string = "";
+    _id:any = { $oid: "" };
     displayName:string = '';
     username:string = '';
     password:string = '';
     level:number = 2;
     cart:string[] = ["movieid1", "movieid2"];
     billing:Card = new Card();
+    isAdmin:Boolean = false;
     
 }

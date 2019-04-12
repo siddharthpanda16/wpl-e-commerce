@@ -131,10 +131,12 @@ function getMoviesRouter() {
   router.post("/movies", async (req, res) => {
     console.log("POST /movies hit.");
     try {
-      if (!req.body.title) throw new Error("title is required.");
+      if (!req.body.Title) throw new Error("Title is required.");
 
       /* Ensure username is not already taken. */
-      const nameTaken = await Movie.findOne({ title: req.body.title });
+      const nameTaken = await Movie.findOne({ 'Title' : req.body.Title });
+
+      console.log("unadded Title");
 
       if (nameTaken) throw new Error("This title already exists");
 
@@ -205,7 +207,7 @@ function getMoviesRouter() {
         throw new Error("genres, cast, and ratings must be an array");
 
       /* Initialize arrays if they are empty for some reason */
-      if (genres.length === 0) genres = ["Action"];
+      if (genres.length === 0) genres = ["Comedy"];
       if (cast.length === 0) cast = ["Kevin Bacon"]; // cuz why not?
       if (ratings.length === 0) ratings = [6];
 

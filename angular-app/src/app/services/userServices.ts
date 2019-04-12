@@ -25,32 +25,44 @@ export class UserService {
 
     ngOnInit() {}
 
-    getUser(username:string): Observable<User> {
-        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, username); 
-        
+    getUser(userID:string): Observable<User> {
+        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, userID); 
         var options = httpOptions; 
         // options['params'] = new HttpParams()
         //     .set('session_id',this.currUserId);
-
-        return this.http.get<User>( url, options).pipe(
+        console.log("userService, getUser() " + url);
+        
+        return this.http.get<User>( url,options).pipe(
             tap(_ => console.log('fetched claim')),
-            catchError(this.handleError<User>(`getUserById() failed`))
+            catchError(this.handleError<User>(`getUser() failed`))
         );
     }
+    getSingleUser(username:string): Observable<User> {
+      var url = ('http://localhost:1234/users/username/' + username); 
+      var options = httpOptions; 
+      // options['params'] = new HttpParams()
+      //     .set('session_id',this.currUserId);
+      console.log("userService, getUser() " + url);
+      
+      return this.http.get<User>( url,options).pipe(
+          tap(_ => console.log('fetched claim')),
+          catchError(this.handleError<User>(`fetchUser() failed`))
+      );
+  }
 
     validateUser(username:string, password:string):Observable<User> {
       var url = ('http://localhost:1234/login'); 
       var options = httpOptions; 
-      console.log( { username, password})
+      console.log("userService, validateUser()" , { username, password})
       let queryParams = {
         'username' : username , 
         'password': password
-      }
-
+      };
       return this.http.post<User>( url, queryParams , options ).pipe(
-          tap(_ => console.log('fetched claim')),
-          catchError(this.handleError<User>(`getUserById() failed`))
-      );
+        tap(_ => console.log('fetched claim, userService, validateUser()')),
+        catchError(this.handleError<User>(`validateUser() failed`)) );
+      
+      ;
     }
 
     addUser(user:User):Observable<User> {
@@ -59,21 +71,24 @@ export class UserService {
 
         return this.http.post<User>( url, user, options).pipe(
             tap(_ => console.log('fetched claim')),
-            catchError(this.handleError<User>(`getUserById() failed`))
+            catchError(this.handleError<User>(`addUser() failed`))
         );
     }
 
     updateUser(user:User):Observable<User> {
-      var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user.id); 
+      var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user._id); 
       var options = httpOptions; 
 
-      return this.http.put<User>( url, user, options).pipe(
+      console.log("userServices, updateUser(), user._id==" + user._id + ", username == "+ user.username);
+      var resu = this.http.put<User>( url, user, options).pipe(
           tap(_ => { 
             this.sharedData.setUser(user); 
             console.log('fetched claim');
           }),
-          catchError(this.handleError<User>(`getUserById() failed`))
+          catchError(this.handleError<User>(`updateUser() failed`))
       );
+      console.log("resu?");
+      return resu;
     }
 
     updatePlaylist(user:User, movieIds:string[]):Observable<User>{
@@ -86,7 +101,7 @@ export class UserService {
             console.log('fetched claim');
             this.sharedData.setUser(user);
           }),
-          catchError(this.handleError<User>(`getUserById() failed`))
+          catchError(this.handleError<User>(`updatePlaylist() failed`))
       );
     }
 
@@ -103,7 +118,7 @@ export class UserService {
               console.log('fetched claim');
               this.sharedData.setUser(user);
             }),
-            catchError(this.handleError<boolean>(`getUserById() failed`))
+            catchError(this.handleError<boolean>(`addToPlaylist() failed`))
         );
       }
     }
@@ -130,7 +145,7 @@ export class UserService {
               console.log('fetched claim');
               this.sharedData.setUser(user);
             }),
-            catchError(this.handleError<boolean>(`getUserById() failed`))
+            catchError(this.handleError<boolean>(`deleteFromPlaylist() failed`))
         );
       // }
     }

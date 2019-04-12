@@ -54,10 +54,12 @@ export class HomeComponent implements OnInit {
   user: User = new User;
 
   ngOnInit() {
+    console.log("session: ");
     if (sessionStorage.getItem("keyname")) {
+      console.log("home, session: " + sessionStorage.getItem("keyname"));
       this.userService.getUser(sessionStorage.getItem("keyname")).subscribe(user => this.sharedData.setUser(user));
       this.sharedData.currentUser.subscribe(user => {
-        if (user ==null || user.username == '') {
+        if (user == null || user.username == '') {
           this.router.navigate(['/login']);
         }
         else {
@@ -67,6 +69,7 @@ export class HomeComponent implements OnInit {
       });
     }
     else {
+      console.log("home, session2:");
       this.router.navigate(['/login']);
     }
 
@@ -104,7 +107,7 @@ export class HomeComponent implements OnInit {
     this.isSearched = true;
     this.moviesSearched = [];
     this.movies.forEach(movie => {
-      if (movie.Title.includes(inputVal)) {
+      if (movie.Title.toLowerCase().includes(inputVal.toLowerCase() )) {
         this.moviesSearched.push(movie);
       }
     });
@@ -117,7 +120,8 @@ export class HomeComponent implements OnInit {
 
   }
 
-  public movieDetails(movie: Movie) {
+  // weird behavior?! This function's name is Details, but need to be called as movieDetails()
+  public Details(movie: Movie) {
     console.log("moviedetails home ", movie._id["$oid"]);
 
     this.router.navigateByUrl('/movie/' + movie._id["$oid"]);
