@@ -42,9 +42,9 @@ export class RegisterComponent implements OnInit {
       this.user.username = username;
       this.user.password = password;
       this.user.level = 1;
-      this.user.billing.ccNum = card_details.toInteger;
-      this.user.billing.ccExp = "2021";
-      this.user.billing.ccNum = 221;
+      this.user.billing.ccNum = String(card_details).split('/')[0];
+      this.user.billing.ccExp = String(card_details).split('/')[1];
+      this.user.billing.ccCVV = String(card_details).split('/')[2];
 
       this.userService.addUser(this.user).subscribe(user => {
         this.sharedData.setUser(user);
