@@ -13,7 +13,8 @@ const UserSchema = new Schema({
     ccCVV: { type: String, required: true },
     ccExp: { type: String, required: true }
   },
-  level: { type: String, required: true }
+  level: { type: String, required: true },
+  isAdmin: { type: Boolean, required: true }
 });
 
 UserSchema.pre("save", function(next) {

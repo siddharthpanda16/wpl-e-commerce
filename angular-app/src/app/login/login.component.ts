@@ -44,10 +44,17 @@ export class LoginComponent implements OnInit {
     this.submitted = true;
     if (this.loginForm.valid) {
       this.userService.validateUser(username, password).subscribe(user => {
-        this.sharedData.setUser(user);
-        this.success = true;
-        sessionStorage.setItem("keyname", user["_id"]);
-        this.router.navigate(['/']);
+        if( !user.match ) {
+          this.router.navigate(['/login']);
+          this.success = false;
+        }else {
+          console.log(username + ' ' + password + '  ' + this.user.username + '  ' + this.user.password)
+          this.sharedData.setUser(user);
+          this.success = true;
+          sessionStorage.setItem("keyname", user.id);
+          // console.log(this.sharedData.currentUser);
+          this.router.navigate(['/']);
+        }
       }, err => {
         this.router.navigate(['/login']);
         this.success = false;

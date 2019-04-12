@@ -11,7 +11,7 @@ function getUsersRouter() {
     console.log("POST /login hit.");
     try {
       /* Grab un/pw from body */
-      console.log(req.body );
+      console.log(req.body);
       const username = req.body.username;
       const password = req.body.password;
 
@@ -27,7 +27,15 @@ function getUsersRouter() {
         throw Error("Problem comparing the passwords");
       });
 
-      res.status(200).json( user );
+      res.status(200).json({
+        match,
+        billing: user.billing,
+        _id: user._id,
+        displayName: user.displayName,
+        username: user.username,
+        level: user.level,
+        isAdmin: user.isAdmin
+      });
     } catch (e) {
       res.status(400).json({ error: e.message });
     }
@@ -41,7 +49,7 @@ function getUsersRouter() {
       const user = await User.findById(req.params.id).catch(e => {
         throw Error("Problem finding user by ID.");
       });
-      res.status(200).json( user );
+      res.status(200).json(user);
     } catch (e) {
       res.status(400).json({ error: e.message });
     }
@@ -65,6 +73,12 @@ function getUsersRouter() {
     console.log("POST /users hit.");
 
     try {
+      if (req.body.isAdmin) {
+        throw Error(
+          "Admins must be created directly in the database. Please remove 'isAdmin' key from your request."
+        );
+      }
+
       /* Grab the required portions of the new user. */
       const {
         displayName,
@@ -92,7 +106,7 @@ function getUsersRouter() {
       const nameTaken = await User.findOne({ username });
 
       if (nameTaken) throw new Error("This username is already taken.");
-      const user = new User(req.body);
+      const user = new User({ ...req.body, isAdmin: false });
 
       /* Make sure the user is saved */
       await user.save().catch(e => {
@@ -109,13 +123,15 @@ function getUsersRouter() {
   router.put("/users/:id", async (req, res) => {
     console.log(`PUT /users/${req.params.id} hit.`);
     try {
-      console.log(req.params.id, req.body);
+      if (req.body.isAdmin) {
+        throw Error("Cannot use endpoint to make existing user an admin.");
+      }
       const user = await User.findByIdAndUpdate(req.params.id, req.body).catch(
         e => {
           throw Error("Problem finding or updating user by ID.");
         }
       );
-      res.status(200).json( user ); //{ id: user._id, message: "Success" }
+      res.status(200).json(user); //{ id: user._id, message: "Success" }
     } catch (e) {
       res.status(400).json({ error: e.message });
     }

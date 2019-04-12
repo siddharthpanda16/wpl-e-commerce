@@ -34,7 +34,7 @@
           </button>
           <button *ngIf="isLast" class="no-margin-padding" [popoverTitle]="popTitle" type="button" placement="top"
             [ngbPopover]="popContent" popoverClass="my-custom-class">
-            <img class="card-img bg-dark" [src]="movie.Poster" [alt]="movie.Title">
+            <img class="card-img bg-dark" [src]="movie.Poster" onerror="this.src='../resources/images/none.jpg'" [alt]="movie.Title">
           </button>
           <ng-template #popContent>
             <table class="popover-table">
