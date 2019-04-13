@@ -41,11 +41,6 @@ export class TopRatedComponent implements OnInit {
         this.movies.push( movie );
       });
     });
-    // this.sharedData.allMovies.subscribe( movies => {
-    //   movies.forEach(element => {
-    //     this.movies.push( element );
-    //   });
-    // });
   }
 
   public setUser(){
