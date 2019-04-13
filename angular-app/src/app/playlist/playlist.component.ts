@@ -16,6 +16,7 @@ export class PlaylistComponent implements OnInit {
 
   user : User = new User();
   movies : Movie[] = [];
+  ids = [];
   saveDisabled :Boolean = true;
 
   constructor(private sharedData:DataService, private movieService:MovieService,
@@ -29,9 +30,10 @@ export class PlaylistComponent implements OnInit {
           this.router.navigate(['/login']);
         }
         else{
-          console.log("i am in playlist");
-          this.setUser();
-          this.getPlaylist();
+            console.log( "here" );
+            this.router.navigate(['/playlist']);
+            this.setUser();
+            this.getPlaylist();
           }
         });
     }else{
@@ -40,13 +42,17 @@ export class PlaylistComponent implements OnInit {
   }
 
   public getPlaylist(): void {
+    console.log( "here2" );
     this.sharedData.currentUser.subscribe( currentUser => {
       this.user = currentUser;
       var playlist = this.user.cart;
       playlist.forEach( movieId => {
-        this.movieService.getMovieById(movieId).subscribe( movie => {
-          this.movies.push( movie );
-        })
+        if( !this.ids.includes( movieId) ) {
+          this.movieService.getMovieById(movieId).subscribe( movie => {
+              this.movies.push( movie );
+              this.ids.push(movieId);
+          });
+        }
       });
     });
   }
@@ -63,13 +69,13 @@ export class PlaylistComponent implements OnInit {
   }
 
   public updateCart(){
+    this.saveDisabled = true;
     let movieIds:string[] = [];
     this.movies.forEach(movie => {
       movieIds.push(movie._id);
     }); 
-    this.userService.updatePlaylist(this.user, movieIds).subscribe( );
-    this.saveDisabled = true;
-    console.log( movieIds);
+    this.userService.updatePlaylist(this.user, movieIds).subscribe( res => {
+    });
   }
 
   public movieDetails(movie:Movie){
@@ -81,7 +87,12 @@ export class PlaylistComponent implements OnInit {
   }
 
   public removeFromPlaylist(movie:Movie){
-    this.userService.deleteFromPlaylist(this.user, movie._id).subscribe();
+    this.userService.deleteFromPlaylist(this.user, movie._id).subscribe( res => {
+      this.movies = this.movies.filter( function(value){
+        return value._id != movie._id;
+      });
+    });
+    
   }
 
   public play(){
