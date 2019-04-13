@@ -29,7 +29,7 @@ export class RegisterComponent implements OnInit {
     this.registerForm = this.formBuilder.group({
       displayname: ['', Validators.required],
       username: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9_]+')]],
-      card_details: [],
+      card_details: ['', Validators.required],
       password: ['', Validators.required],
       confirm_password: ['', Validators.required]
     });
@@ -47,9 +47,8 @@ export class RegisterComponent implements OnInit {
       this.user.billing.ccCVV = card_details ? String(card_details).split('/')[2] : "111";
       console.log( this.user );
       this.userService.addUser(this.user).subscribe(user => {
-        this.sharedData.setUser(user);
+        console.log(user['id'],"returned from register");
         sessionStorage.setItem("keyname", user.id);
-        // console.log(this.sharedData.currentUser);
         this.router.navigate(['/']);
       }, err => {
         this.success=false;

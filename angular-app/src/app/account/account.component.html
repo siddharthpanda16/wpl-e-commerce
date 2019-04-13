@@ -26,13 +26,13 @@
       </div>
       <input type="text" id="card_details"  formControlName="card_details" #card_details class="fadeIn second"  name="card_details" [value]="user.billing['ccNum'] + '/' + user.billing['ccCVV']+ '/' + user.billing['ccExp']" placeholder="card details">
       <input type="password" id="password" formControlName="password" #password  class="fadeIn third" name="password" placeholder="Password">
-      <div *ngIf="submitted && registerForm.controls.password.errors" class="error">
+      <!-- <div *ngIf="submitted && registerForm.controls.password.errors" class="error">
           <label *ngIf="registerForm.controls.password.errors.required" class="alert-danger"> password  is required.</label>
-      </div>
+      </div> -->
       <input type="password" id="confirm_password" formControlName="confirm_password" #confirm_password  class="fadeIn third" name="confirm_password" placeholder="Confirm Password">
-      <div *ngIf="submitted && registerForm.controls.confirm_password.errors" class="error">
+      <!-- <div *ngIf="submitted && registerForm.controls.confirm_password.errors" class="error">
           <label *ngIf="registerForm.controls.confirm_password.errors.required" class="alert-danger"> confirm password is required.</label>
-      </div>
+      </div> -->
       <input (click)="onRegister(displayname.value,username.value,card_details.value,password.value,confirm_password.value)" type="submit" class="fadeIn fourth" value="Update">
     </form>
 
