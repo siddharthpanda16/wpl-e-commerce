@@ -34,7 +34,7 @@ export class UserService {
 
         return this.http.get<User>( url, options).pipe(
             tap(_ => console.log('fetched user')),
-            catchError(this.handleError<User>(`getUser() failed`))
+            catchError(this.handleError<User>(`getUserById() failed`))
         );
     }
 
@@ -49,7 +49,7 @@ export class UserService {
 
       return this.http.post<User>( url, queryParams , options ).pipe(
           tap(_ => console.log('validated user')),
-          catchError(this.handleError<User>(`validateUser() failed`))
+          catchError(this.handleError<User>(`getUserById() failed`))
       );
     }
 
@@ -59,7 +59,7 @@ export class UserService {
 
         return this.http.post<User>( url, user, options).pipe(
             tap(_ => console.log('added user')),
-            catchError(this.handleError<User>(`addUser() failed`))
+            catchError(this.handleError<User>(`getUserById() failed`))
         );
     }
 
@@ -69,6 +69,7 @@ export class UserService {
       let queryParams = {
         'displayName': user.displayName,
         'username': user.username,
+        'password': user.password,
         'level': user.level,
         'cart': user.cart,
         'billing': user.billing
@@ -79,25 +80,24 @@ export class UserService {
             this.sharedData.setUser(user); 
             console.log('updated user');
           }),
-          catchError(this.handleError<User>(`updateUser() failed`))
+          catchError(this.handleError<User>(`getUserById() failed`))
       );
     }
 
     updatePlaylist(user:User, movieIds:string[]):Observable<User>{
-      var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user.id); 
+      var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g,user.id); 
       user.cart = movieIds;
       var options = httpOptions; 
       let queryParams = {
         'cart': user.cart
       }
 
-      console.log( "updating playlist " , user , url );
       return this.http.put<User>( url, queryParams, options).pipe(
           tap(_ => {
             console.log('updated playlist');
             this.sharedData.setUser(user);
           }),
-          catchError(this.handleError<User>(`updatePlaylist() failed`))
+          catchError(this.handleError<User>(`getUserById() failed`))
       );
     }
 
@@ -106,7 +106,7 @@ export class UserService {
         return new BehaviorSubject<boolean>(false);
       } else {
         user.cart.push(movieId);
-        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user.id); 
+        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g,user.id);
         var options = httpOptions; 
         let queryParams = {
           'cart': user.cart
@@ -118,7 +118,7 @@ export class UserService {
               console.log('added to playlist');
               this.sharedData.setUser(user);
             }),
-            catchError(this.handleError<boolean>(`addToPlaylist() failed`))
+            catchError(this.handleError<boolean>(`getUserById() failed`))
         );
       }
     }
@@ -132,7 +132,7 @@ export class UserService {
         //   user.cart = user.cart.filter( function(value){
         //     return value != movieId;
         // });
-        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user.id); 
+        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g,user.id);
         var options = httpOptions; 
 
         user.cart = user.cart.filter( function(value){
@@ -148,7 +148,7 @@ export class UserService {
               console.log('deleted from playlist');
               this.sharedData.setUser(user);
             }),
-            catchError(this.handleError<boolean>(`deleteFromPlaylist() failed`))
+            catchError(this.handleError<boolean>(`getUserById() failed`))
         );
       // }
     }

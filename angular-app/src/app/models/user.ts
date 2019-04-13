@@ -1,8 +1,8 @@
 
 export class Card{
-    ccNum:string = "";
-    ccCVV:string = "";
-    ccExp: string= "";
+    ccNum:string = "1111222233334444";
+    ccCVV:string = "123";
+    ccExp: string="";
 }
 
 export class User{
@@ -12,7 +12,7 @@ export class User{
     username:string = '';
     password:string = '';
     level:number = 2;
-    cart:string[] = [];
+    cart:string[] = ["movieid1", "movieid2"];
     billing:Card = new Card();
     
 }

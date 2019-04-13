@@ -25,7 +25,7 @@ export class DetailsPageComponent implements OnInit {
   ngOnInit() {
     console.log("in deatils");
     if (sessionStorage.getItem("keyname")) {
-      //this.userService.getUser(sessionStorage.getItem("keyname")).subscribe(user => this.sharedData.setUser(user));
+      // this.userService.getUser(sessionStorage.getItem("keyname")).subscribe(user => this.sharedData.setUser(user));
       this.sharedData.currentUser.subscribe(user => {
         if (user == null || user.username == '') {
           this.router.navigate(['/login']);
@@ -52,12 +52,27 @@ export class DetailsPageComponent implements OnInit {
     this.movieService.getMovieById(movieId).subscribe( movie => {
       this.stars = Math.round(movie.imdb.rating/2);
       this.movie = movie;
-      this.movieService.getRecommended([movie]).subscribe ( movies => {
-        movies.forEach( simMovie => {
-          this.similar.push(simMovie);
-        });
-      });
     });
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.similar.push(new Movie());
+    // this.stars = Math.round(this.movie.imdb.rating/2);
+
   }
 
   public setUser(){
@@ -76,7 +91,7 @@ export class DetailsPageComponent implements OnInit {
 
   public addToPlayList(movie:Movie){
     console.log( { from : "AddPlaylistMovieDetails" , user : this.user , movie});
-    this.userService.addToPlaylist(this.user , movie._id).subscribe();
+    this.userService.addToPlaylist(this.user , movie._id);
   }
 
   public getPremium(){

@@ -144,7 +144,7 @@ export class HomeComponent implements OnInit {
   }
 
   public addToPlayList(movie: Movie) {
-    this.userService.addToPlaylist(this.user, movie._id).subscribe();
+    this.userService.addToPlaylist(this.user, movie._id);
   }
 
   public checkMovieInCart(movie: Movie) {
