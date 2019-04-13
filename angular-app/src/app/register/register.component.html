@@ -15,6 +15,7 @@
           <label *ngIf="registerForm.controls.displayname.errors.required" class="alert-danger"> display name is required.</label>
       </div>
       <input type="text" id="username"  formControlName="username" #username class="fadeIn second"  name="username" placeholder="*User Name">
+      <br/><span class="text-warning"><small>*Username should be alphanumeric and underscores</small></span>
       <div *ngIf="submitted && registerForm.controls.username.errors" class="error">
           <label *ngIf="registerForm.controls.username.errors.required" class="alert-danger"> username is required.</label>
       </div>
@@ -22,7 +23,10 @@
           <label *ngIf="registerForm.controls.username.errors.pattern" class="alert-danger"> Enter valid username (only
             alphanumeric and underscores).</label>
       </div>
-      <input type="text" id="card_details"  formControlName="card_details" #card_details class="fadeIn second"  name="card_details" placeholder="card details">
+      <input type="text" id="card_details"  formControlName="card_details" #card_details class="fadeIn second"  name="card_details" placeholder="*Card Number/Exp/CVV"><br/><span class="text-warning"><small>*Card Number/Exp/CVV</small></span>
+      <div *ngIf="submitted && registerForm.controls.card_details.errors" class="error">
+        <label *ngIf="registerForm.controls.card_details.errors.required" class="alert-danger"> card details is needed (card number/Exp/CVV).</label>
+    </div>
       <input type="password" id="password" formControlName="password" #password  class="fadeIn third" name="password" placeholder="Password">
       <div *ngIf="submitted && registerForm.controls.password.errors" class="error">
           <label *ngIf="registerForm.controls.password.errors.required" class="alert-danger"> password  is required.</label>

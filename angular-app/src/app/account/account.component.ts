@@ -21,7 +21,7 @@ export class AccountComponent implements OnInit {
   submitted: Boolean = false;
   success: Boolean = true;
   invalid: Boolean = false;
-  
+
   ngOnInit() {
     if (sessionStorage.getItem("keyname")) {
       this.userService.getUser(sessionStorage.getItem("keyname")).subscribe(user => this.sharedData.setUser(user));
@@ -31,7 +31,6 @@ export class AccountComponent implements OnInit {
         }
         else {
           this.router.navigate(['/account']);
-         // this.sortMoviesByGenre();
           this.user = user;
         }
       });
@@ -53,10 +52,11 @@ export class AccountComponent implements OnInit {
     });
   }
 
-  onRegister(displayname, username,card_details, password, confirm_password) {
+  onRegister(displayname, username, card_details, password, confirm_password) {
     this.submitted = true;
     //console.log(this.registerForm.controls["username"].touched);
     //if (this.registerForm.valid) {
+    if (String(password) == String(confirm_password) && String(password)!="" && String(displayname) != "" && String(username) != "") {
       this.user.displayName = displayname;
       this.user.username = username;
       this.user.password = password;
@@ -66,19 +66,15 @@ export class AccountComponent implements OnInit {
       this.user.billing.ccCVV = String(card_details).split('/')[2];
 
       this.userService.updateUser(this.user).subscribe(user => {
-        this.sharedData.setUser(user);
-        sessionStorage.setItem("keyname", user.id);
-        // console.log(this.sharedData.currentUser);
-        //this.router.navigate(['/']);
+        this.router.navigate(['/']);
       }, err => {
-        this.success=false;
+        this.success = false;
         this.router.navigate(['/account']);
       });
-    //}
-    // else{
-    //   this.invalid=true;
-
-    // }
+    }
+    else {
+      this.invalid = true;
+    }
   }
 
 }
