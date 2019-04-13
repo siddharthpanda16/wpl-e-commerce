@@ -113,7 +113,7 @@ function getUsersRouter() {
         throw Error("Problem saving new user.");
       });
 
-      res.status(200).json({ id: user._id, message: "success" });
+      res.status(200).json( user );
     } catch (e) {
       res.status(400).json({ error: e.message });
     }
