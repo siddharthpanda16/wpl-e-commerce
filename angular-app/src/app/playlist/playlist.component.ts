@@ -22,18 +22,21 @@ export class PlaylistComponent implements OnInit {
      private userService:UserService, private router: Router ) { }
 
   ngOnInit() {
-    this.sharedData.currentUser.subscribe(user=> {
-      if(  user.username==''){
-      this.router.navigate(['/login']);
-
-      }
-      else{
-        console.log("i am in playlist");
-        this.setUser();
-        this.getPlaylist();
+    if (sessionStorage.getItem("keyname")) {
+      //this.userService.getUser(sessionStorage.getItem("keyname")).subscribe(user => this.sharedData.setUser(user));
+      this.sharedData.currentUser.subscribe(user=> {
+        if(  user && user.username==''){
+          this.router.navigate(['/login']);
         }
-      });
-    
+        else{
+          console.log("i am in playlist");
+          this.setUser();
+          this.getPlaylist();
+          }
+        });
+    }else{
+      this.router.navigate(['/login']);
+    }
   }
 
   public getPlaylist(): void {
@@ -46,11 +49,6 @@ export class PlaylistComponent implements OnInit {
         })
       });
     });
-    // this.sharedData.allMovies.subscribe( movies => {
-    //   movies.forEach(element => {
-    //     this.movies.push( element );
-    //   });
-    // });
   }
 
   public setUser(){
@@ -69,7 +67,7 @@ export class PlaylistComponent implements OnInit {
     this.movies.forEach(movie => {
       movieIds.push(movie._id);
     }); 
-    this.userService.updatePlaylist(this.user, movieIds);
+    this.userService.updatePlaylist(this.user, movieIds).subscribe( );
     this.saveDisabled = true;
     console.log( movieIds);
   }
@@ -83,7 +81,7 @@ export class PlaylistComponent implements OnInit {
   }
 
   public removeFromPlaylist(movie:Movie){
-    this.userService.deleteFromPlaylist(this.user, movie._id);
+    this.userService.deleteFromPlaylist(this.user, movie._id).subscribe();
   }
 
   public play(){
