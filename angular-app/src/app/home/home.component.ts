@@ -6,7 +6,6 @@ import { UserService } from '../services/userServices';
 import { Movie } from '../models/movie';
 import { User } from '../models/user';
 import { Router } from '@angular/router';
-import { HttpRequest, HttpClient, HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-home',
@@ -57,17 +56,27 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
 
     if (sessionStorage.getItem("keyname")) {
-      this.userService.getUser(sessionStorage.getItem("keyname")).subscribe(user => this.sharedData.setUser(user));
-      this.sharedData.currentUser.subscribe(user => {
+      this.userService.getUser(sessionStorage.getItem("keyname")).subscribe(user => {
+        this.sharedData.setUser(user);
         if (user == null || user.username == '') {
           this.router.navigate(['/login']);
         }
         else {
-          this.router.navigate(['/']);
-          this.sortMoviesByGenre();
           this.user = user;
         }
       });
+     /*  this.sharedData.currentUser.subscribe(user => {
+        if (user == null || user.username == '') {
+          this.router.navigate(['/login']);
+        }
+        else {
+          //this.router.navigate(['/']);
+          console.log("i am in home");
+          
+          this.user = user;
+        }
+      }); */
+      this.sortMoviesByGenre();
     }
     else {
       this.router.navigate(['/login']);
@@ -146,6 +155,19 @@ export class HomeComponent implements OnInit {
     console.log("playing movie ", movie);
     this.router.navigate(["/"]).then(result => { window.location.href = 'http://www.cnn.com/'; });
 
+  }
+
+  public makeUserPremium(){
+    this.sharedData.currentUser.subscribe(user=>{
+      user.level=3;
+      console.log("making payment");
+      this.user=user;
+    })
+
+    this.userService.updateUser(this.user).subscribe();
+    
+    /* $('#getPremiumModal').hide();
+    $('.modal-backdrop.fade.show').remove(); */
   }
 
   createForm() {

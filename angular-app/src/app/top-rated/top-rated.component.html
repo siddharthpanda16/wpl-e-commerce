@@ -27,9 +27,9 @@
         <div class="col col-3">
           <div class="row">
             <button class="btn btn-info savebutton"  (click)="movieDetails(movie)"> View Details </button>
-            <!-- <button class="btn btn-warning savebutton"  *ngIf="!canPlay(movie)" (click)="getPremium(movie)"> Get Premium </button>
+            <button class="btn btn-warning savebutton"  *ngIf="!canPlay(movie)"data-toggle="modal" data-target="#getPremiumModal"> Get Premium </button>
             <button class="btn btn-info savebutton"  *ngIf="canPlay(movie) && !checkMovieInCart(movie)" (click)="addToPlayList(movie)"> Add To Playlist </button>
-            <button class="btn btn-info savebutton"  *ngIf="canPlay(movie) && checkMovieInCart(movie)" (click)="play()"> Play </button> -->
+            <button class="btn btn-info savebutton"  *ngIf="canPlay(movie) && checkMovieInCart(movie)" (click)="play()"> Play </button> 
           </div>
           <div *ngIf="movie.imdb && movie.imdb.rating" class="ratings"><i class="far fa-star text-danger"></i> IMDB - {{movie.imdb.rating}}</div>
           <div *ngIf="movie.metacritic" class="ratings"><i class="far fa-star text-danger"></i> Critic - {{movie.metacritic}}</div>
@@ -38,4 +38,24 @@
       </div>
     </div>
   </div>
+</div>
+<div class="modal fade" id="getPremiumModal" tabindex="-1" role="dialog" aria-labelledby="getPremiumModalTitle"
+aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title text-warning" id="getPremiumModalTitle">Get Premium</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+     <span class="text-danger"> Your card will be charged 50$.</span> As a premium member you will get access to all our movies.
+    </div>
+    <div class="modal-footer">
+      <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+      <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="makeUserPremium()">Make Payment</button>
+    </div>
+  </div>
+</div>
 </div>
