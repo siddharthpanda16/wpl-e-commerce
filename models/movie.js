@@ -3,7 +3,11 @@ var Schema = mongoose.Schema;
 
 var MovieSchema = new Schema({
   Title: { type: String, required: true },
+<<<<<<< HEAD
   poster: { type: String },
+=======
+  Poster: { type: String },
+>>>>>>> master
   actors: [{ type: String }],
   awards: {
     wins: { type: Number },

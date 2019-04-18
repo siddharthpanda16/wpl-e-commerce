@@ -23,13 +23,29 @@ export class DetailsPageComponent implements OnInit {
     private userService:UserService,private route: ActivatedRoute, private router:Router) { }
 
   ngOnInit() {
-    this.movieId = this.route.snapshot.paramMap.get("id");
-    // this.route.paramMap.subscribe(params => {
-    //   this.movieId = params.get("id")
-    // });
-    this.setUser();
-    console.log( 'username' , this.user.username );
-    this.getDetails(this.movieId);
+    console.log("in deatils");
+    if (sessionStorage.getItem("keyname")) {
+      // this.userService.getUser(sessionStorage.getItem("keyname")).subscribe(user => this.sharedData.setUser(user));
+      this.sharedData.currentUser.subscribe(user => {
+        if (user == null || user.username == '') {
+          this.router.navigate(['/login']);
+        }
+        else {
+          this.router.navigate([`/movie/${this.route.snapshot.paramMap.get("id")}`]);
+          this.movieId = this.route.snapshot.paramMap.get("id");
+          // this.route.paramMap.subscribe(params => {
+          //   this.movieId = params.get("id")
+          // });
+          this.setUser();
+          console.log( 'username' , this.user.username );
+          this.getDetails(this.movieId);
+        }
+      });
+    }
+    else {
+      this.router.navigate(['/login']);
+    }
+   
   }
 
   getDetails(movieId:string){
@@ -74,6 +90,7 @@ export class DetailsPageComponent implements OnInit {
   }
 
   public addToPlayList(movie:Movie){
+    console.log( { from : "AddPlaylistMovieDetails" , user : this.user , movie});
     this.userService.addToPlaylist(this.user , movie._id);
   }
 

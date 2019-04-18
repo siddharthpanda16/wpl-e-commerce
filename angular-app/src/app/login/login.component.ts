@@ -23,7 +23,18 @@ export class LoginComponent implements OnInit {
   success: Boolean = true;
 
   ngOnInit() {
+<<<<<<< HEAD
     console.log("login session:");
+=======
+    if (sessionStorage.getItem("keyname")) {
+      this.userService.getUser(sessionStorage.getItem("keyname")).subscribe(user => this.sharedData.setUser(user));
+      this.sharedData.currentUser.subscribe(user => {
+        if (!(user == null || user.username == '')) {
+          this.router.navigate(['/']);
+        }
+      });
+    }
+>>>>>>> master
   }
 
   createForm() {
@@ -37,6 +48,7 @@ export class LoginComponent implements OnInit {
     this.submitted = true;
     if (this.loginForm.valid) {
       this.userService.validateUser(username, password).subscribe(user => {
+<<<<<<< HEAD
         this.sharedData.setUser(user);
         console.log("login, onLogin(): " + username + ' ' + password + ', this.user: ' + '  ' + user.username + '  ' + user.password)
         this.success = true;
@@ -45,6 +57,19 @@ export class LoginComponent implements OnInit {
         console.log("login.onLogin(), user._id == " + user._id.$oid);
 1        // console.log(this.sharedData.currentUser);
         this.router.navigate(['/']);
+=======
+        if( !user.match ) {
+          this.router.navigate(['/login']);
+          this.success = false;
+        }else {
+          console.log(username + ' ' + password + '  ' + this.user.username + '  ' + this.user.password)
+          this.sharedData.setUser(user);
+          this.success = true;
+          sessionStorage.setItem("keyname", user.id);
+          // console.log(this.sharedData.currentUser);
+          this.router.navigate(['/']);
+        }
+>>>>>>> master
       }, err => {
         this.router.navigate(['/login']);
         this.success = false;

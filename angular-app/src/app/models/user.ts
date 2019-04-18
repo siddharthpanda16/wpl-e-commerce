@@ -1,12 +1,17 @@
 
 export class Card{
-    ccNum:number = 1111222233334444;
-    ccCVV:number = 123;
+    ccNum:string = "1111222233334444";
+    ccCVV:string = "123";
     ccExp: string="";
 }
 
 export class User{
+<<<<<<< HEAD
     _id:any = { $oid: "" };
+=======
+    match:boolean;
+    id:string = "";
+>>>>>>> master
     displayName:string = '';
     username:string = '';
     password:string = '';

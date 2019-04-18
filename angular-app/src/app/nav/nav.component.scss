@@ -1,5 +1,11 @@
-a:focus{
+a{
+  color: lightskyblue !important;
+  &:focus,&:active{
     color: white !important;
+  }
+  &:hover{
+    color: white !important;
+  }
 }
 
 .container-fluid{

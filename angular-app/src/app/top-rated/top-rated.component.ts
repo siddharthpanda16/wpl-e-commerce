@@ -55,6 +55,7 @@ export class TopRatedComponent implements OnInit {
   }
 
   public addToPlayList(movie:Movie){
+    console.log( { from : "AddPlaylistTopRated" , user : this.user , movie});
     this.userService.addToPlaylist(this.user , movie._id);
   }
 
@@ -67,6 +68,7 @@ export class TopRatedComponent implements OnInit {
   }
 
   public canPlay(movie:Movie){
+    console.log( { from : "canPlayTopRated", user : this.user , movie});
     movie.level <= this.user.level;
   }
 }
