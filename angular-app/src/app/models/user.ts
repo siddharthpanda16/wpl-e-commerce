@@ -6,12 +6,8 @@ export class Card{
 }
 
 export class User{
-<<<<<<< HEAD
-    _id:any = { $oid: "" };
-=======
     match:boolean;
     id:string = "";
->>>>>>> master
     displayName:string = '';
     username:string = '';
     password:string = '';

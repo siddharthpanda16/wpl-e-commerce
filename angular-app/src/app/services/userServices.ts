@@ -30,22 +30,14 @@ export class UserService {
         var options = httpOptions; 
         // options['params'] = new HttpParams()
         //     .set('session_id',this.currUserId);
-<<<<<<< HEAD
+
         console.log("userService, getUser() " + url);
         
-        return this.http.get<User>( url,options).pipe(
-            tap(_ => console.log('fetched claim')),
-            catchError(this.handleError<User>(`getUser() failed`))
-=======
 
         return this.http.get<User>( url, options).pipe(
             tap(_ => console.log('fetched user')),
-<<<<<<< HEAD
             catchError(this.handleError<User>(`getUserById() failed`))
->>>>>>> master
-=======
-            catchError(this.handleError<User>(`getUser() failed`))
->>>>>>> master
+
         );
     }
     getSingleUser(username:string): Observable<User> {
@@ -70,16 +62,9 @@ export class UserService {
         'password': password
       };
       return this.http.post<User>( url, queryParams , options ).pipe(
-<<<<<<< HEAD
-        tap(_ => console.log('fetched claim, userService, validateUser()')),
-        catchError(this.handleError<User>(`validateUser() failed`)) );
-      
-      ;
-=======
           tap(_ => console.log('validated user')),
           catchError(this.handleError<User>(`validateUser() failed`))
       );
->>>>>>> master
     }
 
     addUser(user:User):Observable<User> {
@@ -87,17 +72,8 @@ export class UserService {
         var options = httpOptions; 
 
         return this.http.post<User>( url, user, options).pipe(
-<<<<<<< HEAD
-            tap(_ => console.log('fetched claim')),
-            catchError(this.handleError<User>(`addUser() failed`))
-=======
             tap(_ => console.log('added user')),
-<<<<<<< HEAD
-            catchError(this.handleError<User>(`getUserById() failed`))
->>>>>>> master
-=======
             catchError(this.handleError<User>(`addUser() failed`))
->>>>>>> master
         );
     }
 
@@ -112,12 +88,7 @@ export class UserService {
         'billing': user.billing
       }
 
-<<<<<<< HEAD
-      console.log("userServices, updateUser(), user._id==" + user._id + ", username == "+ user.username);
-      var resu = this.http.put<User>( url, user, options).pipe(
-=======
       return this.http.put<User>( url, queryParams, options).pipe(
->>>>>>> master
           tap(_ => { 
             this.sharedData.setUser(user); 
             console.log('updated user');
