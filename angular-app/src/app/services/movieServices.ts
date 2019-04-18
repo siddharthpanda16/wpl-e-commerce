@@ -121,6 +121,26 @@ export class MovieService {
         );
     }
 
+    getRecommended(movies:Movie[]): Observable<Movie[]>{
+        var url = ('http://localhost:1234/movies/recommend'); 
+        var options = httpOptions; 
+        let queryParams = {
+            genres : [],
+            cast : [],
+            ratings: []
+        }
+        movies.forEach( movie => {
+            queryParams.genres.push( movie.genres );
+            queryParams.cast.push( movie.actors );
+            queryParams.ratings.push( movie.imdb.rating );
+        });
+        console.log( {queryParams} ) ;
+        return this.http.post<Movie[]>( url, queryParams, options ).pipe(
+            tap(_ => console.log('fetched recommended movies')),
+            catchError(this.handleError<Movie[]>(`getRecommended() failed`))
+        );
+    }
+
     searchMovie(params:Object): Observable<Movie[]> {
         var url = ('http://localhost:1234/movies'); 
         var options = httpOptions; 

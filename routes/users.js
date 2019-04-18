@@ -128,7 +128,7 @@ function getUsersRouter() {
         throw Error("Problem saving new user.");
       });
 
-      res.status(200).json({ id: user._id, message: "success" });
+      res.status(200).json( user );
     } catch (e) {
       res.status(400).json({ error: e.message });
     }
@@ -141,6 +141,7 @@ function getUsersRouter() {
   router.put("/users/:id", async (req, res) => {
     console.log(`PUT /users/${req.params.id} hit.`); /* even this line didn't show in console  */
     try {
+<<<<<<< HEAD
       /*if (req.body.isAdmin) {
         throw Error("Cannot use endpoint to make existing user an admin.");
       }*/
@@ -149,6 +150,18 @@ function getUsersRouter() {
           throw Error("Problem finding or updating user by ID.");
         }
       );
+=======
+      if (req.body.password) throw Error("Cannot change password. ");
+      if (req.body.isAdmin)
+        throw Error("Cannot use endpoint to make existing user an admin.");
+
+      const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+        new: true
+      }).catch(e => {
+        throw Error("Problem finding or updating user by ID.");
+      });
+
+>>>>>>> master
       res.status(200).json(user); //{ id: user._id, message: "Success" }
       console.log("update user success");
     } catch (e) {

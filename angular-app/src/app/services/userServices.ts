@@ -40,7 +40,11 @@ export class UserService {
 
         return this.http.get<User>( url, options).pipe(
             tap(_ => console.log('fetched user')),
+<<<<<<< HEAD
             catchError(this.handleError<User>(`getUserById() failed`))
+>>>>>>> master
+=======
+            catchError(this.handleError<User>(`getUser() failed`))
 >>>>>>> master
         );
     }
@@ -73,7 +77,7 @@ export class UserService {
       ;
 =======
           tap(_ => console.log('validated user')),
-          catchError(this.handleError<User>(`getUserById() failed`))
+          catchError(this.handleError<User>(`validateUser() failed`))
       );
 >>>>>>> master
     }
@@ -88,7 +92,11 @@ export class UserService {
             catchError(this.handleError<User>(`addUser() failed`))
 =======
             tap(_ => console.log('added user')),
+<<<<<<< HEAD
             catchError(this.handleError<User>(`getUserById() failed`))
+>>>>>>> master
+=======
+            catchError(this.handleError<User>(`addUser() failed`))
 >>>>>>> master
         );
     }
@@ -99,7 +107,6 @@ export class UserService {
       let queryParams = {
         'displayName': user.displayName,
         'username': user.username,
-        'password': user.password,
         'level': user.level,
         'cart': user.cart,
         'billing': user.billing
@@ -122,13 +129,14 @@ export class UserService {
     }
 
     updatePlaylist(user:User, movieIds:string[]):Observable<User>{
-      var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g,user.id); 
+      var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user.id); 
       user.cart = movieIds;
       var options = httpOptions; 
       let queryParams = {
         'cart': user.cart
       }
 
+      console.log( "updating playlist " , user , url );
       return this.http.put<User>( url, queryParams, options).pipe(
           tap(_ => {
             console.log('updated playlist');
@@ -143,7 +151,7 @@ export class UserService {
         return new BehaviorSubject<boolean>(false);
       } else {
         user.cart.push(movieId);
-        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g,user.id);
+        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user.id); 
         var options = httpOptions; 
         let queryParams = {
           'cart': user.cart
@@ -169,7 +177,7 @@ export class UserService {
         //   user.cart = user.cart.filter( function(value){
         //     return value != movieId;
         // });
-        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g,user.id);
+        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user.id); 
         var options = httpOptions; 
 
         user.cart = user.cart.filter( function(value){

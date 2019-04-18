@@ -29,7 +29,7 @@ export class RegisterComponent implements OnInit {
     this.registerForm = this.formBuilder.group({
       displayname: ['', Validators.required],
       username: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9_]+')]],
-      card_details: [],
+      card_details: ['', Validators.required],
       password: ['', Validators.required],
       confirm_password: ['', Validators.required]
     });
@@ -42,14 +42,13 @@ export class RegisterComponent implements OnInit {
       this.user.username = username;
       this.user.password = password;
       this.user.level = 1;
-      this.user.billing.ccNum = String(card_details).split('/')[0];
-      this.user.billing.ccExp = String(card_details).split('/')[1];
-      this.user.billing.ccCVV = String(card_details).split('/')[2];
-
+      this.user.billing.ccNum =  card_details ? String(card_details).split('/')[0] : "1111111111111111";
+      this.user.billing.ccExp = card_details ? String(card_details).split('/')[1] : "11111111";
+      this.user.billing.ccCVV = card_details ? String(card_details).split('/')[2] : "111";
+      console.log( this.user );
       this.userService.addUser(this.user).subscribe(user => {
-        this.sharedData.setUser(user);
+        console.log(user['id'],"returned from register");
         sessionStorage.setItem("keyname", user.id);
-        // console.log(this.sharedData.currentUser);
         this.router.navigate(['/']);
       }, err => {
         this.success=false;
