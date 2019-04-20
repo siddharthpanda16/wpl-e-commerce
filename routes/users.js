@@ -139,21 +139,13 @@ function getUsersRouter() {
   /* also can change to find by username */
   /* it couldn't get into this route, no log text from this shown on nodejs console */
   router.put("/users/:id", async (req, res) => {
-    console.log(`PUT /users/${req.params.id} hit.`); /* even this line didn't show in console  */
+    console.log(`PUT /users/${req.params.id} hit.`);
     try {
-<<<<<<< HEAD
-      /*if (req.body.isAdmin) {
-        throw Error("Cannot use endpoint to make existing user an admin.");
-      }*/
-      const user = await User.findOneAndUpdate({ "_id":req.params.id}, req.body).catch(
-        e => {
-          throw Error("Problem finding or updating user by ID.");
-        }
-      );
-=======
       if (req.body.password) throw Error("Cannot change password. ");
       if (req.body.isAdmin)
+      {
         throw Error("Cannot use endpoint to make existing user an admin.");
+      }
 
       const user = await User.findByIdAndUpdate(req.params.id, req.body, {
         new: true
@@ -161,20 +153,21 @@ function getUsersRouter() {
         throw Error("Problem finding or updating user by ID.");
       });
 
->>>>>>> master
       res.status(200).json(user); //{ id: user._id, message: "Success" }
       console.log("update user success");
-    } catch (e) {
+    } 
+    catch (e) {
       console.log("update user failure");
       res.status(400).json({ error: e.message });
     }
   });
 
+  
   /* delete a user */
   router.delete("/users/:id", async (req, res) => {
     console.log("DELETE /users hit.");
     try {
-      await User.findByIdAndDelete(req.params.id).catch(e => {
+      await User.findByIdAndDelete(req.body._id).catch(e => {
         throw Error("Problem finding or deleting user by ID.");
       });
       res.status(200).json({ message: "Success" });

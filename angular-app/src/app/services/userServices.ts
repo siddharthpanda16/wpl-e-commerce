@@ -80,27 +80,26 @@ export class UserService {
     updateUser(user:User):Observable<User> {
       var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user._id); 
       var options = httpOptions; 
-      let queryParams = {
+      var queryParams = {
         'displayName': user.displayName,
         'username': user.username,
         'level': user.level,
         'cart': user.cart,
         'billing': user.billing
       }
-
+      console.log("userServices, updateuser");
+      
       return this.http.put<User>( url, queryParams, options).pipe(
           tap(_ => { 
-            this.sharedData.setUser(user); 
+            //this.sharedData.setUser(user); 
             console.log('updated user');
           }),
           catchError(this.handleError<User>(`updateUser() failed`))
       );
-      console.log("resu?");
-      return resu;
     }
 
     updatePlaylist(user:User, movieIds:string[]):Observable<User>{
-      var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user.id); 
+      var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user._id); 
       user.cart = movieIds;
       var options = httpOptions; 
       let queryParams = {
@@ -122,7 +121,7 @@ export class UserService {
         return new BehaviorSubject<boolean>(false);
       } else {
         user.cart.push(movieId);
-        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user.id); 
+        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user._id); 
         var options = httpOptions; 
         let queryParams = {
           'cart': user.cart
@@ -148,7 +147,7 @@ export class UserService {
         //   user.cart = user.cart.filter( function(value){
         //     return value != movieId;
         // });
-        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user.id); 
+        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user._id); 
         var options = httpOptions; 
 
         user.cart = user.cart.filter( function(value){

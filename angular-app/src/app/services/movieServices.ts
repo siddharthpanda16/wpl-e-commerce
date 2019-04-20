@@ -30,11 +30,7 @@ export class MovieService {
         var options = httpOptions; 
 
         return this.http.post<Movie>( url, movie, options).pipe(
-<<<<<<< HEAD
             tap(resp => console.log('addMovie resp: '+ JSON.stringify(resp) )),
-=======
-            tap(_ => console.log('added new movie')),
->>>>>>> master
             catchError(this.handleError<Movie>(`addMovie() failed`))
         );
     }
@@ -46,11 +42,7 @@ export class MovieService {
         var options = httpOptions; 
 
         return this.http.put<Movie>( url, movie, options).pipe(
-<<<<<<< HEAD
-            tap(_ => console.log('fetched claim updateMovie()')),
-=======
             tap(_ => console.log('updated movie')),
->>>>>>> master
             catchError(this.handleError<Movie>(`updateMovie() failed`))
         );
     }
@@ -70,11 +62,7 @@ export class MovieService {
         var options = httpOptions; 
 
         return this.http.get<Movie>( url, options).pipe(
-<<<<<<< HEAD
-            tap(_ => console.log('fetched claim getMovieByID()')),
-=======
-            tap(_ => console.log('fetched movie')),
->>>>>>> master
+            tap(_ => console.log('fetched movie, getMovieByID()')),
             catchError(this.handleError<Movie>(`getMovieById() failed`))
         );
     }
@@ -84,11 +72,7 @@ export class MovieService {
         var options = httpOptions; 
 
         return this.http.get<Movie[]>( url, options ).pipe(
-<<<<<<< HEAD
-            tap(_ => console.log('fetched claim getAllMovies()')),
-=======
-            tap(_ => console.log('fetched all movies')),
->>>>>>> master
+            tap(_ => console.log('fetched all movies, getAllMovies()')),
             catchError(this.handleError<Movie[]>(`getAllMovies() failed`))
         );
     }
@@ -98,11 +82,7 @@ export class MovieService {
         var options = httpOptions; 
         
         return this.http.get<Movie[]>( url, options ).pipe(
-<<<<<<< HEAD
-            tap(_ => console.log('fetched claim getTopRated()')),
-=======
-            tap(_ => console.log('fetched top rated')),
->>>>>>> master
+            tap(_ => console.log('fetched top rated, getTopRated()')),
             catchError(this.handleError<Movie[]>(`getTopRated() failed`))
         );
     }
@@ -112,11 +92,7 @@ export class MovieService {
         var options = httpOptions; 
         
         return this.http.get<Movie[]>( url, options ).pipe(
-<<<<<<< HEAD
-            tap(_ => console.log('fetched claim getRecent()')),
-=======
-            tap(_ => console.log('fetched recent movies')),
->>>>>>> master
+            tap(_ => console.log('fetched recent movies, getRecent()')),
             catchError(this.handleError<Movie[]>(`getTopRated() failed`))
         );
     }
@@ -147,11 +123,7 @@ export class MovieService {
         options['params'] = params;
 
         return this.http.get<Movie[]>( url, options).pipe(
-<<<<<<< HEAD
-            tap(_ => console.log('fetched claim searchMovies()')),
-=======
-            tap(_ => console.log('fetched search movie')),
->>>>>>> master
+            tap(_ => console.log('fetched search movie, searchMovies()')),
             catchError(this.handleError<Movie[]>(`searchMovie() failed`))
         );
     }

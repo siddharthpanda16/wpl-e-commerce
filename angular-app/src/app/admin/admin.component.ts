@@ -8,6 +8,7 @@ import { MovieService } from '../services/movieServices';
 
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Observable, throwError } from 'rxjs';
+import { stringify } from '@angular/compiler/src/util';
 
 @Component({
   selector: 'app-admin',
@@ -24,7 +25,7 @@ export class AdminComponent implements OnInit {
   user: User = new User;
   moviesSearched: Movie[] = [];
   movies: Movie[];
-  selectedUser: User;
+  selectedUser: User = new User();
   selectedMovie:Movie;
   
   manageUsers:Boolean = false;
@@ -48,13 +49,13 @@ export class AdminComponent implements OnInit {
         this.router.navigate(['/']);
       }
       else {
-        this.router.navigate(['/admin']);
+        //this.router.navigate(['/admin']);
       }
 
 
       this.movieService.getAllMovies().subscribe(movieList => {
         this.movies = movieList;
-        this.moviesSearched = this.movies;
+        this.moviesSearched = movieList;
       });
 
 
@@ -150,6 +151,7 @@ export class AdminComponent implements OnInit {
 
   onSearch(searchInput) {
     if (this.manageUsers)
+    /* search user */
     {
       this.userService.getSingleUser(searchInput).subscribe(user => {
         
@@ -157,10 +159,13 @@ export class AdminComponent implements OnInit {
         //console.log(user);
         //console.log(JSON.stringify(user) );
         this.selectedUser = user;
+        console.log("user: " + stringify(user._id) );
       });
     }
     else
+    /* search movie */
     {
+      console.log("admin, search movie");
       this.moviesSearched = [];
       this.movies.forEach(movie => {
         if (movie.Title.toLowerCase().includes(searchInput.toLowerCase() )) {
@@ -187,27 +192,32 @@ export class AdminComponent implements OnInit {
     /* just need to check to make sure we are in the right place */
     {
       if(this.manageModeUpdate)
+      /* update mode */
       {
         this.movieService.updateMovie(this.selectedMovie).subscribe(movie => {
           console.log("admin.onManageMovie.update() success: " + JSON.stringify(movie) );
         });
       }
       else
+      /* add mode */
       {
         this.movieService.addMovie(this.selectedMovie).subscribe(movie => {
           console.log("admin.onManageMovie.add() success: " + JSON.stringify(movie) );
         });
         this.selectedMovie = new Movie();
+        /*
         this.selectedMovie._id = null;
+        */
       }
 
-      /* refresh movie list */
-      this.movieService.getAllMovies().subscribe(movieList => {
-      this.movies = movieList;
-      this.moviesSearched = this.movies;
-
-      });      
     }
+    
+    /* refresh movie list */
+    this.movieService.getAllMovies().subscribe(movieList => {
+      this.movies = movieList;
+      this.moviesSearched = movieList;
+    });
+
   }
 
   onDeleteMovie(deletedMovie:Movie){
@@ -216,14 +226,21 @@ export class AdminComponent implements OnInit {
     {
       if(this.manageModeUpdate)
       {
-        this.movieService.deleteMovie(this.selectedMovie);
+        console.log("admin, ondeletemovie: " + deletedMovie._id + ", " + deletedMovie.Title);
+        this.movieService.deleteMovie(this.selectedMovie).subscribe(resp =>
+          {
+            console.log("admin, delete movie, response: " + JSON.stringify(resp) );
+          }
 
-        this.movieService.getAllMovies().subscribe(movieList => {
-          this.movies = movieList;
-          this.moviesSearched = this.movies;
-        });
+        );
       }
+
     }
+
+    this.movieService.getAllMovies().subscribe(movieList => {
+      this.movies = movieList;
+      this.moviesSearched = movieList;
+    });
 
   }
   
@@ -233,8 +250,11 @@ export class AdminComponent implements OnInit {
     {
       if(this.manageModeUpdate)
       {
-        console.log("admin, onmanageuser, update user");
-        this.userService.updateUser(updatedUser);
+        console.log("admin, onmanageuser: " + updatedUser._id + ", " + updatedUser.username);
+        
+        this.userService.updateUser(updatedUser).subscribe(resp => {
+          console.log("admin, update user, response: " + JSON.stringify(resp) );
+        });
       }
     }
   }

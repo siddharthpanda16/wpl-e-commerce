@@ -25,13 +25,10 @@ export class NavComponent implements OnInit {
   username:String; 
   user:User;
   
-<<<<<<< HEAD
   isAdmin: Boolean = false;
+  
 
-  constructor(private sharedData:DataService ) { }
-=======
   constructor(private sharedData:DataService, private router:Router ) { }
->>>>>>> master
 
   ngOnInit() {
     this.sharedData.currentUser.subscribe( user => {

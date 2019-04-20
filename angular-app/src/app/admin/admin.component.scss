@@ -1,0 +1,56 @@
+
+label, h1, h2, h3
+{
+    color: white;
+}
+
+label
+{
+    width: 25%;
+}
+
+input, textarea
+{
+    width: 70%;
+}
+
+img
+{
+    width: 90%;
+    max-width: 90%;
+    height: auto;
+}
+
+.fullPage
+{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+}
+.pgHeader, .pgBody
+{
+    display: block;
+    width: 100%;
+}
+
+.viewLeftRight
+{
+    width:100%;
+    display: flex;
+    flex-direction: row;
+}
+
+
+
+.detailsLeft
+{
+    flex-direction: column;
+    width: 65%;
+}
+
+.detailsRight
+{
+    flex-direction: column;
+    width: 30%;
+}

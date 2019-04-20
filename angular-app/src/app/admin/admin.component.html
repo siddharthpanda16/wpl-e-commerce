@@ -1,8 +1,9 @@
 
 <html>
-<div id="page">
+<body>
+<div class="fullPage" id="page">
 
-  <div id="pgHeader">
+  <div class="pgHeader" id="pgHeader">
     <h1> Admin Page </h1>  
     <div>
       <button type="button" id="manageTargetSwitch" (click)="manageTargetSwitch()"> {{ manageTargetSwitchText }}</button>
@@ -23,7 +24,7 @@
     </div>
   </div> <!-- div id=pgheader -->
 
-  <div id="pgBody">
+  <div class="pgBody" id="pgBody">
     <div id="pgBodyMovies" *ngIf="!manageUsers">
       <div id="updateMovies" *ngIf="manageModeUpdate">
         <h2>Select a movie to view/update</h2>
@@ -40,21 +41,15 @@
       </div>
       
       <div class="detailsView">
-        <p>Selected Movie: {{ selectMovieForm.value | json }} </p>
-
-        <br>
-        <p>Movie Details: {{ selectedMovie | json }} </p>
-
-        <br>
-        <p>Movie Details Form: {{ movieDetailsForm.value | json }} </p>
 
         <br>
         <h2>Movie Details:</h2>
         <form id="movieDetailsForm" name="movieDetailsForm" #movieDetailsForm novalidate >
-          <div class="col-8">           
+          <div class="viewLeftRight">
+          <div class="detailsLeft">           
             <br>
             <label for="oid" *ngIf="manageModeUpdate">Movie ID:</label>
-            <input id="oid" name="oid" type=text [(ngModel)]="selectedMovie._id" *ngIf="manageModeUpdate">
+            <input id="oid" name="oid" type=text [(ngModel)]="selectedMovie._id" *ngIf="manageModeUpdate" disabled>
             
             <br>
             <label for="Title">Movie Title:</label>
@@ -89,7 +84,8 @@
             <input id="writers" name="writers" type=text [(ngModel)]="selectedMovie.writers">
 
             <br>
-            <label>Awards</label>
+            <label>Awards: </label>
+            <br>
             <label for="awardswins">Wins</label>
             <input id="awardswins" name="awardswins" type=text [(ngModel)]="selectedMovie.awards.wins">
 
@@ -114,7 +110,8 @@
             <textarea id="plot" name="plot" [(ngModel)]="selectedMovie.plot">{{selectedMovie.plot}}</textarea>
             
             <br>
-            <label>Imdb</label>
+            <label>Imdb: </label>
+            <br>
             <label for="imdbrating">Rating</label>
             <input id="imdbrating" name="imdbrating" type=text [(ngModel)]="selectedMovie.imdb.rating">
             
@@ -131,7 +128,8 @@
             <input id="metacritic" name="metacritic" type="text" [(ngModel)]="selectedMovie['metacritic']">
 
             <br>
-            <label> Tomato </label>       
+            <label> Tomato: </label>       
+            <br>
             <label for="tomatorating">Rating</label>
 
             <input id="tomatorating" name="tomatorating" [(ngModel)]="selectedMovie.tomato['rating']">
@@ -170,18 +168,17 @@
 
             <br>
             <button type="submit" id="submit" (click)="onManageMovie(selectedMovie)"> {{manageMode}} Movie </button>
-            <button type="button" (click)="onDelete(selectedMovie)" *ngIf="manageModeUpdate"> Delete Movie</button>
+            <button type="button" (click)="onDeleteMovie(selectedMovie)" *ngIf="manageModeUpdate"> Delete Movie</button>
 
           </div>
-          <div class="col-4">
-              <div width="100%"><img class="poster" [src]="selectedMovie.Poster"/><br></div>
-              <div width="100%"><br><textarea id="Poster" name="Poster" form="movieDetailsForm" [(ngModel)]="selectedMovie.Poster" >{{selectedMovie.Poster}}</textarea></div>
+          <div class="detailsRight">
+              <div><img class="poster" [src]="selectedMovie.Poster"/><br></div>
+              <div><br><textarea id="Poster" name="Poster" form="movieDetailsForm" [(ngModel)]="selectedMovie.Poster" >{{selectedMovie.Poster}}</textarea></div>
               
+          </div>
           </div>
 
       </form>
-
-      
       </div>
     </div> <!-- div id=pgBodyMovies -->
 
@@ -213,7 +210,8 @@
           <textarea id="usercart" name="usercart" [(ngModel)]="selectedUser.cart">{{selectedUser.cart}}</textarea>
 
           <br>
-          <label>Billing</label>
+          <label>Billing:</label>
+          <br>
           <label for="ccNum">Card Number</label>
           <input type="text" id="ccNum" name="ccNum" [(ngModel)]="selectedUser.billing.ccNum">
           <label for="ccCVV">Card CVV</label>
@@ -238,4 +236,5 @@
 
 
 </div> <!-- div id=page -->
+</body>
 </html>
