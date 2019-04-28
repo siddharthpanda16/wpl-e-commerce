@@ -18,6 +18,13 @@ export class PlaylistComponent implements OnInit {
   movies : Movie[] = [];
   ids = [];
   saveDisabled :Boolean = true;
+  id = 'FIBeIAA2J9A';
+  playerVars = {
+    cc_lang_pref: 'en'
+  };
+  private player;
+  private ytEvent;
+
 
   constructor(private sharedData:DataService, private movieService:MovieService,
      private userService:UserService, private router: Router ) { }
@@ -55,6 +62,17 @@ export class PlaylistComponent implements OnInit {
         }
       });
     });
+  }
+  //video player
+  onStateChange(event) {
+    this.ytEvent = event.data;
+  }
+  savePlayer(player) {
+    this.player = player;
+  }
+
+  pauseVideo() {
+    this.player.pauseVideo();
   }
 
   public setUser(){

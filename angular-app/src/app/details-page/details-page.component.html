@@ -47,7 +47,7 @@
             <br>
             <button class="btn btn-warning "  *ngIf="!canPlay(movie)" (click)="getPremium()"> Get Premium </button>
             <button class="btn btn-info "  *ngIf="canPlay(movie) && !alreadyInCart(movie)" (click)="addToPlayList(movie)"> Add To Playlist </button>
-            <button class="btn btn-info "  *ngIf="canPlay(movie) && alreadyInCart(movie)" (click)="play()"> Play </button>
+            <button class="btn btn-info "  *ngIf="canPlay(movie) && alreadyInCart(movie)" data-toggle="modal" data-target="#exampleModalCenter"> Play </button>
           </div>
           <div class="col col-4">
               <img class="poster" [src]="movie.Poster"/>
@@ -65,3 +65,23 @@
         </div>
     </div>
 </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <youtube-player
+              [videoId]="id"
+            [width] = 460
+              (ready)="savePlayer($event)"
+              (change)="onStateChange($event)"
+              [playerVars]="playerVars">
+            </youtube-player>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click) ="pauseVideo()" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>

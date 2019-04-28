@@ -21,10 +21,13 @@
     "@angular/animations": "^7.2.12",
     "@angular/cdk": "^7.3.7",
     "@angular/material": "^7.3.7",
+    "@types/youtube": "0.0.37",
     "bcrypt": "^3.0.5",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "mongoose": "^5.4.19",
-    "nodemon": "^1.18.10"
+    "ngx-youtube-player": "^7.1.1",
+    "nodemon": "^1.18.10",
+    "reframe.js": "^2.2.5"
   }
 }

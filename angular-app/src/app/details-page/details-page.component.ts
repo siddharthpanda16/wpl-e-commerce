@@ -18,6 +18,12 @@ export class DetailsPageComponent implements OnInit {
   similar:Movie[] = []
   stars:number = 0;
   user:User = new User();
+  id = 'FIBeIAA2J9A';
+  playerVars = {
+    cc_lang_pref: 'en'
+  };
+  private player;
+  private ytEvent;
 
   constructor(private sharedData:DataService, private movieService:MovieService, 
     private userService:UserService,private route: ActivatedRoute, private router:Router) { }
@@ -46,6 +52,18 @@ export class DetailsPageComponent implements OnInit {
       this.router.navigate(['/login']);
     }
    
+  }
+
+  //video player
+  onStateChange(event) {
+    this.ytEvent = event.data;
+  }
+  savePlayer(player) {
+    this.player = player;
+  }
+  
+  pauseVideo() {
+    this.player.pauseVideo();
   }
 
   getDetails(movieId:string){

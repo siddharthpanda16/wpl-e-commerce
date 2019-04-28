@@ -57,9 +57,8 @@
                   <button class="btn btn-info savebutton playlist-btn" *ngIf="canPlay(movie) && !checkMovieInCart(movie)"
                     (click)="addToPlayList(movie)">
                     Add To Playlist <i class="far fa-plus-square fa-lg"></i> </button>
-                  <button class="btn btn-info savebutton" *ngIf="canPlay(movie) && checkMovieInCart(movie)"
-                    (click)="play(movie)">
-                    Play <i class="far fa-play-circle fa-lg"></i></button>
+                    <button class="btn btn-info savebutton" *ngIf="canPlay(movie) && checkMovieInCart(movie)" (click)="loadPlayer()" data-toggle="modal" data-target="#exampleModalCenter">
+                        Play <i class="far fa-play-circle fa-lg"></i></button>
                   <!-- <button *ngIf="addedInPlayList" type="button" class="btn btn-outline-info">
                     Add To Playlist
                     <i class="far fa-plus-square fa-lg"></i>
@@ -113,9 +112,11 @@
                 <button class="btn btn-info savebutton playlist-btn" *ngIf="canPlay(movie) && !checkMovieInCart(movie)"
                   (click)="addToPlayList(movie)">
                   Add To Playlist <i class="far fa-plus-square fa-lg"></i> </button>
-                <button class="btn btn-info savebutton" *ngIf="canPlay(movie) && checkMovieInCart(movie)"
-                  (click)="play(movie)">
+                <button class="btn btn-info savebutton" *ngIf="canPlay(movie) && checkMovieInCart(movie)" data-toggle="modal" data-target="#exampleModalCenter">
                   Play <i class="far fa-play-circle fa-lg"></i></button>
+                 <!--  <button type="button" class="btn btn-primary" >
+                      Launch demo modal
+                    </button> -->
                 <!-- <button *ngIf="addedInPlayList" type="button" class="btn btn-outline-info">
                   Add To Playlist
                   <i class="far fa-plus-square fa-lg"></i>
@@ -158,3 +159,26 @@
     </div>
   </div>
 </div>
+
+<!-- Button trigger modal -->
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <youtube-player
+            [videoId]="id"
+          [width] = 460
+            (ready)="savePlayer($event)"
+            (change)="onStateChange($event)"
+            [playerVars]="playerVars">
+          </youtube-player>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click) ="pauseVideo()" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
