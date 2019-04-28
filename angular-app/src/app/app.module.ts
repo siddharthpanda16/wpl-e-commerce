@@ -5,6 +5,7 @@ import { ReactiveFormsModule} from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule }    from '@angular/common/http';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { NgxYoutubePlayerModule } from 'ngx-youtube-player';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -44,7 +45,8 @@ import { DetailsPageComponent } from './details-page/details-page.component';
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
-    DragDropModule
+    DragDropModule,
+    NgxYoutubePlayerModule.forRoot()
   ],
   providers: [
     DataService,

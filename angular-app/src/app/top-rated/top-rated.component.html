@@ -27,9 +27,9 @@
         <div class="col col-3">
           <div class="row">
             <button class="btn btn-info savebutton"  (click)="movieDetails(movie)"> View Details </button>
-            <button class="btn btn-warning savebutton"  *ngIf="!canPlay(movie)"data-toggle="modal" data-target="#getPremiumModal"> Get Premium </button>
+            <!-- <button class="btn btn-warning savebutton"  *ngIf="!canPlay(movie)"data-toggle="modal" data-target="#getPremiumModal"> Get Premium </button>
             <button class="btn btn-info savebutton"  *ngIf="canPlay(movie) && !checkMovieInCart(movie)" (click)="addToPlayList(movie)"> Add To Playlist </button>
-            <button class="btn btn-info savebutton"  *ngIf="canPlay(movie) && checkMovieInCart(movie)" (click)="play()"> Play </button> 
+            <button class="btn btn-info savebutton"  *ngIf="canPlay(movie) && checkMovieInCart(movie)" (click)="play()"> Play </button>  -->
           </div>
           <div *ngIf="movie.imdb && movie.imdb.rating" class="ratings"><i class="far fa-star text-danger"></i> IMDB - {{movie.imdb.rating}}</div>
           <div *ngIf="movie.metacritic" class="ratings"><i class="far fa-star text-danger"></i> Critic - {{movie.metacritic}}</div>
