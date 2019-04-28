@@ -55,7 +55,7 @@ export class TopRatedComponent implements OnInit {
   }
 
   public checkMovieInCart(movie:Movie){
-    this.user.cart.includes(movie._id);
+    return this.user.cart.includes(movie._id);
   }
 
   public movieDetails(movie:Movie){
@@ -64,6 +64,16 @@ export class TopRatedComponent implements OnInit {
 
   public canPlay(movie:Movie){
     console.log( { from : "canPlayTopRated", user : this.user , movie});
-    movie.level <= this.user.level;
+    return movie.level <= this.user.level;
+  }
+
+  public makeUserPremium(){
+    this.sharedData.currentUser.subscribe(user=>{
+      user.level=3;
+      console.log("making payment");
+      this.user=user;
+    })
+
+    this.userService.updateUser(this.user).subscribe();
   }
 }

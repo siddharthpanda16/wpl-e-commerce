@@ -7,7 +7,7 @@ export class Card{
 
 export class User{
     match:boolean;
-    _id:string = "";
+    id:string = "";
     displayName:string = '';
     username:string = '';
     password:string = '';

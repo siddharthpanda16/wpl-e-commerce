@@ -6,7 +6,6 @@ import { UserService } from '../services/userServices';
 import { Movie } from '../models/movie';
 import { User } from '../models/user';
 import { Router } from '@angular/router';
-import { HttpRequest, HttpClient, HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-home',
@@ -53,22 +52,36 @@ export class HomeComponent implements OnInit {
   searchForm: FormGroup;
   search: any = {};
   user: User = new User;
-
+  searchFinished: Boolean = false;
+  
   ngOnInit() {
-    console.log("session: ");
+    console.log("session: ",sessionStorage.getItem("keyname"));
     if (sessionStorage.getItem("keyname")) {
-      console.log("home, session: " + sessionStorage.getItem("keyname"));
-      this.userService.getUser(sessionStorage.getItem("keyname")).subscribe(user => this.sharedData.setUser(user));
-      this.sharedData.currentUser.subscribe(user => {
+      this.userService.getUser(sessionStorage.getItem("keyname")).subscribe(user => {
+        this.sharedData.setUser(user);
+        if (user == null || user.username == '') {
+          console.log("No user found");
+
+          this.router.navigate(['/login']);
+        }
+        else {
+          this.user = user;
+          console.log({"user":user});
+          this.router.navigate(['/']);
+        }
+      });
+     /*  this.sharedData.currentUser.subscribe(user => {
         if (user == null || user.username == '') {
           this.router.navigate(['/login']);
         }
         else {
-          this.router.navigate(['/']);
-          this.sortMoviesByGenre();
+          //this.router.navigate(['/']);
+          console.log("i am in home");
+          
           this.user = user;
         }
-      });
+      }); */
+      this.sortMoviesByGenre();
     }
     else {
       console.log("home, session2:");
@@ -106,12 +119,13 @@ export class HomeComponent implements OnInit {
     console.log("search form is submitted");
     console.log("input text  " + inputVal);
     console.log("Genre checkbox " + this.model.genre);
+    inputVal  = inputVal.toLowerCase();
     if (inputVal.trim() != "") {
       this.isSearched = true;
       this.moviesSearched = [];
 
-      this.movieService.getAllMovies().subscribe(movies => {
-        movies.forEach(movie => {
+      this.movieService.getAllMovies().subscribe(async movies => {
+        await movies.forEach(movie => {
           if (((this.model.title || (!this.model.genre && !this.model.title && !this.model.director)) && movie.Title.toLowerCase().includes(inputVal))
           || (this.model.director && movie.director.toLowerCase().includes(inputVal))) 
           {
@@ -125,6 +139,7 @@ export class HomeComponent implements OnInit {
             })
           } 
         });
+        this.searchFinished =true;
       });
       console.log(this.model.genre, this.model.title, this.model.director)
   }
@@ -172,6 +187,19 @@ export class HomeComponent implements OnInit {
     console.log("playing movie ", movie);
     this.router.navigate(["/"]).then(result => { window.location.href = 'http://www.cnn.com/'; });
 
+  }
+
+  public makeUserPremium(){
+    this.sharedData.currentUser.subscribe(user=>{
+      user.level=3;
+      console.log("making payment");
+      this.user=user;
+    })
+
+    this.userService.updateUser(this.user).subscribe();
+    
+    /* $('#getPremiumModal').hide();
+    $('.modal-backdrop.fade.show').remove(); */
   }
 
   createForm() {

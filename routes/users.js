@@ -30,7 +30,7 @@ function getUsersRouter() {
       res.status(200).json({
         match,
         billing: user.billing,
-        _id: user._id,
+        _id: user.id,
         displayName: user.displayName,
         username: user.username,
         level: user.level,
@@ -153,7 +153,7 @@ function getUsersRouter() {
         throw Error("Problem finding or updating user by ID.");
       });
 
-      res.status(200).json(user); //{ id: user._id, message: "Success" }
+      res.status(200).json(user); //{ id: user.id, message: "Success" }
       console.log("update user success");
     } 
     catch (e) {
