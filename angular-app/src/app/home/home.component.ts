@@ -6,6 +6,7 @@ import { UserService } from '../services/userServices';
 import { Movie } from '../models/movie';
 import { User } from '../models/user';
 import { Router } from '@angular/router';
+import { timingSafeEqual } from 'crypto';
 
 @Component({
   selector: 'app-home',
@@ -53,7 +54,8 @@ export class HomeComponent implements OnInit {
   search: any = {};
   user: User = new User;
   searchFinished: Boolean = false;
-  
+  loadComplete: Boolean  = false;
+
   ngOnInit() {
     console.log("session: ",sessionStorage.getItem("keyname"));
     if (sessionStorage.getItem("keyname")) {
@@ -81,6 +83,9 @@ export class HomeComponent implements OnInit {
           this.user = user;
         }
       }); */
+      this.isSearched = false;
+      this.searchFinished = false;
+      this.loadComplete =false;
       this.sortMoviesByGenre();
     }
     else {
@@ -92,17 +97,9 @@ export class HomeComponent implements OnInit {
 
   }
 
-  sortMoviesByGenre() { // transform data here 
-    /* this.sharedData.allMovies.subscribe( movies => {
-        movies.forEach( movie => {
-          var genres = movie.genres;
-          genres.forEach( genre => {
-            // add to moviesActual
-          });
-        });
-    }); */
-    this.movieService.getAllMovies().subscribe(movies => {
-      movies.forEach(movie => {
+  sortMoviesByGenre() { 
+    this.movieService.getAllMovies().subscribe(async movies => {
+      await movies.forEach(movie => {
       var genres = movie["genres"];
       genres.forEach(genre => {
         if (this.moviesActual != null && this.moviesActual.get(genre) != null)
@@ -112,6 +109,7 @@ export class HomeComponent implements OnInit {
         }
       });
       })
+      this.loadComplete = true;
     });
   }
 
@@ -120,6 +118,7 @@ export class HomeComponent implements OnInit {
     console.log("input text  " + inputVal);
     console.log("Genre checkbox " + this.model.genre);
     inputVal  = inputVal.toLowerCase();
+    this.searchFinished =false;
     if (inputVal.trim() != "") {
       this.isSearched = true;
       this.moviesSearched = [];
