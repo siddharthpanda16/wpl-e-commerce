@@ -159,7 +159,7 @@ export class AdminComponent implements OnInit {
         //console.log(user);
         //console.log(JSON.stringify(user) );
         this.selectedUser = user;
-        console.log("user: " + stringify(user._id) );
+        console.log("user: " + stringify(user.id) );
       });
     }
     else
@@ -250,7 +250,7 @@ export class AdminComponent implements OnInit {
     {
       if(this.manageModeUpdate)
       {
-        console.log("admin, onmanageuser: " + updatedUser._id + ", " + updatedUser.username);
+        console.log("admin, onmanageuser: " + updatedUser.id + ", " + updatedUser.username);
         
         this.userService.updateUser(updatedUser).subscribe(resp => {
           console.log("admin, update user, response: " + JSON.stringify(resp) );

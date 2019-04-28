@@ -52,17 +52,22 @@ export class HomeComponent implements OnInit {
   searchForm: FormGroup;
   search: any = {};
   user: User = new User;
-
+  searchFinished: Boolean = false;
+  
   ngOnInit() {
-    console.log("session: ");
+    console.log("session: ",sessionStorage.getItem("keyname"));
     if (sessionStorage.getItem("keyname")) {
       this.userService.getUser(sessionStorage.getItem("keyname")).subscribe(user => {
         this.sharedData.setUser(user);
         if (user == null || user.username == '') {
+          console.log("No user found");
+
           this.router.navigate(['/login']);
         }
         else {
           this.user = user;
+          console.log({"user":user});
+          this.router.navigate(['/']);
         }
       });
      /*  this.sharedData.currentUser.subscribe(user => {
@@ -114,12 +119,13 @@ export class HomeComponent implements OnInit {
     console.log("search form is submitted");
     console.log("input text  " + inputVal);
     console.log("Genre checkbox " + this.model.genre);
+    inputVal  = inputVal.toLowerCase();
     if (inputVal.trim() != "") {
       this.isSearched = true;
       this.moviesSearched = [];
 
-      this.movieService.getAllMovies().subscribe(movies => {
-        movies.forEach(movie => {
+      this.movieService.getAllMovies().subscribe(async movies => {
+        await movies.forEach(movie => {
           if (((this.model.title || (!this.model.genre && !this.model.title && !this.model.director)) && movie.Title.toLowerCase().includes(inputVal))
           || (this.model.director && movie.director.toLowerCase().includes(inputVal))) 
           {
@@ -133,6 +139,7 @@ export class HomeComponent implements OnInit {
             })
           } 
         });
+        this.searchFinished =true;
       });
       console.log(this.model.genre, this.model.title, this.model.director)
   }

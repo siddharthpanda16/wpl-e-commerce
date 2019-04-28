@@ -1,6 +1,6 @@
 
-<html>
-<body>
+<app-nav>
+</app-nav>
 <div class="fullPage" id="page">
 
   <div class="pgHeader" id="pgHeader">
@@ -188,7 +188,7 @@
           <h2>User Details:</h2>
           <form id="userDetailsForm" name="userDetailsForm" #userDetailsForm>
           
-          <label>User ID: {{ selectedUser._id }}</label>
+          <label>User ID: {{ selectedUser.id }}</label>
           
           <br>
           <label>Username: {{ selectedUser.username}}</label>
@@ -236,5 +236,3 @@
 
 
 </div> <!-- div id=page -->
-</body>
-</html>

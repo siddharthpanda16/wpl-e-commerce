@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
       this.userService.validateUser(username, password).subscribe(user => {
         console.log("login, onLogin(): " + username + ' ' + password + ', this.user: ' + '  ' + user.username + '  ' + user.password)
         console.log("user: " + JSON.stringify(user));
-        console.log("login.onLogin(), user._id == " + user._id);
+        console.log("login.onLogin(), user.id == " + user.id);
 1        // console.log(this.sharedData.currentUser);
         if( !user.match ) {
           this.router.navigate(['/login']);
@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
           console.log(username + ' ' + password + '  ' + this.user.username + '  ' + this.user.password)
           this.sharedData.setUser(user);
           this.success = true;
-          sessionStorage.setItem("keyname", user._id);
+          sessionStorage.setItem("keyname", user.id);
           // console.log(this.sharedData.currentUser);
           this.router.navigate(['/']);
         }

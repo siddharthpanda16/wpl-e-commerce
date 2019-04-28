@@ -48,7 +48,7 @@ export class RegisterComponent implements OnInit {
       console.log( this.user );
       this.userService.addUser(this.user).subscribe(user => {
         console.log(user['_id'],"returned from register");
-        sessionStorage.setItem("keyname", user._id);
+        sessionStorage.setItem("keyname", user['_id']);
         this.router.navigate(['/']);
       }, err => {
         this.success=false;
