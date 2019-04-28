@@ -1,3 +1,240 @@
-<p>
-  admin works!
-</p>
+
+<html>
+<body>
+<div class="fullPage" id="page">
+
+  <div class="pgHeader" id="pgHeader">
+    <h1> Admin Page </h1>  
+    <div>
+      <button type="button" id="manageTargetSwitch" (click)="manageTargetSwitch()"> {{ manageTargetSwitchText }}</button>
+      <button type="button" id="manageModeSwitch" (click)="manageModeSwitch()" *ngIf="!manageUsers"> {{ manageModeSwitchText }}</button><br>
+      <h2>
+        {{manageTarget}}
+      </h2>
+      <br>
+      <h2>
+        Manage Mode: {{manageMode}}
+      </h2>
+    </div>
+    <div id="search-div-id" *ngIf="manageModeUpdate">
+        <form id="searchForm" class="form-inline" novalidate>
+          <input class="form-control mr-sm-2" type="search" #search_input [placeholder]="searchPlaceHolder" aria-label="Search">
+          <button (click)="onSearch(search_input.value)" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+  </div> <!-- div id=pgheader -->
+
+  <div class="pgBody" id="pgBody">
+    <div id="pgBodyMovies" *ngIf="!manageUsers">
+      <div id="updateMovies" *ngIf="manageModeUpdate">
+        <h2>Select a movie to view/update</h2>
+        <form [formGroup] ="selectMovieForm" >
+          <select name="selectMovie" formControlName="selectMovie" (change)="onSelect(selectMovieForm.value.selectMovie)">
+              <option *ngFor="let movie of moviesSearched" [ngValue]="movie"> 
+                {{movie.Title}}
+              </option>
+          </select>
+        </form>
+      </div>
+      <div id="addMovies" *ngIf="!manageModeUpdate">
+        <h2>Fill in the details to add a new Movie</h2>
+      </div>
+      
+      <div class="detailsView">
+
+        <br>
+        <h2>Movie Details:</h2>
+        <form id="movieDetailsForm" name="movieDetailsForm" #movieDetailsForm novalidate >
+          <div class="viewLeftRight">
+          <div class="detailsLeft">           
+            <br>
+            <label for="oid" *ngIf="manageModeUpdate">Movie ID:</label>
+            <input id="oid" name="oid" type=text [(ngModel)]="selectedMovie._id" *ngIf="manageModeUpdate" disabled>
+            
+            <br>
+            <label for="Title">Movie Title:</label>
+            <input id="Title" name="Title" type=text [(ngModel)]="selectedMovie.Title">
+            
+            <br>
+            <label>Year</label>
+            <input id="year" name="year" type=text [(ngModel)]="selectedMovie.year">
+
+            <br>
+            <label>User Level Required</label>
+            <input id="level" name="level" type=text [(ngModel)]="selectedMovie.level">
+
+            <br>
+            <label for="genres">Genre</label>
+            <input id="genres" name="genres" type=text [(ngModel)]="selectedMovie.genres">
+
+            <br>
+            <label for="countries">Countries</label>
+            <input id="countries" name="countries" type=text [(ngModel)]="selectedMovie.countries">
+
+            <br>
+            <label for="director">Director</label>
+            <input id="director" name="director" type=text [(ngModel)]="selectedMovie.director">
+
+            <br>
+            <label for="actors">Actors</label>
+            <input id="actors" name="actors" type=text [(ngModel)]="selectedMovie.actors">
+
+            <br>
+            <label for="writers">Writers</label>
+            <input id="writers" name="writers" type=text [(ngModel)]="selectedMovie.writers">
+
+            <br>
+            <label>Awards: </label>
+            <br>
+            <label for="awardswins">Wins</label>
+            <input id="awardswins" name="awardswins" type=text [(ngModel)]="selectedMovie.awards.wins">
+
+            <br>
+            <label for="awardsnominations">Nominations</label>
+            <input id="awardsnominations" name="awardsnominations" type=text [(ngModel)]="selectedMovie.awards.nominations">
+
+            <br>
+            <label for="awardstext">Comments</label>
+            <input id="awardstext" name="awardstext" type=text [(ngModel)]="selectedMovie.awards.text">
+
+            <br>
+            <label >Rated</label>
+            <input id="rated" name="rated" type=text [(ngModel)]="selectedMovie.rated">
+            
+            <br>
+            <label for="rated">Runtime</label>
+            <input id="runtime" name="runtime" type=text [(ngModel)]="selectedMovie.runtime">
+            
+            <br>
+            <label for="plot">Plot</label>
+            <textarea id="plot" name="plot" [(ngModel)]="selectedMovie.plot">{{selectedMovie.plot}}</textarea>
+            
+            <br>
+            <label>Imdb: </label>
+            <br>
+            <label for="imdbrating">Rating</label>
+            <input id="imdbrating" name="imdbrating" type=text [(ngModel)]="selectedMovie.imdb.rating">
+            
+            <br>
+            <label for="imdvotes">Votes</label>
+            <input id="imdbvotes" name="imdbvotes" type=text [(ngModel)]="selectedMovie.imdb.votes">
+            
+            <br>
+            <label for="imdbid">ID</label>
+            <input id="imdbid" name="imdbid" type=text [(ngModel)]="selectedMovie.imdb.id">
+            
+            <br>
+            <label for="metacritic">Metacritic</label>
+            <input id="metacritic" name="metacritic" type="text" [(ngModel)]="selectedMovie['metacritic']">
+
+            <br>
+            <label> Tomato: </label>       
+            <br>
+            <label for="tomatorating">Rating</label>
+
+            <input id="tomatorating" name="tomatorating" [(ngModel)]="selectedMovie.tomato['rating']">
+
+            <br>
+            <label for="tomatouserReviews">User Reviews</label>
+            <input id="tomatouserReviews" name="tomatouserReviews" [(ngModel)]="selectedMovie.tomato.userReviews">
+
+            <br>
+            <label for="tomatouserMeter">User Meter</label>
+            <input id="tomatouserMeter" name="tomatouserMeter" [(ngModel)]="selectedMovie.tomato.userMeter">
+
+            <br>
+            <label for="tomatoimage">Image</label>
+            <input id="tomatoimage" name="tomatoimage" [(ngModel)]="selectedMovie.tomato.image">
+
+            <br>
+            <label for="tomatometer">Meter</label>
+            <input id="tomatometer" name="tomatometer" [(ngModel)]="selectedMovie.tomato.meter">
+
+            <br>
+            <label for="tomatoreviews">Reviews</label>
+            <input id="tomatoreviews" name="tomatoreviews" [(ngModel)]="selectedMovie.tomato.reviews">
+
+            <br>
+            <label for="tomatouserRating">User Rating</label>
+            <input id="tomatouserRating" name="tomatouserRating" [(ngModel)]="selectedMovie.tomato.userRating">
+
+            <br>
+            <label for="tomatofresh">Fresh</label>
+            <input id="tomatofresh" name="tomatofresh" [(ngModel)]="selectedMovie.tomato.fresh">
+
+            <br>
+            <label for="tomatoconsensus">Consensus</label>
+            <input id="tomatoconsensus" name="tomatoconsensus" [(ngModel)]="selectedMovie.tomato.consensus">
+
+            <br>
+            <button type="submit" id="submit" (click)="onManageMovie(selectedMovie)"> {{manageMode}} Movie </button>
+            <button type="button" (click)="onDeleteMovie(selectedMovie)" *ngIf="manageModeUpdate"> Delete Movie</button>
+
+          </div>
+          <div class="detailsRight">
+              <div><img class="poster" [src]="selectedMovie.Poster"/><br></div>
+              <div><br><textarea id="Poster" name="Poster" form="movieDetailsForm" [(ngModel)]="selectedMovie.Poster" >{{selectedMovie.Poster}}</textarea></div>
+              
+          </div>
+          </div>
+
+      </form>
+      </div>
+    </div> <!-- div id=pgBodyMovies -->
+
+    <div id="pgBodyUsers" *ngIf="manageUsers">
+      <div id="updateUsers" *ngIf="manageModeUpdate">
+        <div class="detailsView">
+          <h2>User Details:</h2>
+          <form id="userDetailsForm" name="userDetailsForm" #userDetailsForm>
+          
+          <label>User ID: {{ selectedUser._id }}</label>
+          
+          <br>
+          <label>Username: {{ selectedUser.username}}</label>
+          
+          <br>
+          <label for="userdisplayName">Display Name</label>
+          <input type="text" id="userdisplayName" name="userdisplayName" [(ngModel)]="selectedUser.displayName">
+
+          <br>
+          <label for="password">Password</label>
+          <input type="text" id="userpassword" name="userpassword" [(ngModel)]="selectedUser.password" disabled>
+
+          <br>
+          <label for="userlevel">User Level</label>
+          <input type="text" id="userlevel" name="userlevel" [(ngModel)]="selectedUser.level">
+
+          <br>
+          <label for="usercart">Cart</label>
+          <textarea id="usercart" name="usercart" [(ngModel)]="selectedUser.cart">{{selectedUser.cart}}</textarea>
+
+          <br>
+          <label>Billing:</label>
+          <br>
+          <label for="ccNum">Card Number</label>
+          <input type="text" id="ccNum" name="ccNum" [(ngModel)]="selectedUser.billing.ccNum">
+          <label for="ccCVV">Card CVV</label>
+          <input type="text" id="ccCVV" name="ccCVV" [(ngModel)]="selectedUser.billing.ccCVV">
+          <label for="ccExp">Card Exp Date</label>
+          <input type="text" id="ccExp" name="ccExp" [(ngModel)]="selectedUser.billing.ccExp">
+
+          <br>
+          <label>Is Admin: {{selectedUser.isAdmin}} </label>
+
+          <br>
+          <button type="submit" id="updateUser" name="updateUser" (click)="onManageUser(selectedUser)">Update User</button>
+          </form>
+        </div>
+      </div>
+      
+
+    </div> <!-- div id=pgBodyUsers -->
+
+  </div> <!-- div id=pgBody -->
+
+
+
+</div> <!-- div id=page -->
+</body>
+</html>

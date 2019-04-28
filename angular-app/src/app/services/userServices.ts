@@ -25,28 +25,42 @@ export class UserService {
 
     ngOnInit() {}
 
-    getUser(username:string): Observable<User> {
-        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, username); 
-        
+    getUser(userID:string): Observable<User> {
+        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, userID); 
         var options = httpOptions; 
         // options['params'] = new HttpParams()
         //     .set('session_id',this.currUserId);
 
+        console.log("userService, getUser() " + url);
+        
+
         return this.http.get<User>( url, options).pipe(
             tap(_ => console.log('fetched user')),
-            catchError(this.handleError<User>(`getUser() failed`))
+            catchError(this.handleError<User>(`getUserById() failed`))
+
         );
     }
+    getSingleUser(username:string): Observable<User> {
+      var url = ('http://localhost:1234/users/username/' + username); 
+      var options = httpOptions; 
+      // options['params'] = new HttpParams()
+      //     .set('session_id',this.currUserId);
+      console.log("userService, getUser() " + url);
+      
+      return this.http.get<User>( url,options).pipe(
+          tap(_ => console.log('fetched claim')),
+          catchError(this.handleError<User>(`fetchUser() failed`))
+      );
+  }
 
     validateUser(username:string, password:string):Observable<User> {
       var url = ('http://localhost:1234/login'); 
       var options = httpOptions; 
-      console.log( { username, password})
+      console.log("userService, validateUser()" , { username, password})
       let queryParams = {
         'username' : username , 
         'password': password
-      }
-
+      };
       return this.http.post<User>( url, queryParams , options ).pipe(
           tap(_ => console.log('validated user')),
           catchError(this.handleError<User>(`validateUser() failed`))
@@ -64,19 +78,20 @@ export class UserService {
     }
 
     updateUser(user:User):Observable<User> {
-      var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user.id); 
+      var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user._id); 
       var options = httpOptions; 
-      let queryParams = {
+      var queryParams = {
         'displayName': user.displayName,
         'username': user.username,
         'level': user.level,
         'cart': user.cart,
         'billing': user.billing
       }
-
+      console.log("userServices, updateuser");
+      
       return this.http.put<User>( url, queryParams, options).pipe(
           tap(_ => { 
-            this.sharedData.setUser(user); 
+            //this.sharedData.setUser(user); 
             console.log('updated user');
           }),
           catchError(this.handleError<User>(`updateUser() failed`))
@@ -84,7 +99,7 @@ export class UserService {
     }
 
     updatePlaylist(user:User, movieIds:string[]):Observable<User>{
-      var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user.id); 
+      var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user._id); 
       user.cart = movieIds;
       var options = httpOptions; 
       let queryParams = {
@@ -106,7 +121,7 @@ export class UserService {
         return new BehaviorSubject<boolean>(false);
       } else {
         user.cart.push(movieId);
-        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user.id); 
+        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user._id); 
         var options = httpOptions; 
         let queryParams = {
           'cart': user.cart
@@ -132,7 +147,7 @@ export class UserService {
         //   user.cart = user.cart.filter( function(value){
         //     return value != movieId;
         // });
-        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user.id); 
+        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user._id); 
         var options = httpOptions; 
 
         user.cart = user.cart.filter( function(value){

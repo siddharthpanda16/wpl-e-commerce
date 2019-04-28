@@ -47,8 +47,8 @@ export class RegisterComponent implements OnInit {
       this.user.billing.ccCVV = card_details ? String(card_details).split('/')[2] : "111";
       console.log( this.user );
       this.userService.addUser(this.user).subscribe(user => {
-        console.log(user['id'],"returned from register");
-        sessionStorage.setItem("keyname", user.id);
+        console.log(user['_id'],"returned from register");
+        sessionStorage.setItem("keyname", user._id);
         this.router.navigate(['/']);
       }, err => {
         this.success=false;
