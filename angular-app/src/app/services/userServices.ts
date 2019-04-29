@@ -163,7 +163,7 @@ export class UserService {
               console.log('deleted from playlist');
               this.sharedData.setUser(user);
             }),
-            catchError(this.handleError<boolean>(`deleteFromPlaylist() failed`))
+            catchError(this.handleError<boolean>(`deleteFromPlaylist() failed`, ))
         );
       // }
     }
@@ -174,7 +174,7 @@ export class UserService {
    * @param operation - name of the operation that failed
    * @param result - optional value to return as the observable result
    */
-  private handleError<T> (operation = 'operation', result?: T) {
+  private handleError<T> (operation = 'operation', message?: string) {
     return (error: any): Observable<T> => {
  
       // TODO: send the error to remote logging infrastructure
@@ -185,6 +185,8 @@ export class UserService {
  
       // Let the app keep running by returning an empty result.
       //return of(result as T);
+
+      if( error.status == 400) return throwError(error.error.error);
 
       return throwError(
         'There was an error while processing your request. Please try again later.');

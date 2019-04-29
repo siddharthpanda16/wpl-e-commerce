@@ -65,6 +65,7 @@ export class HomeComponent implements OnInit {
   private player;
   private ytEvent;
 
+
   ngOnInit() {
     console.log("session: ",sessionStorage.getItem("keyname"));
     if (sessionStorage.getItem("keyname")) {
@@ -190,7 +191,7 @@ export class HomeComponent implements OnInit {
 
   public play(movie: Movie) {
     console.log("playing movie ", movie);
-    this.router.navigate(["/"]).then(result => { window.location.href = 'http://www.cnn.com/'; });
+    this.router.navigate(["/"]).then(result => { window.location.href = 'http://www.youtube.com/'; });
 
   }
 

@@ -21,6 +21,7 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   submitted: Boolean = false;
   success: Boolean = true;
+  errorMessage : string = "";
 
   ngOnInit() {
   }
@@ -51,6 +52,7 @@ export class RegisterComponent implements OnInit {
         sessionStorage.setItem("keyname", user['_id']);
         this.router.navigate(['/']);
       }, err => {
+        this.errorMessage = err;
         this.success=false;
         this.router.navigate(['/register']);
       });

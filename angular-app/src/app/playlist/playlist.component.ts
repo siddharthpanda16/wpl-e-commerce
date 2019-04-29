@@ -39,7 +39,7 @@ export class PlaylistComponent implements OnInit {
         else{
             console.log( "here" );
             this.router.navigate(['/playlist']);
-            this.setUser();
+            // this.setUser();
             this.getPlaylist();
           }
         });
@@ -56,8 +56,15 @@ export class PlaylistComponent implements OnInit {
       playlist.forEach( movieId => {
         if( !this.ids.includes( movieId) ) {
           this.movieService.getMovieById(movieId).subscribe( movie => {
+            if( movie ) {
               this.movies.push( movie );
+              this.movies.sort(function(a, b){  
+                return currentUser.cart.indexOf(a._id) - currentUser.cart.indexOf(b._id);
+              });
               this.ids.push(movieId);
+            }
+          }, err => {
+            console.log("couldnt get movie");
           });
         }
       });
@@ -92,7 +99,8 @@ export class PlaylistComponent implements OnInit {
     this.movies.forEach(movie => {
       movieIds.push(movie._id);
     }); 
-    this.userService.updatePlaylist(this.user, movieIds).subscribe( res => {
+    this.userService.updatePlaylist(this.user, movieIds).subscribe( user => {
+      this.user = user;
     });
   }
 

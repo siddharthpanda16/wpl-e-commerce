@@ -55,7 +55,7 @@
                     data-target="#getPremiumModal">
                     Get Premium </button>
                   <button class="btn btn-info savebutton playlist-btn" *ngIf="canPlay(movie) && !checkMovieInCart(movie)"
-                    (click)="addToPlayList(movie)">
+                    (click)="addToPlayList(movie)" data-toggle="modal" [attr.data-target]="user.cart.length>=5?'#cannotAddToPlaylistModal':null">
                     Add To Playlist <i class="far fa-plus-square fa-lg"></i> </button>
                     <button class="btn btn-info savebutton" *ngIf="canPlay(movie) && checkMovieInCart(movie)" (click)="loadPlayer()" data-toggle="modal" data-target="#exampleModalCenter">
                         Play <i class="far fa-play-circle fa-lg"></i></button>
@@ -110,7 +110,7 @@
                   data-target="#getPremiumModal" *ngIf="!canPlay(movie)"> Get
                   Premium </button>
                 <button class="btn btn-info savebutton playlist-btn" *ngIf="canPlay(movie) && !checkMovieInCart(movie)"
-                  (click)="addToPlayList(movie)">
+                  (click)="addToPlayList(movie)" data-toggle="modal" [attr.data-target]="user.cart.length>=5?'#cannotAddToPlaylistModal':null">
                   Add To Playlist <i class="far fa-plus-square fa-lg"></i> </button>
                 <button class="btn btn-info savebutton" *ngIf="canPlay(movie) && checkMovieInCart(movie)" data-toggle="modal" data-target="#exampleModalCenter">
                   Play <i class="far fa-play-circle fa-lg"></i></button>
@@ -182,3 +182,22 @@
       </div>
     </div>
   </div>
+
+    
+  <!-- Modal -->
+  <div class="modal fade" id="cannotAddToPlaylistModal" tabindex="-1" role="dialog" aria-labelledby="cannotAddToPlaylistTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-warning" id="cannotAddToPlaylistTitle">Playlist limit exceeded</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <span class="text-danger"> You have reached your playlist capacity. Please remove before adding new movies</span> 
+      </div>
+    </div>
+  </div>
+</div>
