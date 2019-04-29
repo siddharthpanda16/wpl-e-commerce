@@ -13,6 +13,7 @@ export class User{
     password:string = '';
     level:number = 2;
     cart:string[] = [];
+    cartHistory:string[] = [];
     billing:Card = new Card();
     isAdmin:Boolean = false;
     

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, throwError, of, BehaviorSubject } from 'rxjs';
+import { Observable, throwError, of, BehaviorSubject, timer } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
@@ -102,8 +102,10 @@ export class UserService {
       var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user.id); 
       user.cart = movieIds;
       var options = httpOptions; 
+      user.cartHistory.unshift("Updated playlist sequence at " + new Date().toLocaleString());
       let queryParams = {
-        'cart': user.cart
+        'cart': user.cart,
+        'cartHistory' : user.cartHistory
       }
 
       console.log( "updating playlist " , user , url );
@@ -116,15 +118,17 @@ export class UserService {
       );
     }
 
-    addToPlaylist(user:User, movieId:string):Observable<boolean>{
+    addToPlaylist(user:User, movieId:string, movieName?:string):Observable<boolean>{
       if( user.cart.length === 5 ){
         return new BehaviorSubject<boolean>(false);
       } else {
         user.cart.push(movieId);
+        user.cartHistory.unshift('Added ' +  movieName + ' at ' + new Date().toLocaleString());
         var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user.id); 
         var options = httpOptions; 
         let queryParams = {
-          'cart': user.cart
+          'cart': user.cart,
+          'cartHistory' : user.cartHistory
         }
 
         console.log( url , queryParams );
@@ -139,7 +143,7 @@ export class UserService {
     }
 
 
-    deleteFromPlaylist(user:User, movieId:string):Observable<boolean>{
+    deleteFromPlaylist(user:User, movieId:string, movieName?:string):Observable<boolean>{
         // console.log('here2', user);
         // if( user.cart.length == 0 ){
         //   return new BehaviorSubject<boolean>(false);
@@ -153,9 +157,11 @@ export class UserService {
         user.cart = user.cart.filter( function(value){
           return value != movieId;
         });
+        user.cartHistory.unshift('Deleted ' +  movieName + ' at ' + new Date().toLocaleString());
         console.log( {"delete service " : {  user , url }});
         let queryParams = {
-          'cart': user.cart
+          'cart': user.cart,
+          'cartHistory' : user.cartHistory
         }
 
         return this.http.put<boolean>( url, queryParams, options).pipe(

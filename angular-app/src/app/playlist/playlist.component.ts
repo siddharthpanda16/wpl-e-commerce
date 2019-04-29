@@ -113,7 +113,7 @@ export class PlaylistComponent implements OnInit {
   }
 
   public removeFromPlaylist(movie:Movie){
-    this.userService.deleteFromPlaylist(this.user, movie._id).subscribe( res => {
+    this.userService.deleteFromPlaylist(this.user, movie._id, movie.Title).subscribe( res => {
       this.movies = this.movies.filter( function(value){
         return value._id != movie._id;
       });
