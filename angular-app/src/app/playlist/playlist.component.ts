@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DataService } from '../data.service';
 import { UserService } from '../services/userServices';
 import { MovieService } from '../services/movieServices';
@@ -24,6 +24,10 @@ export class PlaylistComponent implements OnInit {
   };
   private player;
   private ytEvent;
+  showHistory:boolean = false;
+  page = 1;
+  pageSize = 4;
+  collectionSize = 0;
 
 
   constructor(private sharedData:DataService, private movieService:MovieService,
@@ -52,6 +56,7 @@ export class PlaylistComponent implements OnInit {
     console.log( "here2" );
     this.sharedData.currentUser.subscribe( currentUser => {
       this.user = currentUser;
+      this.collectionSize = currentUser.cartHistory.length;
       var playlist = this.user.cart;
       playlist.forEach( movieId => {
         if( !this.ids.includes( movieId) ) {
@@ -119,6 +124,12 @@ export class PlaylistComponent implements OnInit {
       });
     });
     
+  }
+
+  get carthistorytable(): {id:number, message:string}[] {
+    return this.user.cartHistory
+      .map((message, i) => ({id: i + 1, message}))
+      .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
   }
 
   public play(){

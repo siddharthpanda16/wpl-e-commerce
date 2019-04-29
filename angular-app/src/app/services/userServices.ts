@@ -102,7 +102,7 @@ export class UserService {
       var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user.id); 
       user.cart = movieIds;
       var options = httpOptions; 
-      user.cartHistory.unshift("Updated playlist sequence at " + new Date().toLocaleString());
+      user.cartHistory.unshift("Updated playlist sequence at      " + new Date().toLocaleString());
       let queryParams = {
         'cart': user.cart,
         'cartHistory' : user.cartHistory
@@ -123,7 +123,7 @@ export class UserService {
         return new BehaviorSubject<boolean>(false);
       } else {
         user.cart.push(movieId);
-        user.cartHistory.unshift('Added ' +  movieName + ' at ' + new Date().toLocaleString());
+        user.cartHistory.unshift('Added     "' +  movieName + '"      at ' + new Date().toLocaleString());
         var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user.id); 
         var options = httpOptions; 
         let queryParams = {
@@ -157,7 +157,7 @@ export class UserService {
         user.cart = user.cart.filter( function(value){
           return value != movieId;
         });
-        user.cartHistory.unshift('Deleted ' +  movieName + ' at ' + new Date().toLocaleString());
+        user.cartHistory.unshift('Deleted     "' +  movieName + '"      at ' + new Date().toLocaleString());
         console.log( {"delete service " : {  user , url }});
         let queryParams = {
           'cart': user.cart,
