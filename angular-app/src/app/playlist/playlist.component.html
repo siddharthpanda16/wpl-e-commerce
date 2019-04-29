@@ -37,6 +37,31 @@
       </div>
     </div>
   </div>
+  <div class="secondaryheader">
+    <button class="btn btn-info savebutton" (click)="showHistory=!showHistory"> History </button>
+  </div>
+  <div *ngIf="showHistory&&collectionSize>0">
+    <div>
+      <table class="table">
+        <tbody>
+        <tr *ngFor="let hist of carthistorytable">
+          <td>{{ hist.id }}</td>
+          <td>{{ hist.message }}</td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="d-flex justify-content-between p-2">
+        <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize">
+        </ngb-pagination>
+      
+        <select class="custom-select" style="width: auto" [(ngModel)]="pageSize">
+          <option [ngValue]="5">5 items per page</option>
+          <option [ngValue]="10">10 items per page</option>
+          <option [ngValue]="20">20 items per page</option>
+        </select>
+      </div>
+    </div>
+  </div>
 </div>
  <!-- Modal -->
  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
