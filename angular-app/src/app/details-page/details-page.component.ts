@@ -24,34 +24,34 @@ export class DetailsPageComponent implements OnInit {
   };
   private player;
   private ytEvent;
+  subscription:any;
 
   constructor(private sharedData:DataService, private movieService:MovieService, 
-    private userService:UserService,private route: ActivatedRoute, private router:Router) { }
+    private userService:UserService,private route: ActivatedRoute, private router:Router) {
 
-  ngOnInit() {
-    console.log("in deatils");
-    if (sessionStorage.getItem("keyname")) {
-      //this.userService.getUser(sessionStorage.getItem("keyname")).subscribe(user => this.sharedData.setUser(user));
-      this.sharedData.currentUser.subscribe(user => {
-        if (user == null || user.username == '') {
+      this.subscription = route.params.subscribe(val => {
+        if (sessionStorage.getItem("keyname")) {
+          this.sharedData.currentUser.subscribe(user => {
+            if (user == null || user.username == '') {
+              this.router.navigate(['/login']);
+            } else {
+              console.log( val );
+              this.movieId = val.id;
+              this.setUser();
+              this.getDetails(this.movieId);
+            }
+          })
+        } else {
           this.router.navigate(['/login']);
         }
-        else {
-          this.router.navigate([`/movie/${this.route.snapshot.paramMap.get("id")}`]);
-          this.movieId = this.route.snapshot.paramMap.get("id");
-          // this.route.paramMap.subscribe(params => {
-          //   this.movieId = params.get("id")
-          // });
-          this.setUser();
-          console.log( 'username' , this.user.username );
-          this.getDetails(this.movieId);
-        }
-      });
-    }
-    else {
-      this.router.navigate(['/login']);
-    }
-   
+    });
+  }
+
+  ngOnInit() {
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe()
   }
 
   //video player
@@ -70,12 +70,19 @@ export class DetailsPageComponent implements OnInit {
     this.movieService.getMovieById(movieId).subscribe( movie => {
       this.stars = Math.round(movie.imdb.rating/2);
       this.movie = movie;
+      this.similar = [];
       this.movieService.getRecommended([movie]).subscribe ( movies => {
         movies.forEach( simMovie => {
           this.similar.push(simMovie);
         });
       });
     });
+  }
+
+  movieDetails(simMovie:Movie){
+    this.router.navigate([`/movie/${simMovie._id}`]);  
+    // this.similar = [];        
+    // this.getDetails(simMovie._id);
   }
 
   public setUser(){
