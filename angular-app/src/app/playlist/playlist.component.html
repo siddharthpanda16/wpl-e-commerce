@@ -38,11 +38,11 @@
     </div>
   </div>
   <div class="secondaryheader">
-    <button class="btn btn-info savebutton" (click)="showHistory=!showHistory"> History </button>
+    <button class="btn btn-info savebutton history-btn" (click)="showHistory=!showHistory"> History </button>
   </div>
   <div *ngIf="showHistory&&collectionSize>0">
-    <div>
-      <table class="table">
+    <div class="padding50">
+      <table class="table table-hover table-light">
         <tbody>
         <tr *ngFor="let hist of carthistorytable">
           <td>{{ hist.id }}</td>
