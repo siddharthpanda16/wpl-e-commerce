@@ -101,7 +101,7 @@ export class DetailsPageComponent implements OnInit {
 
   public addToPlayList(movie:Movie){
     console.log( { from : "AddPlaylistMovieDetails" , user : this.user , movie});
-    this.userService.addToPlaylist(this.user , movie._id).subscribe();
+    this.userService.addToPlaylist(this.user , movie._id, movie.Title).subscribe();
   }
 
   public getPremium(){

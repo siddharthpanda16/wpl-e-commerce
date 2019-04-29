@@ -104,6 +104,7 @@ function getUsersRouter() {
 
       /* Set the cart to blank initially */
       req.body.cart = [];
+      req.body.history = [];
 
       /* Ensure all the required fields are present. */
       if (
