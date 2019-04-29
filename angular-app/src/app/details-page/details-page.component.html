@@ -46,7 +46,7 @@
             </div>
             <br>
             <button class="btn btn-warning "  *ngIf="!canPlay(movie)" (click)="getPremium()"> Get Premium </button>
-            <button class="btn btn-info "  *ngIf="canPlay(movie) && !alreadyInCart(movie)" (click)="addToPlayList(movie)"> Add To Playlist </button>
+            <button class="btn btn-info "  *ngIf="canPlay(movie) && !alreadyInCart(movie)" (click)="addToPlayList(movie)" data-toggle="modal" [attr.data-target]="user.cart.length>=5?'#cannotAddToPlaylistModal':null"> Add To Playlist </button>
             <button class="btn btn-info "  *ngIf="canPlay(movie) && alreadyInCart(movie)" data-toggle="modal" data-target="#exampleModalCenter"> Play </button>
           </div>
           <div class="col col-4">
@@ -85,3 +85,22 @@
         </div>
       </div>
     </div>
+
+        
+  <!-- Modal -->
+  <div class="modal fade" id="cannotAddToPlaylistModal" tabindex="-1" role="dialog" aria-labelledby="cannotAddToPlaylistTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-warning" id="cannotAddToPlaylistTitle">Playlist limit exceeded</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <span class="text-danger"> You have reached your playlist capacity. Please remove before adding new movies</span> 
+      </div>
+    </div>
+  </div>
+</div>

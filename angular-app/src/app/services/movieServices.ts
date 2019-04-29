@@ -62,7 +62,7 @@ export class MovieService {
         var options = httpOptions; 
 
         return this.http.get<Movie>( url, options).pipe(
-            tap(_ => console.log('fetched movie, getMovieByID()')),
+            tap(_ => console.log('fetched movie, getMovieByID('+movieId+')')),
             catchError(this.handleError<Movie>(`getMovieById() failed`))
         );
     }

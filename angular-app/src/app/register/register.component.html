@@ -9,7 +9,7 @@
 
     <!-- Login Form -->
     <form [formGroup]="registerForm" novalidate>
-      <h5 *ngIf="!success" class="error alert-danger">confirm password and password do not match!!!</h5>
+      <h5 *ngIf="!success" class="error alert-danger">{{errorMessage}}</h5>
       <input type="text" id="displayname"  formControlName="displayname" #displayname class="fadeIn second"  name="displayname" placeholder="*Full Name">
       <div *ngIf="submitted && registerForm.controls.displayname.errors" class="error">
           <label *ngIf="registerForm.controls.displayname.errors.required" class="alert-danger"> display name is required.</label>
