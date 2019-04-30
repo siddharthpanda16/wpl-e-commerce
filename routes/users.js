@@ -128,7 +128,7 @@ function getUsersRouter() {
       await user.save().catch(e => {
         throw Error("Problem saving new user.");
       });
-
+console.log(user)
       res.status(200).json( user );
     } catch (e) {
       res.status(400).json({ error: e.message });
@@ -139,8 +139,8 @@ function getUsersRouter() {
   /* *byKhoa: change put to post? */
   /* also can change to find by username */
   /* it couldn't get into this route, no log text from this shown on nodejs console */
-  router.put("/users/:id", async (req, res) => {
-    console.log(`PUT /users/${req.params.id} hit.`);
+  router.put("/users/:username", async (req, res) => {
+    console.log(`PUT /users/${req.params.username} hit.`);
     try {
       if (req.body.password) throw Error("Cannot change password. ");
       if (req.body.isAdmin)
@@ -148,7 +148,7 @@ function getUsersRouter() {
         throw Error("Cannot use endpoint to make existing user an admin.");
       }
 
-      const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+      const user = await User.findOneAndUpdate({ "username":req.params.username}, req.body, {
         new: true
       }).catch(e => {
         throw Error("Problem finding or updating user by ID.");

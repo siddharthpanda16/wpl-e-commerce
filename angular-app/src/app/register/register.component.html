@@ -31,6 +31,10 @@
       <div *ngIf="submitted && registerForm.controls.password.errors" class="error">
           <label *ngIf="registerForm.controls.password.errors.required" class="alert-danger"> password  is required.</label>
       </div>
+      <div *ngIf="submitted && registerForm.controls.password.errors" class="error">
+          <label *ngIf="registerForm.controls.password.errors.pattern" class="alert-danger"> Enter valid password (only
+            at least 8 characters,1 digit, 1 lowercase character (a-z),1 uppercase character (A-Z)).</label>
+        </div>
       <input type="password" id="confirm_password" formControlName="confirm_password" #confirm_password  class="fadeIn third" name="confirm_password" placeholder="Confirm Password">
       <div *ngIf="submitted && registerForm.controls.confirm_password.errors" class="error">
           <label *ngIf="registerForm.controls.confirm_password.errors.required" class="alert-danger"> confirm password is required.</label>

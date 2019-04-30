@@ -78,7 +78,7 @@ export class UserService {
     }
 
     updateUser(user:User):Observable<User> {
-      var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user.id); 
+      var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user.username); 
       var options = httpOptions; 
       var queryParams = {
         'displayName': user.displayName,
@@ -99,7 +99,7 @@ export class UserService {
     }
 
     updatePlaylist(user:User, movieIds:string[]):Observable<User>{
-      var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user.id); 
+      var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user.username); 
       user.cart = movieIds;
       var options = httpOptions; 
       user.cartHistory.unshift("Updated playlist sequence at      " + new Date().toLocaleString());
@@ -124,7 +124,7 @@ export class UserService {
       } else {
         user.cart.push(movieId);
         user.cartHistory.unshift('Added     "' +  movieName + '"      at ' + new Date().toLocaleString());
-        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user.id); 
+        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user.username); 
         var options = httpOptions; 
         let queryParams = {
           'cart': user.cart,
@@ -151,7 +151,7 @@ export class UserService {
         //   user.cart = user.cart.filter( function(value){
         //     return value != movieId;
         // });
-        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user.id); 
+        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user.username); 
         var options = httpOptions; 
 
         user.cart = user.cart.filter( function(value){
