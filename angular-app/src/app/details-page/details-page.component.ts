@@ -85,6 +85,19 @@ export class DetailsPageComponent implements OnInit {
     // this.getDetails(simMovie._id);
   }
 
+  makeUserPremium(){
+    this.sharedData.currentUser.subscribe(user=>{
+      user.level=3;
+      console.log("making payment");
+      this.user=user;
+    })
+
+    this.userService.updateUser(this.user).subscribe();
+    
+    /* $('#getPremiumModal').hide();
+    $('.modal-backdrop.fade.show').remove(); */
+  }
+
   public setUser(){
     this.sharedData.currentUser.subscribe( user => {
       this.user = user;

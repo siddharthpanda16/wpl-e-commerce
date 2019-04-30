@@ -45,7 +45,8 @@
                 <span>{{movie.awards.text}}</span>
             </div>
             <br>
-            <button class="btn btn-warning "  *ngIf="!canPlay(movie)" (click)="getPremium()"> Get Premium </button>
+            <button class="btn btn-warning "  *ngIf="!canPlay(movie)" data-toggle="modal"
+            data-target="#getPremiumModal"> Get Premium </button>
             <button class="btn btn-info "  *ngIf="canPlay(movie) && !alreadyInCart(movie)" (click)="addToPlayList(movie)" data-toggle="modal" [attr.data-target]="user.cart.length>=5?'#cannotAddToPlaylistModal':null"> Add To Playlist </button>
             <button class="btn btn-info "  *ngIf="canPlay(movie) && alreadyInCart(movie)" data-toggle="modal" data-target="#exampleModalCenter"> Play </button>
           </div>
@@ -104,3 +105,24 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="getPremiumModal" tabindex="-1" role="dialog" aria-labelledby="getPremiumModalTitle"
+aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title text-warning" id="getPremiumModalTitle">Get Premium</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+     <span class="text-danger"> Your card will be charged 50$.</span> As a premium member you will get access to all our movies.
+    </div>
+    <div class="modal-footer">
+      <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+      <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="makeUserPremium()">Make Payment</button>
+    </div>
+  </div>
+</div>
+</div>  
