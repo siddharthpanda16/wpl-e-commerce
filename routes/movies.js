@@ -227,15 +227,27 @@ function getMoviesRouter() {
         /* First aggregate the genres of all the movies into one list */
         let genreList = [];
         for (var i = 0; i < cart.length; i++) {
-          console.log("i", cart[i]);
           const movie = await Movie.findById(cart[i]).catch(e => {
             throw Error("Problem finding movie by ID.");
           });
           genreList.push(...movie.genres); // spread operator is a slick tool
         }
 
+        console.log("genreList", genreList);
+
         /* Filter down to the most common genre */
-        const favGenre = uniqueCountPreserve(genreList)[0] || "Action";
+        const favGenre = uniqueCountPreserve(genreList)[1] || "Action";
+
+        console.log("favGenre", favGenre);
+
+        console.log("genreList", genreList);
+
+        if (favGenre == true) {
+          console.log("Woo!");
+          favGenre = genreList[0];
+        }
+
+        console.log("favGenre", favGenre);
 
         /* return based on their favorite movie type */
         const recommendedMovies = await Movie.find({
