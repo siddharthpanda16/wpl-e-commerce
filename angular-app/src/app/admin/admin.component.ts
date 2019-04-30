@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { User } from '../models/user';
 import { Movie } from '../models/movie';
 import { Router } from "@angular/router";
@@ -10,6 +10,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { Observable, throwError } from 'rxjs';
 import { stringify } from '@angular/compiler/src/util';
 
+
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
@@ -17,12 +18,14 @@ import { stringify } from '@angular/compiler/src/util';
 })
 export class AdminComponent implements OnInit {
 
-  constructor(private sharedData: DataService, private movieService: MovieService, private userService: UserService, private formBuilder: FormBuilder, private router: Router) {
+  constructor(private sharedData: DataService, private movieService: MovieService, private userService: UserService, private formBuilder: FormBuilder, private router: Router, private cdr: ChangeDetectorRef) {
     this.selectedMovie = new Movie();
     this.selectedMovie._id = null;
   }
 
   user: User = new User;
+  userList: User[] = [];
+  usersSearched: User[] = [];
   moviesSearched: Movie[] = [];
   movies: Movie[];
   selectedUser: User = new User();
@@ -38,6 +41,8 @@ export class AdminComponent implements OnInit {
   
   
   searchPlaceHolder:string = "Movie Title";
+
+  searchedUser:boolean = false;
 
   ngOnInit() {
     console.log("admin session: ");
@@ -56,8 +61,8 @@ export class AdminComponent implements OnInit {
       this.movieService.getAllMovies().subscribe(movieList => {
         this.movies = movieList;
         this.moviesSearched = movieList;
+        this.cdr.detectChanges();
       });
-
 
     });
 
@@ -65,8 +70,11 @@ export class AdminComponent implements OnInit {
 
   selectMovieForm: FormGroup = new FormGroup({
     selectMovie: new FormControl()  
-  }
-  );
+  });
+
+  selectUserForm: FormGroup = new FormGroup({
+    selectUser: new FormControl()  
+  });
   
   /*
   movieDetailsForm: FormGroup = new FormGroup({
@@ -99,6 +107,8 @@ export class AdminComponent implements OnInit {
       this.searchPlaceHolder = "Username";
       this.manageTarget = "Manage Users";
     }
+    this.searchedUser = false;
+    this.cdr.detectChanges();
   }
 
   manageModeSwitch()
@@ -124,7 +134,8 @@ export class AdminComponent implements OnInit {
         this.manageModeSwitchText = "Switch to Add Mode";
       }
     }
-    
+    this.searchedUser = false;
+    this.cdr.detectChanges();
   }
 
   onSelect(movie:Movie){
@@ -149,18 +160,51 @@ export class AdminComponent implements OnInit {
 
   }
 
+  onSelectUser(user:User){
+    console.log("selected == " + user.username);
+    /* get all properties of a Movie object*/
+    this.selectedUser = user;
+
+  }
+
   onSearch(searchInput) {
     if (this.manageUsers)
     /* search user */
     {
-      this.userService.getSingleUser(searchInput).subscribe(user => {
-        
-        console.log("admin, search user");
-        //console.log(user);
-        //console.log(JSON.stringify(user) );
-        this.selectedUser = user;
-        console.log("user: " + stringify(user.id) );
-      });
+      console.log("admin, search user");
+      
+      this.usersSearched = [];
+
+      if ( this.userList.length == 0 )
+      {
+        this.userService.getAllUsers().subscribe(users => {          
+          this.userList = users;
+          //console.log("user list: " + JSON.stringify(this.userList ) );
+
+          this.userList.forEach( user => {
+            if(user.username.toLowerCase().includes(searchInput.toLowerCase() ) )  
+            {
+              this.usersSearched.push(user);
+              console.log("user: " + stringify(user.id) );
+            }
+            console.log("user searched: " + JSON.stringify(this.usersSearched) );
+          });
+
+        });
+      }
+      else
+      {
+        this.userList.forEach( user => {
+          if(user.username.toLowerCase().includes(searchInput.toLowerCase() ) )  
+          {
+            this.usersSearched.push(user);
+            console.log("user: " + stringify(user.id) );
+          }
+          console.log("user searched: " + JSON.stringify(this.usersSearched) );
+        });
+      }
+
+      this.searchedUser = true;
     }
     else
     /* search movie */
@@ -173,6 +217,9 @@ export class AdminComponent implements OnInit {
         }
       });
     }
+
+    this.cdr.detectChanges();
+
   }
 
   checkNull( input ) {
@@ -196,6 +243,13 @@ export class AdminComponent implements OnInit {
       {
         this.movieService.updateMovie(this.selectedMovie).subscribe(movie => {
           console.log("admin.onManageMovie.update() success: " + JSON.stringify(movie) );
+          
+          /* refresh movie list */
+          this.movieService.getAllMovies().subscribe(movieList => {
+            this.movies = movieList;
+            this.moviesSearched = movieList;
+            this.cdr.detectChanges();
+          });
         });
       }
       else
@@ -203,6 +257,13 @@ export class AdminComponent implements OnInit {
       {
         this.movieService.addMovie(this.selectedMovie).subscribe(movie => {
           console.log("admin.onManageMovie.add() success: " + JSON.stringify(movie) );
+          
+          /* refresh movie list */
+          this.movieService.getAllMovies().subscribe(movieList => {
+            this.movies = movieList;
+            this.moviesSearched = movieList;
+            this.cdr.detectChanges();
+          });
         });
         this.selectedMovie = new Movie();
         /*
@@ -210,14 +271,10 @@ export class AdminComponent implements OnInit {
         */
       }
 
-    }
-    
-    /* refresh movie list */
-    this.movieService.getAllMovies().subscribe(movieList => {
-      this.movies = movieList;
-      this.moviesSearched = movieList;
-    });
+      
+      
 
+    }
   }
 
   onDeleteMovie(deletedMovie:Movie){
@@ -233,15 +290,15 @@ export class AdminComponent implements OnInit {
           }
 
         );
+
+        this.movieService.getAllMovies().subscribe(movieList => {
+          this.movies = movieList;
+          this.moviesSearched = movieList;
+          this.cdr.detectChanges();
+        });
       }
-
+      
     }
-
-    this.movieService.getAllMovies().subscribe(movieList => {
-      this.movies = movieList;
-      this.moviesSearched = movieList;
-    });
-
   }
   
 
@@ -255,6 +312,37 @@ export class AdminComponent implements OnInit {
         this.userService.updateUser(updatedUser).subscribe(resp => {
           console.log("admin, update user, response: " + JSON.stringify(resp) );
         });
+
+        this.userService.getAllUsers().subscribe(users => {          
+          this.userList = users;
+          //console.log("user list: " + JSON.stringify(this.userList );
+          this.cdr.detectChanges();
+        });
+
+        
+      }
+    }
+  }
+
+  onDeleteUser(deletedUser:User){
+    if(this.manageUsers)
+    {
+      if( this.manageModeUpdate )
+      {
+        console.log("admin, onmanageuser: " + ", " + deletedUser.username);
+        this.userService.deleteUser(deletedUser).subscribe(resp => {
+          console.log("admin, delete user, response: " + JSON.stringify(resp) );
+        });
+
+      this.userService.getAllUsers().subscribe(users => {          
+        this.userList = users;
+        //console.log("user list: " + JSON.stringify(this.userList );
+        this.searchedUser = false;
+        this.selectedUser = new User;        
+        this.cdr.detectChanges(); 
+      });
+
+             
       }
     }
   }

@@ -40,6 +40,19 @@ export class UserService {
 
         );
     }
+
+    getAllUsers(): Observable<User[]> {
+      var url = 'http://localhost:1234/users';
+      var options = httpOptions; 
+      
+      console.log("userService, getAllUsers() ");
+
+      return this.http.get<User[]>( url, options).pipe(
+        tap(_ => console.log('fetched all users')),
+        catchError(this.handleError<User[]>(`getAllUsers() failed`))
+      );
+    }
+
     getSingleUser(username:string): Observable<User> {
       var url = ('http://localhost:1234/users/username/' + username); 
       var options = httpOptions; 
@@ -51,7 +64,7 @@ export class UserService {
           tap(_ => console.log('fetched claim')),
           catchError(this.handleError<User>(`fetchUser() failed`))
       );
-  }
+    }
 
     validateUser(username:string, password:string):Observable<User> {
       var url = ('http://localhost:1234/login'); 
@@ -78,7 +91,7 @@ export class UserService {
     }
 
     updateUser(user:User):Observable<User> {
-      var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user.id); 
+      var url = ('http://localhost:1234/users/{username}').replace(/{username}/g, user.username); 
       var options = httpOptions; 
       var queryParams = {
         'displayName': user.displayName,
@@ -98,8 +111,23 @@ export class UserService {
       );
     }
 
+    deleteUser(user:User):Observable<User> {
+      var url = ('http://localhost:1234/users/{username}').replace(/{username}/g, user.username); 
+      var options = httpOptions; 
+
+      console.log("userServices, deleteuser");
+      
+      return this.http.delete<User>( url, options).pipe(
+          tap(_ => { 
+            //this.sharedData.setUser(user); 
+            console.log('deleted user');
+          }),
+          catchError(this.handleError<User>(`deleteUser() failed`))
+      );
+    }
+
     updatePlaylist(user:User, movieIds:string[]):Observable<User>{
-      var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user.id); 
+      var url = ('http://localhost:1234/users/{username}').replace(/{username}/g, user.username); 
       user.cart = movieIds;
       var options = httpOptions; 
       user.cartHistory.unshift("Updated playlist sequence at      " + new Date().toLocaleString());
@@ -124,7 +152,7 @@ export class UserService {
       } else {
         user.cart.push(movieId);
         user.cartHistory.unshift('Added     "' +  movieName + '"      at ' + new Date().toLocaleString());
-        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user.id); 
+        var url = ('http://localhost:1234/users/{username}').replace(/{username}/g, user.username); 
         var options = httpOptions; 
         let queryParams = {
           'cart': user.cart,
@@ -151,7 +179,7 @@ export class UserService {
         //   user.cart = user.cart.filter( function(value){
         //     return value != movieId;
         // });
-        var url = ('http://localhost:1234/users/{user_id}').replace(/{user_id}/g, user.id); 
+        var url = ('http://localhost:1234/users/{username}').replace(/{username}/g, user.username); 
         var options = httpOptions; 
 
         user.cart = user.cart.filter( function(value){

@@ -8,7 +8,6 @@ const UserSchema = new Schema({
   username: { type: String, required: true },
   password: { type: String, required: true },
   cart: [{ type: String, required: true }],
-  cartHistory: [{ type: String, required: true }],
   billing: {
     ccNum: { type: String, required: true },
     ccCVV: { type: String, required: true },

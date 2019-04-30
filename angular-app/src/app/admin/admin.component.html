@@ -184,11 +184,22 @@
 
     <div id="pgBodyUsers" *ngIf="manageUsers">
       <div id="updateUsers" *ngIf="manageModeUpdate">
+        <div id="selectSearchedUser" *ngIf="searchedUser">
+            <h2>Select a User to view/update</h2>
+            <form [formGroup] ="selectUserForm" >
+              <select name="selectUser" formControlName="selectUser" (change)="onSelectUser(selectUserForm.value.selectUser)">
+                <option *ngFor="let user of usersSearched" [ngValue]="user"> 
+                    {{ user.username }}
+                </option>
+              </select>
+            </form>
+        </div>
+
         <div class="detailsView">
           <h2>User Details:</h2>
           <form id="userDetailsForm" name="userDetailsForm" #userDetailsForm>
           
-          <label>User ID: {{ selectedUser.id }}</label>
+          <label>User ID: {{ selectedUser._id }}</label>
           
           <br>
           <label>Username: {{ selectedUser.username}}</label>
@@ -224,6 +235,7 @@
 
           <br>
           <button type="submit" id="updateUser" name="updateUser" (click)="onManageUser(selectedUser)">Update User</button>
+          <button type="button" id="deleteUser" name="deleteUser" (click)="onDeleteUser(selectedUser)">Delete User</button>
           </form>
         </div>
       </div>
