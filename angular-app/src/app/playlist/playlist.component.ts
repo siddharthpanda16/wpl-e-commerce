@@ -56,36 +56,23 @@ export class PlaylistComponent implements OnInit {
     console.log( "here2" );
     this.sharedData.currentUser.subscribe( currentUser => {
       this.user = currentUser;
-      if(currentUser.cartHistory)
-      {
-        this.collectionSize = currentUser.cartHistory.length;
-      }
-      else
-      {
-        this.collectionSize = 0;
-      }
-      
-      var playlist;
-      if(this.user.cart)
-      {
-        playlist = this.user.cart;
-        playlist.forEach( movieId => {
-          if( !this.ids.includes( movieId) ) {
-            this.movieService.getMovieById(movieId).subscribe( movie => {
-              if( movie ) {
-                this.movies.push( movie );
-                this.movies.sort(function(a, b){  
-                  return currentUser.cart.indexOf(a._id) - currentUser.cart.indexOf(b._id);
-                });
-                this.ids.push(movieId);
-              }
-            }, err => {
-              console.log("couldnt get movie");
-            });
-          }
-        });
-      } 
-      
+      this.collectionSize = currentUser.cartHistory.length;
+      var playlist = this.user.cart;
+      playlist.forEach( movieId => {
+        if( !this.ids.includes( movieId) ) {
+          this.movieService.getMovieById(movieId).subscribe( movie => {
+            if( movie ) {
+              this.movies.push( movie );
+              this.movies.sort(function(a, b){  
+                return currentUser.cart.indexOf(a._id) - currentUser.cart.indexOf(b._id);
+              });
+              this.ids.push(movieId);
+            }
+          }, err => {
+            console.log("couldnt get movie");
+          });
+        }
+      });
     });
   }
   //video player
@@ -131,11 +118,10 @@ export class PlaylistComponent implements OnInit {
   }
 
   public removeFromPlaylist(movie:Movie){
-    this.userService.deleteFromPlaylist( this.user, movie._id.oid, movie.Title).subscribe( res => {
+    this.userService.deleteFromPlaylist(this.user, movie._id, movie.Title).subscribe( res => {
       this.movies = this.movies.filter( function(value){
         return value._id != movie._id;
       });
-      //console.log("test this.movies" + JSON.stringify(this.movies) );
     });
     
   }
