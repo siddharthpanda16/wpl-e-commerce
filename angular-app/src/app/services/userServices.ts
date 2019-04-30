@@ -130,10 +130,15 @@ export class UserService {
       var url = ('http://localhost:1234/users/{username}').replace(/{username}/g, user.username); 
       user.cart = movieIds;
       var options = httpOptions; 
-      user.cartHistory.unshift("Updated playlist sequence at      " + new Date().toLocaleString());
+      var cartHistory:string[] = [];
+      if(user.cartHistory)
+      {
+        cartHistory = user.cartHistory;
+      }
+      cartHistory.unshift("Updated playlist sequence at      " + new Date().toLocaleString());
       let queryParams = {
         'cart': user.cart,
-        'cartHistory' : user.cartHistory
+        'cartHistory' : cartHistory
       }
 
       console.log( "updating playlist " , user , url );
@@ -149,14 +154,22 @@ export class UserService {
     addToPlaylist(user:User, movieId:string, movieName?:string):Observable<boolean>{
       if( user.cart.length === 5 ){
         return new BehaviorSubject<boolean>(false);
-      } else {
+      }
+      else {
+        var cartHistory:string[] = [];
+        if (user.cartHistory)
+        {
+          cartHistory = user.cartHistory;
+        }
+
         user.cart.push(movieId);
-        user.cartHistory.unshift('Added     "' +  movieName + '"      at ' + new Date().toLocaleString());
+        cartHistory.unshift('Added     "' +  movieName + '"      at ' + new Date().toLocaleString());
+        
         var url = ('http://localhost:1234/users/{username}').replace(/{username}/g, user.username); 
         var options = httpOptions; 
         let queryParams = {
           'cart': user.cart,
-          'cartHistory' : user.cartHistory
+          'cartHistory' : cartHistory
         }
 
         console.log( url , queryParams );
@@ -181,15 +194,29 @@ export class UserService {
         // });
         var url = ('http://localhost:1234/users/{username}').replace(/{username}/g, user.username); 
         var options = httpOptions; 
+        var cartHistory:string[] = [];
 
-        user.cart = user.cart.filter( function(value){
-          return value != movieId;
-        });
-        user.cartHistory.unshift('Deleted     "' +  movieName + '"      at ' + new Date().toLocaleString());
+        if (user.cartHistory)
+        {
+          cartHistory = user.cartHistory;
+        }
+        
+        if (user.cart)
+        {
+          /*
+          user.cart = user.cart.filter( function(value){
+            return value != movieId;
+          });
+          */
+          user.cart.splice(user.cart.indexOf(movieId) );
+          //console.log("test delete: " + JSON.stringify(user.cart) );
+        }
+
+        cartHistory.unshift('Deleted     "' +  movieName + '"      at ' + new Date().toLocaleString());
         console.log( {"delete service " : {  user , url }});
         let queryParams = {
           'cart': user.cart,
-          'cartHistory' : user.cartHistory
+          'cartHistory' : cartHistory
         }
 
         return this.http.put<boolean>( url, queryParams, options).pipe(
