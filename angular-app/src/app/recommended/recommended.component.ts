@@ -5,7 +5,6 @@ import { UserService } from '../services/userServices';
 import { MovieService } from '../services/movieServices';
 import { Movie } from '../models/movie';
 import { User } from '../models/user';
-import { error } from 'util';
 
 @Component({
   selector: 'app-recommended',
@@ -38,9 +37,19 @@ export class RecommendedComponent implements OnInit {
 
 
   public getRecommended(): void {
-    this.movieService.getRecommended( this.cart ).subscribe( movies => {
-      movies.forEach( movie => {
-        this.movies.push( movie );
+    this.sharedData.currentUser.subscribe(user=> {
+      this.movieService.getRecommended( user.cart ).subscribe( movies => {
+        if( movies['movies'].length == 0 ){
+          this.movieService.getRecommended([]).subscribe( defmovies => {
+            defmovies.forEach( movie => {
+              this.movies.push( movie );
+            });
+          });
+        }else{
+          movies['movies'].forEach( movie => {
+            this.movies.push( movie );
+          });
+        }
       });
     });
   }
