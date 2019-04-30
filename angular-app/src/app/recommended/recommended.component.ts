@@ -37,15 +37,12 @@ export class RecommendedComponent implements OnInit {
 
 
   public getRecommended(): void {
-    this.sharedData.currentUser.subscribe(user=> {
-      this.movieService.getRecommended( user.cart ).subscribe( movies => {
+    this.sharedData.currentUser.subscribe( user=> {
+       this.movieService.getRecommended( user.cart ).subscribe( movies => {
         if( movies['movies'].length == 0 ){
-          this.movieService.getRecommended([]).subscribe( defmovies => {
-            defmovies.forEach( movie => {
-              this.movies.push( movie );
-            });
-          });
+
         }else{
+          console.log(" heerreeeeeeeeeeeee ");
           movies['movies'].forEach( movie => {
             this.movies.push( movie );
           });

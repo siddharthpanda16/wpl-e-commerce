@@ -98,6 +98,8 @@ export class MovieService {
     }
 
     getRecommended(movies:string[]): Observable<Movie[]>{
+        console.log(movies);
+        if( !movies || movies.length==0 ) movies = []
         var url = ('http://localhost:1234/movies/recommend'); 
         var options = httpOptions; 
         let queryParams = {

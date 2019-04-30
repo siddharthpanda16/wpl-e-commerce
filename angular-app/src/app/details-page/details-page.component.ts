@@ -74,11 +74,11 @@ export class DetailsPageComponent implements OnInit {
       this.sharedData.currentUser.subscribe( user => {
         this.movieService.getRecommended( [movieId] ).subscribe ( movies => {
           if( movies['movies'].length == 0 ){
-            this.movieService.getRecommended([]).subscribe( defmovies => {
-              defmovies.forEach( movie => {
-                this.similar.push( movie );
-              });
-            });
+            // this.movieService.getRecommended([]).subscribe( defmovies => {
+            //   defmovies.forEach( movie => {
+            //     this.similar.push( movie );
+            //   });
+            // });
           }else{
             movies['movies'].forEach( movie => {
               this.similar.push( movie );

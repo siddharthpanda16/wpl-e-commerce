@@ -207,9 +207,11 @@ function getMoviesRouter() {
       /* Make sure cart passed in in the body is an array */
       if (!cart.isArray) throw new Error("cart must be an array");
 
+      console.log( cart );
       /* If cart is empty send back top 20 action movies
        * with high rating that aren't already in the cart */
       if (cart.length === 0) {
+        console.log( "default" );
         const defaultMovies = await Movie.find({
           genres: "Action"
           // qty: { $nin: [ 5, 15 ] }
@@ -219,8 +221,8 @@ function getMoviesRouter() {
           .catch(e => {
             throw Error("Problem finding movies.");
           });
-
-        res.status(200).json(defaultMovies);
+          console.log( defaultMovies  );
+        res.status(200).json( { movies : defaultMovies } );
       } else {
         /* Choose the most occuring movie type from their passed in list*/
 
@@ -236,13 +238,13 @@ function getMoviesRouter() {
         console.log("genreList", genreList);
 
         /* Filter down to the most common genre */
-        const favGenre = uniqueCountPreserve(genreList)[1] || "Action";
+        let favGenre = uniqueCountPreserve(genreList)[1] || "Action";
 
         console.log("favGenre", favGenre);
 
         console.log("genreList", genreList);
 
-        if (favGenre == true) {
+        if (favGenre == 'true') {
           console.log("Woo!");
           favGenre = genreList[0];
         }
@@ -251,7 +253,8 @@ function getMoviesRouter() {
 
         /* return based on their favorite movie type */
         const recommendedMovies = await Movie.find({
-          $and: [{ genres: favGenre }, { _id: { $nin: cart } }]
+          // $and: [{ genres: favGenre }, { _id: { $nin: cart } }]
+          genres: favGenre
         })
           .sort(defaultSort)
           .limit(20)
