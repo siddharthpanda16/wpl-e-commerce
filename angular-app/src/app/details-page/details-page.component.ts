@@ -71,9 +71,19 @@ export class DetailsPageComponent implements OnInit {
       this.stars = Math.round(movie.imdb.rating/2);
       this.movie = movie;
       this.similar = [];
-      this.movieService.getRecommended([movie]).subscribe ( movies => {
-        movies.forEach( simMovie => {
-          this.similar.push(simMovie);
+      this.sharedData.currentUser.subscribe( user => {
+        this.movieService.getRecommended( [movieId] ).subscribe ( movies => {
+          if( movies['movies'].length == 0 ){
+            // this.movieService.getRecommended([]).subscribe( defmovies => {
+            //   defmovies.forEach( movie => {
+            //     this.similar.push( movie );
+            //   });
+            // });
+          }else{
+            movies['movies'].forEach( movie => {
+              this.similar.push( movie );
+            });
+          }
         });
       });
     });

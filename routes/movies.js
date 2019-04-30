@@ -134,7 +134,7 @@ function getMoviesRouter() {
       if (!req.body.Title) throw new Error("Title is required.");
 
       /* Ensure username is not already taken. */
-      const nameTaken = await Movie.findOne({ 'Title' : req.body.Title });
+      const nameTaken = await Movie.findOne({ Title: req.body.Title });
 
       console.log("unadded Title");
 
@@ -191,71 +191,79 @@ function getMoviesRouter() {
    * I'm making this a POST request so we can use the body, rather
    * than the url string.
    */
+
   router.post("/movies/recommend", async (req, res) => {
     console.log(`POST /movies/recommend hit.`);
     try {
-      let sortByYear = { year: "desc" };
+      let defaultSort = {
+        "imdb.rating": "desc"
+      };
 
       /* get the information from the body */
-      let { genres, cast, ratings } = req.body;
+      let { cart } = req.body;
 
-      if (!genres || !cast || !ratings)
-        throw new Error("genres, cast, and ratings are required");
+      if (!cart) throw new Error("cart is required");
 
-      /* Make sure everything passed in in the body is an array */
-      if (!genres.isArray || !cast.isArray || !ratings.isArray)
-        throw new Error("genres, cast, and ratings must be an array");
+      /* Make sure cart passed in in the body is an array */
+      if (!cart.isArray) throw new Error("cart must be an array");
 
-      /* Initialize arrays if they are empty for some reason */
-      if (genres.length === 0) genres = ["Comedy"];
-      if (cast.length === 0) cast = ["Kevin Bacon"]; // cuz why not?
-      if (ratings.length === 0) ratings = [6];
+      console.log( cart );
+      /* If cart is empty send back top 20 action movies
+       * with high rating that aren't already in the cart */
+      if (cart.length === 0) {
+        console.log( "default" );
+        const defaultMovies = await Movie.find({
+          genres: "Action"
+          // qty: { $nin: [ 5, 15 ] }
+        })
+          .sort(defaultSort)
+          .limit(20)
+          .catch(e => {
+            throw Error("Problem finding movies.");
+          });
+          console.log( defaultMovies  );
+        res.status(200).json( { movies : defaultMovies } );
+      } else {
+        /* Choose the most occuring movie type from their passed in list*/
 
-      /* Filter down to the most important genre/cast member */
-      const genre = uniqueCountPreserve(genres)[0] || undefined;
-      console.log("genre", genre);
+        /* First aggregate the genres of all the movies into one list */
+        let genreList = [];
+        for (var i = 0; i < cart.length; i++) {
+          const movie = await Movie.findById(cart[i]).catch(e => {
+            throw Error("Problem finding movie by ID.");
+          });
+          genreList.push(...movie.genres); // spread operator is a slick tool
+        }
 
-      /* Filter down to the most important cast member */
-      const actor = uniqueCountPreserve(cast)[0] || undefined;
-      console.log("actor", actor);
+        console.log("genreList", genreList);
 
-      /* get the average rating. */
-      rating = getAvg(ratings);
-      console.log("rating", rating);
+        /* Filter down to the most common genre */
+        let favGenre = uniqueCountPreserve(genreList)[1] || "Action";
 
-      /* Simple recommendation engine:
-       * Based on the actors, genres, ratings passed in,
-       * we find movies that match either 2+ of the following constraints:
-       * - includes actor that is featured the most in the passed in list
-       * - includes genre type that is featured most in the passed in list
-       * - is higher than the avg rating of the passed in list. */
-      const movies = await Movie.find({
-        $or: [
-          {
-            genres: genre,
-            actors: actor,
-            "imdb.rating": { $gt: rating }
-          },
-          {
-            genres: genre,
-            "imdb.rating": { $gt: rating }
-          },
-          {
-            "imdb.rating": { $gt: rating },
-            actors: actor
-          },
-          {
-            genres: genre,
-            actors: actor
-          }
-        ]
-      })
-        .sort({ year: "desc" })
-        .limit(20)
-        .catch(e => {
-          throw Error("Problem finding movies.");
-        });
-      res.status(200).json(movies);
+        console.log("favGenre", favGenre);
+
+        console.log("genreList", genreList);
+
+        if (favGenre == 'true') {
+          console.log("Woo!");
+          favGenre = genreList[0];
+        }
+
+        console.log("favGenre", favGenre);
+
+        /* return based on their favorite movie type */
+        const recommendedMovies = await Movie.find({
+          // $and: [{ genres: favGenre }, { _id: { $nin: cart } }]
+          genres: favGenre
+        })
+          .sort(defaultSort)
+          .limit(20)
+          .catch(e => {
+            throw Error("Problem finding movies.");
+          });
+
+        res.status(200).json({ movies: recommendedMovies });
+      }
     } catch (e) {
       console.error(e.message);
       res.status(400).json({ error: e.message });

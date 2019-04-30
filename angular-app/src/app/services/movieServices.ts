@@ -97,19 +97,15 @@ export class MovieService {
         );
     }
 
-    getRecommended(movies:Movie[]): Observable<Movie[]>{
+    getRecommended(movies:string[]): Observable<Movie[]>{
+        console.log(movies);
+        if( !movies || movies.length==0 ) movies = []
         var url = ('http://localhost:1234/movies/recommend'); 
         var options = httpOptions; 
         let queryParams = {
-            genres : [],
-            cast : [],
-            ratings: []
+            cart : movies
         }
-        movies.forEach( movie => {
-            queryParams.genres.push( movie.genres );
-            queryParams.cast.push( movie.actors );
-            queryParams.ratings.push( movie.imdb.rating );
-        });
+
         console.log( {queryParams} ) ;
         return this.http.post<Movie[]>( url, queryParams, options ).pipe(
             tap(_ => console.log('fetched recommended movies')),
@@ -117,14 +113,14 @@ export class MovieService {
         );
     }
 
-    searchMovie(params:Object): Observable<Movie[]> {
+    searchMovie(params:Object): Observable<{movies : Movie[]}> {
         var url = ('http://localhost:1234/movies'); 
         var options = httpOptions; 
         options['params'] = params;
 
-        return this.http.get<Movie[]>( url, options).pipe(
+        return this.http.get<{movies : Movie[]}>( url, options).pipe(
             tap(_ => console.log('fetched search movie, searchMovies()')),
-            catchError(this.handleError<Movie[]>(`searchMovie() failed`))
+            catchError(this.handleError<{movies : Movie[]}>(`searchMovie() failed`))
         );
     }
 

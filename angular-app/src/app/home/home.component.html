@@ -6,7 +6,7 @@
   <div id="search-div-id" class="d-flex justify-content-center">
     <form id="search-form" [formGroup]="searchForm" class="form-inline" novalidate>
       <input class="form-control mr-sm-2" type="search" formControlName="search_input" #search_input
-        placeholder="Titles, actors, genres" aria-label="Search">
+        placeholder="Genre, Title, Director" aria-label="Search">
       <button (click)="onSubmit(search_input.value)" class="btn btn-outline-success my-2 my-sm-0"
         type="submit">Search</button>
     </form>
